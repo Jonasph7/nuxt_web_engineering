@@ -1,5 +1,6 @@
 <!-- src/components/Home.vue -->
 <template>
+  <br><br>
   <div>
     <div id="hero">
     <img src="/hero-banner.jpg" alt="Hero Banner" />    
