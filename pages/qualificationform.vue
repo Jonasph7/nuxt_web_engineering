@@ -70,20 +70,29 @@ data() {
   };
 },
 methods: {
-  submitForm() {
-    if (this.validateForm()) {
-      // Hier würde man normalerweise einen API-Aufruf machen
-      console.log('Bewerbung gesendet:', this.form);
-      // Zeige eine Erfolgsmeldung oder leite auf eine Dankesseite um
-    } else {
+  async submitForm() {
+    try {
+      const response = await fetch('http://remote-backend-url/save_qualification.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.form)
+      });
+      
+      if (response.ok) {
+        console.log('Bewerbung gesendet:', this.form);
+        // Zeige eine Erfolgsmeldung oder leite auf eine Dankesseite um
+      } else {
+        console.error('Fehler beim Senden der Bewerbung:', response.statusText);
+        // Zeige Fehlermeldungen an
+        this.formHasErrors = true;
+      }
+    } catch (error) {
+      console.error('Fehler beim Senden der Bewerbung:', error);
       // Zeige Fehlermeldungen an
-      this.formHasErrors = true; // Dies setzt voraus, dass Sie eine neue Datenvariable `formHasErrors` haben
+      this.formHasErrors = true;
     }
-  },
-  validateForm() {
-    // Implementieren Sie hier die Logik zur Validierung des Formulars
-    // Zum Beispiel können Sie prüfen, ob alle erforderlichen Felder ausgefüllt wurden
-    return document.querySelector('.qualifications-form').checkValidity();
   }
 }
 }
