@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-wrapper">
     <header id="main-header">
       <nav>
         <ul>
@@ -7,15 +7,30 @@
           <li><NuxtLink to="/contactform" active-class="active-link">Kontakt</NuxtLink></li>
           <li><NuxtLink to="/qualificationform" active-class="active-link">Qualifikation</NuxtLink></li>
           <li><NuxtLink to="/impressum" active-class="active-link">Impressum</NuxtLink></li>
-          <li class="spacer"></li> <!-- Platzhalter, um die Login-Schaltfläche rechtsbündig zu setzen -->
+          <li class="spacer"></li>
           <li><NuxtLink to="/login" active-class="active-link">Login für Interne</NuxtLink></li>
         </ul>
       </nav>
     </header>
-    <!-- Page Content -->
-    <div>
+    
+    <div class="content-wrapper">
+      <!-- Page Content -->
       <slot />
     </div>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+      <div class="footer-content">
+        <ul>
+          <li><NuxtLink to="/" active-class="active-link">Homepage</NuxtLink></li>
+          <li><NuxtLink to="/contactform" active-class="active-link">Kontakt</NuxtLink></li>
+          <li><NuxtLink to="/qualificationform" active-class="active-link">Qualifikation</NuxtLink></li>
+          <li><NuxtLink to="/impressum" active-class="active-link">Impressum</NuxtLink></li>
+          <li><NuxtLink to="/login" active-class="active-link">Login für Interne</NuxtLink></li>
+        </ul>
+        <p>&copy; 2024 TechInnovate Solutions. Alle Rechte vorbehalten.</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -23,6 +38,12 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Macht die Wrapper-Höhe mindestens so groß wie die Höhe des Ansichtsfensters */
 }
 
 #main-header {
@@ -81,6 +102,45 @@ body {
 
 .spacer {
   flex-grow: 1; /* Dieser Platzhalter sorgt dafür, dass "Login für Interne" rechts ausgerichtet wird */
+}
+
+.content-wrapper {
+  flex: 1; /* Vergrößert den Inhaltsbereich, damit der Footer unten bleibt */
+  padding-top: 60px; /* Platz für den fixierten Header */
+}
+
+#main-footer {
+  background-color: rgba(0, 123, 255, 0.6);
+  color: white;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#main-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#main-footer ul li {
+  margin: 0 10px;
+}
+
+#main-footer ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+#main-footer p {
+  margin-top: 10px;
+  font-size: 0.9rem;
 }
 </style>
 
