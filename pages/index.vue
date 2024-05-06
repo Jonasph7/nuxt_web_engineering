@@ -37,6 +37,20 @@
   </ul>  
 </section>
 
+<section id="requirements">
+  <h2>Anforderungen an Systemadministratoren</h2>
+  <ul>
+    <li>Erfahrung mit Windows- und Linux-Servern</li>
+    <li>Kenntnisse in Netzwerkadministration und -sicherheit</li>
+    <li>Vertrautheit mit Cloud-Computing und Virtualisierungstechnologien</li>
+    <li>Problemlösungs- und Troubleshooting-Fähigkeiten</li>
+    <li>Teamfähigkeit und gute Kommunikationskompetenzen</li>
+    <li>Organisationstalent und Zeitmanagement</li>
+  </ul>
+</section>
+
+
+
 <section id="bewerbung">
     <h2>Bereit für neue Herausforderungen? Jetzt bewerben und Teil unseres Teams werden!</h2>
     <button @click="navigateToQualificationForm" class="button-home-styling">JETZT BEWERBEN!</button>
@@ -156,6 +170,15 @@ button.prev { left: 10px; }
 button.next { right: 10px; }
 
 #benefits {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  color: #234A5F;
+}
+
+#requirements {
   display: flex;
   align-items: center;
   flex-direction: column;
