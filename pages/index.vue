@@ -37,10 +37,10 @@
   </ul>  
 </section>
 
-<section id="contact-us">
-  <h2>Bereit für neue Herausforderungen? Jetzt bewerben und Teil unseres Teams werden!</h2>
-  <button class="button-home-styling">JETZT BEWERBEN!</button>
-</section>
+<section id="bewerbung">
+    <h2>Bereit für neue Herausforderungen? Jetzt bewerben und Teil unseres Teams werden!</h2>
+    <button @click="navigateToQualificationForm" class="button-home-styling">JETZT BEWERBEN!</button>
+  </section>
   
 </div>
 </template>
@@ -48,6 +48,7 @@
 <script>
 export default {
   name: "Home",
+  
   
   data() {
     return {
@@ -73,6 +74,9 @@ export default {
     },
     prevSlide() {
       this.currentSlide = (this.currentSlide + this.images.length - 1) % this.images.length;
+    },
+    navigateToQualificationForm() {
+      this.$router.push('/qualificationform');
     }
   }
 };
@@ -170,18 +174,31 @@ button.next { right: 10px; }
   color: #1C1D18;
 }
 
-.button-home-styling {
+#bewerbung {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: #F7F7F7;
   color: #1C1D18;
-  border-color: #1C1D18;
-  background-color: transparent;
-  padding: 10px 20px;
+}
+
+.button-home-styling {
+  color: #FFF;
+  background-color: #1C1D18;
+  border: none;
+  padding: 15px 30px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
 }
 
 .button-home-styling:hover {
-  color: white;
-  background-color: #1C1D18;
+  background-color: #333;
 }
 </style>
