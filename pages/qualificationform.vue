@@ -4,7 +4,7 @@
 
 <template>
 <div class="qualifications-form">
-  <h2>Bewerbungsformular für Systemadministrator</h2>
+  <h2>Bewerbungsformular zum Systemadministrator (m,w,d)</h2>
   
 
   <div class="logo-container">
