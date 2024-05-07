@@ -81,14 +81,7 @@ export default {
       return (filledFields / Object.keys(this.form).length) * 100;
     }
   },
-  methods: {
-    onSubmit() {
-      console.log('Formulardaten:', this.form);
-      this.form = { name: '', email: '', subject: '', message: '' };
-      alert('Vielen Dank für Ihre Nachricht!');
-    }
-  }
-};
+}
 </script>
 
 <style scoped>
