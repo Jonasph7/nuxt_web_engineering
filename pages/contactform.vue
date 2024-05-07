@@ -3,7 +3,7 @@
     <h2>Kontaktformular</h2>
     <div class="progress-container">
       <div class="progress-bar" :style="{ width: progress + '%' }">
-        <span class="progress-percent" :style="{ 'color': progress > 0 ? 'white' : '#007BFF' }">{{ progress.toFixed(0) }}%</span>
+        <span class="progress-percent" :style="{ color: progress > 0 ? 'white' : '#007BFF' }">{{ progress.toFixed(0) }}%</span>
       </div>
     </div>
     <form @submit.prevent="onSubmit" class="contact-form">
@@ -34,6 +34,15 @@ export default {
       formSuccessMessage: "",
       formErrorMessage: ""
     };
+  },
+  computed: {
+    progress() {
+      let filledFields = 0;
+      for (const key in this.form) {
+        if (this.form[key] !== "") filledFields++;
+      }
+      return (filledFields / Object.keys(this.form).length) * 100;
+    }
   },
   methods: {
     async onSubmit() {
@@ -120,10 +129,10 @@ export default {
   font-size: 1rem;
   font-weight: bold;
   position: absolute;
-  left: 10px; /* Geändert von 0 auf 10px um sicherzustellen, dass es innerhalb des Balkens beginnt */
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #007BFF; /* Geändert zu einer Farbe, die sichtbar ist, wenn der Fortschritt 0% beträgt */
+  color: #007BFF;
 }
 
 .contact-form {
@@ -140,14 +149,12 @@ export default {
   font-size: 1rem;
 }
 
-
 .contact-form input:focus,
 .contact-form textarea:focus {
   border-color: #0044cc;
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.2);
 }
-
 
 .contact-form button {
   padding: 1rem;
@@ -163,7 +170,7 @@ export default {
 }
 
 .contact-form button:hover,
-.contact-form button:focus {
+contact-form button:focus {
   background-color: #003399;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -173,13 +180,6 @@ export default {
   transform: translateY(1px);
 }
 
-.contact-form input:focus,
-.contact-form textarea:focus {
-  border-color: #0044cc;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.2);
-}
-
 .error-message {
   color: red;
 }
@@ -187,5 +187,4 @@ export default {
 .success-message {
   color: green;
 }
-
 </style>
