@@ -1,104 +1,105 @@
-<!-- src/components/QualificationForm.vue -->
-
-
-
 <template>
-<div class="qualifications-form">
-  <h2>Bewerbungsformular für Systemadministrator</h2>
-  
-
-  <div class="logo-container">
-  <img src="/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" />
+  <div class="qualifications-form">
+    <h2>Bewerbungsformular für Systemadministrator</h2>
+    <div class="logo-container">
+      <img src="/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" />
+    </div>
+    <form @submit.prevent="submitForm">
+      <fieldset>
+        <legend>Persönliche Informationen</legend>
+        <label for="name">Vollständiger Name:</label>
+        <input type="text" id="name" v-model="form.name" required>
+        <label for="email">E-Mail-Adresse:</label>
+        <input type="email" id="email" v-model="form.email" required>
+        <label for="phone">Telefonnummer:</label>
+        <input type="tel" id="phone" v-model="form.phone">
+      </fieldset>
+      <fieldset>
+        <legend>Berufserfahrung</legend>
+        <label for="experience">Jahre der Erfahrung als Systemadministrator:</label>
+        <input type="number" id="experience" v-model="form.experience" min="0" required>
+      </fieldset>
+      <fieldset>
+        <legend>Technische Fähigkeiten</legend>
+        <label for="skills">Liste der technischen Fähigkeiten:</label>
+        <textarea id="skills" v-model="form.skills" placeholder="Trennen Sie verschiedene Fähigkeiten mit einem Komma."></textarea>
+      </fieldset>
+      <fieldset>
+        <legend>Bildungsabschlüsse</legend>
+        <label for="education">Höchster erreichter Bildungsabschluss:</label>
+        <select id="education" v-model="form.education">
+          <option value="bachelor">Bachelor</option>
+          <option value="master">Master</option>
+          <option value="doctorate">Doktor</option>
+          <option value="other">Andere</option>
+        </select>
+      </fieldset>
+      <button type="submit">Bewerbung absenden</button>
+      <p v-if="formHasErrors" class="error-message">Bitte füllen Sie alle erforderlichen Felder aus.</p>
+      <p v-if="formSuccessMessage" class="success-message">{{ formSuccessMessage }}</p>
+      <p v-if="formErrorMessage" class="error-message">{{ formErrorMessage }}</p>
+    </form>
   </div>
-  
-  <form @submit.prevent="submitForm">
-    <fieldset>
-      <legend>Persönliche Informationen</legend>
-      <label for="name">Vollständiger Name:</label>
-      <input type="text" id="name" v-model="form.name" required>
-
-      <label for="email">E-Mail-Adresse:</label>
-      <input type="email" id="email" v-model="form.email" required>
-
-      <label for="phone">Telefonnummer:</label>
-      <input type="tel" id="phone" v-model="form.phone">
-    </fieldset>
-    
-    <fieldset>
-      <legend>Berufserfahrung</legend>
-      <label for="experience">Jahre der Erfahrung als Systemadministrator:</label>
-      <input type="number" id="experience" v-model="form.experience" min="0" required>
-    </fieldset>
-    
-    <fieldset>
-      <legend>Technische Fähigkeiten</legend>
-      <label for="skills">Liste der technischen Fähigkeiten:</label>
-      <textarea id="skills" v-model="form.skills" placeholder="Trennen Sie verschiedene Fähigkeiten mit einem Komma."></textarea>
-    </fieldset>
-    
-    <fieldset>
-      <legend>Bildungsabschlüsse</legend>
-      <label for="education">Höchster erreichter Bildungsabschluss:</label>
-      <select id="education" v-model="form.education">
-        <option value="bachelor">Bachelor</option>
-        <option value="master">Master</option>
-        <option value="doctorate">Doktor</option>
-        <option value="other">Andere</option>
-      </select>
-    </fieldset>
-    
-    <button type="submit">Bewerbung absenden</button>
-  </form>
-</div>
-
 </template>
-
 
 <script>
 export default {
-name: "ContactForm",
-data() {
-  return {
-    form: {
-      name: '',
-      email: '',
-      phone: '',
-      experience: '',
-      skills: '',
-      education: '',
-    }
-  };
-},
-methods: {
-  async submitForm() {
-    try {
-      const response = await fetch('http://remote-backend-url/save_qualification.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.form)
-      });
-      
-      if (response.ok) {
-        console.log('Bewerbung gesendet:', this.form);
-        // Zeige eine Erfolgsmeldung oder leite auf eine Dankesseite um
-      } else {
-        console.error('Fehler beim Senden der Bewerbung:', response.statusText);
-        // Zeige Fehlermeldungen an
+  name: "QualificationForm",
+  data() {
+    return {
+      form: {
+        name: "",
+        email: "",
+        phone: "",
+        experience: "",
+        skills: "",
+        education: "",
+      },
+      formHasErrors: false,
+      formSuccessMessage: "",
+      formErrorMessage: "",
+    };
+  },
+  methods: {
+    async submitForm() {
+      // Frontend-Validierung
+      if (!this.form.name || !this.form.email || !this.form.experience) {
         this.formHasErrors = true;
+        return;
       }
-    } catch (error) {
-      console.error('Fehler beim Senden der Bewerbung:', error);
-      // Zeige Fehlermeldungen an
-      this.formHasErrors = true;
-    }
-  }
-}
-}
+
+      try {
+        const response = await fetch("https://fh-kiel.com/qualifications.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams(this.form),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          this.formSuccessMessage = data.message;
+          // Formularfelder zurücksetzen
+          this.form = {
+            name: "",
+            email: "",
+            phone: "",
+            experience: "",
+            skills: "",
+            education: "",
+          };
+        } else {
+          this.formErrorMessage = data.error;
+        }
+      } catch (error) {
+        console.error("Fehler beim Senden des Formulars:", error);
+        this.formErrorMessage = "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
+      }
+    },
+  },
+};
 </script>
-
-
 
 <style scoped>
 /* Allgemeine Formularstile */
@@ -190,9 +191,11 @@ methods: {
   transform: translateY(1px);
 }
 
-h2 {
-  text-align: center;
-  color: #0044cc;
+.error-message {
+  color: red;
 }
 
+.success-message {
+  color: green;
+}
 </style>
