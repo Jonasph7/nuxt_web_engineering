@@ -3,75 +3,77 @@
   <br><br>
   <div>
     <div id="hero">
-    <img src="/hero-banner.jpg" alt="Hero Banner" />    
-  </div>
+      <img src="/hero-banner.jpg" alt="Hero Banner" />    
+    </div>
     <section id="about-us">
       <h1>Willkommen bei TechInnovate Solutions</h1>
       <p>Wir stehen an der Spitze der technologischen Innovation und sind verpflichtet, bahnbrechende Lösungen zu entwickeln, die unsere Kunden und Mitarbeiter stärken.</p>
     </section>
   
     <section id="our-values">
-    <h2>Wir suchen ab sofort Systemadministratoren für unser Team (m/w/d)</h2>
+      <h2>Wir suchen ab sofort Systemadministratoren für unser Team (m/w/d)</h2>
     </section>
 
-<div class="slideshow-container-background">
-  <div class="slideshow-container">
-    <div class="slides" :style="{ 'transform': 'translateX(' + (-currentSlide * 100) + '%)' }">
-      <div class="slide" v-for="(image, index) in images" :key="index" :style="{ backgroundImage: 'url(' + image + ')' }"></div>
+    <div class="slideshow-container-background">
+      <div class="slideshow-container">
+        <div class="slides" :style="{ 'transform': 'translateX(' + (-currentSlide * 100) + '%)' }">
+          <div class="slide" v-for="(image, index) in images" :key="index" :style="{ backgroundImage: 'url(' + image + ')' }"></div>
+        </div>
+        <button class="prev" @click="prevSlide">
+          <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+          </svg>
+        </button>
+        <button class="next" @click="nextSlide">
+          <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
+          </svg>
+        </button>
+        <h2>Werfen Sie einen Blick in unser modernes Bürogebäude und lernen Sie unsere Arbeitswelt kennen</h2>
+      </div>
     </div>
-    <button class="prev" @click="prevSlide">❮</button>
-    <button class="next" @click="nextSlide">❯</button>
-    <h2>Werfen Sie einen Blick in unser modernes Bürogebäude und lernen Sie unsere Arbeitswelt kennen</h2>
+
+    <section id="benefits">
+      <h2>Warum bei uns arbeiten?</h2>
+      <p>Teil von TechInnovate Solution zu werden bedeutet, Teil eines unterstützenden und dynamischen Teams zu sein. Hier ist, was wir bieten:</p>
+      <ul>
+        <li>Wettbewerbsfähige Gehälter</li>
+        <li>Flexible Arbeitszeiten</li>
+        <li>Gesundheits- und Wellnessprogramme</li>
+        <li>Fortlaufende Lern- und Entwicklungsmöglichkeiten</li>
+      </ul>  
+    </section>
+
+    <section id="requirements">
+      <h2>Anforderungen an Systemadministratoren</h2>
+      <ul>
+        <li>Erfahrung mit Windows- und Linux-Servern</li>
+        <li>Kenntnisse in Netzwerkadministration und -sicherheit</li>
+        <li>Vertrautheit mit Cloud-Computing und Virtualisierungstechnologien</li>
+        <li>Problemlösungs- und Troubleshooting-Fähigkeiten</li>
+        <li>Teamfähigkeit und gute Kommunikationskompetenzen</li>
+        <li>Organisationstalent und Zeitmanagement</li>
+      </ul>
+    </section>
+
+    <section id="bewerbung">
+      <h2>Bereit für neue Herausforderungen? Jetzt bewerben und Teil unseres Teams werden!</h2>
+      <button @click="navigateToQualificationForm" class="button-home-styling">JETZT BEWERBEN!</button>
+    </section>
   </div>
-</div>
-  
-
-  <section id="benefits">
-  <h2>Warum bei uns arbeiten?</h2>
-  <p>Teil von TechInnovate Solution zu werden bedeutet, Teil eines unterstützenden und dynamischen Teams zu sein. Hier ist, was wir bieten:</p>
-  <ul>
-    <li>Wettbewerbsfähige Gehälter</li>
-    <li>Flexible Arbeitszeiten</li>
-    <li>Gesundheits- und Wellnessprogramme</li>
-    <li>Fortlaufende Lern- und Entwicklungsmöglichkeiten</li>
-  </ul>  
-</section>
-
-<section id="requirements">
-  <h2>Anforderungen an Systemadministratoren</h2>
-  <ul>
-    <li>Erfahrung mit Windows- und Linux-Servern</li>
-    <li>Kenntnisse in Netzwerkadministration und -sicherheit</li>
-    <li>Vertrautheit mit Cloud-Computing und Virtualisierungstechnologien</li>
-    <li>Problemlösungs- und Troubleshooting-Fähigkeiten</li>
-    <li>Teamfähigkeit und gute Kommunikationskompetenzen</li>
-    <li>Organisationstalent und Zeitmanagement</li>
-  </ul>
-</section>
-
-
-
-<section id="bewerbung">
-    <h2>Bereit für neue Herausforderungen? Jetzt bewerben und Teil unseres Teams werden!</h2>
-    <button @click="navigateToQualificationForm" class="button-home-styling">JETZT BEWERBEN!</button>
-  </section>
-  
-</div>
 </template>
 
 <script>
 export default {
   name: "Home",
-  
-  
   data() {
     return {
       images: [
-      '/Konferenzraum.png', // Pfad zum ersten Bild
-      '/Serverraum1.png',   // Pfad zum zweiten Bild
-      '/Unternehmen1.png',  // Pfad zum dritten Bild
-    ],
-    currentSlide: 0,
+        '/Konferenzraum.png', // Pfad zum ersten Bild
+        '/Serverraum1.png',   // Pfad zum zweiten Bild
+        '/Unternehmen1.png',  // Pfad zum dritten Bild
+      ],
+      currentSlide: 0,
     };
   },
   mounted() {
@@ -81,7 +83,7 @@ export default {
     startSlideshow() {
       setInterval(() => {
         this.nextSlide();
-      }, 6000); // Wechselt die Slides alle 3 Sekunden
+      }, 6000); // Wechselt die Slides alle 6 Sekunden
     },
     nextSlide() {
       this.currentSlide = (this.currentSlide + 1) % this.images.length;
@@ -102,7 +104,7 @@ export default {
   justify-content: center;
   padding-top: 30px;
   padding-bottom: 30px;
-  }
+}
 
 #hero img {
   width: 40%;
@@ -148,26 +150,45 @@ export default {
 
 .slide {
   flex: 0 0 100%;
-  height: 500px; /* Höhe Ihrer Wahl */
+  height: 500px;
   background-size: cover;
   background-position: center;
   border-radius: 500px;
   object-fit: cover;
 }
 
+.arrow-icon {
+  fill: white;
+  width: 24px;
+  height: 24px;
+  transition: all 0.2s ease-in-out;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.arrow-icon:hover {
+  transform: scale(1.1);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
 button.prev,
 button.next {
   position: absolute;
-  top: 50%;
+  top: 42%;
   transform: translateY(-50%);
-  background-color: #fff;
+  background-color: transparent;
   border: none;
-  font-size: 18px;
   cursor: pointer;
 }
 
-button.prev { left: 10px; }
-button.next { right: 10px; }
+button.prev {
+  left: 10px;
+}
+
+button.next {
+  right: 10px;
+}
 
 #benefits {
   display: flex;
