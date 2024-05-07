@@ -1,6 +1,11 @@
 <template>
   <div class="contact-form-container">
     <h2>Kontaktformular</h2>
+    <div class="progress-container">
+      <div class="progress-bar" :style="{ width: progress + '%' }">
+        <span class="progress-percent" :style="{ 'color': progress > 0 ? 'white' : '#007BFF' }">{{ progress.toFixed(0) }}%</span>
+      </div>
+    </div>
     <form @submit.prevent="onSubmit" class="contact-form">
       <input type="text" v-model="form.name" placeholder="Name" required />
       <input type="email" v-model="form.email" placeholder="E-Mail" required />
@@ -64,6 +69,14 @@ export default {
         console.error("Fehler beim Senden des Formulars:", error);
         this.formErrorMessage = "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
       }
+      return (filledFields / Object.keys(this.form).length) * 100;
+    }
+  },
+  methods: {
+    onSubmit() {
+      console.log('Formulardaten:', this.form);
+      this.form = { name: '', email: '', subject: '', message: '' };
+      alert('Vielen Dank für Ihre Nachricht!');
     }
   }
 };
@@ -80,9 +93,37 @@ export default {
 }
 
 .contact-form-container h2 {
+  font-size: 2.5rem;
+  color: #007BFF;
   text-align: center;
-  color: #0044cc;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.progress-container {
+  position: relative;
+  width: 100%;
+  background-color: #e1e1e1;
+  border-radius: 5px;
+  height: 20px;
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #007BFF;
+  width: 0;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.progress-percent {
+  font-size: 1rem;
+  font-weight: bold;
+  position: absolute;
+  left: 10px; /* Geändert von 0 auf 10px um sicherzustellen, dass es innerhalb des Balkens beginnt */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #007BFF; /* Geändert zu einer Farbe, die sichtbar ist, wenn der Fortschritt 0% beträgt */
 }
 
 .contact-form {
@@ -98,6 +139,15 @@ export default {
   border-radius: 5px;
   font-size: 1rem;
 }
+
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #0044cc;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.2);
+}
+
 
 .contact-form button {
   padding: 1rem;
@@ -137,4 +187,5 @@ export default {
 .success-message {
   color: green;
 }
+
 </style>
