@@ -1,5 +1,3 @@
-<!-- src/components/ContactForm.vue -->
-
 <template>
   <div class="contact-form-container">
     <h2>Kontaktformular</h2>
@@ -15,6 +13,9 @@
       <textarea v-model="form.message" placeholder="Ihre Nachricht" rows="6" required></textarea>
       <button type="submit">Senden</button>
     </form>
+    <p v-if="formHasErrors" class="error-message">Bitte füllen Sie alle erforderlichen Felder aus.</p>
+    <p v-if="formSuccessMessage" class="success-message">{{ formSuccessMessage }}</p>
+    <p v-if="formErrorMessage" class="error-message">{{ formErrorMessage }}</p>
   </div>
 </template>
 
@@ -24,18 +25,49 @@ export default {
   data() {
     return {
       form: {
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+        name: "",
+        email: "",
+        subject: "",
+        message: ""
       },
+      formHasErrors: false,
+      formSuccessMessage: "",
+      formErrorMessage: ""
     };
   },
-  computed: {
-    progress() {
-      let filledFields = 0;
-      for (const key in this.form) {
-        if (this.form[key] !== '') filledFields++;
+  methods: {
+    async onSubmit() {
+      // Frontend-Validierung
+      if (!this.form.name || !this.form.email || !this.form.subject || !this.form.message) {
+        this.formHasErrors = true;
+        return;
+      }
+
+      try {
+        const response = await fetch("https://fh-kiel.com/contact.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams(this.form).toString()
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          this.formSuccessMessage = data.success;
+          // Formularfelder zurücksetzen
+          this.form = {
+            name: "",
+            email: "",
+            subject: "",
+            message: ""
+          };
+        } else {
+          this.formErrorMessage = data.error;
+        }
+      } catch (error) {
+        console.error("Fehler beim Senden des Formulars:", error);
+        this.formErrorMessage = "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
       }
       return (filledFields / Object.keys(this.form).length) * 100;
     }
@@ -108,12 +140,14 @@ export default {
   font-size: 1rem;
 }
 
+
 .contact-form input:focus,
 .contact-form textarea:focus {
   border-color: #0044cc;
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.2);
 }
+
 
 .contact-form button {
   padding: 1rem;
@@ -138,4 +172,20 @@ export default {
 .contact-form button:active {
   transform: translateY(1px);
 }
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #0044cc;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.2);
+}
+
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
+
 </style>
