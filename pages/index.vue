@@ -1,14 +1,15 @@
 <!-- src/components/Home.vue -->
 <template>
-  <br><br>
+  
   <div>
-    <div id="hero">
-      <img src="/hero-banner.jpg" alt="Hero Banner" />    
-    </div>
     <section id="about-us">
       <h1>Willkommen bei TechInnovate Solutions</h1>
       <p>Wir stehen an der Spitze der technologischen Innovation und sind verpflichtet, bahnbrechende Lösungen zu entwickeln, die unsere Kunden und Mitarbeiter stärken.</p>
     </section>
+    <div id="hero">
+      <img src="/hero-banner.jpg" alt="Hero Banner" />    
+    </div>
+    
   
     <section id="our-values">
       <h2>Wir suchen ab sofort Systemadministratoren für unser Team (m/w/d)</h2>
@@ -113,8 +114,8 @@ export default {
 }
 
 #about-us {
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   text-align: center;
   background-color: #F7F7F7;
   color: #1C1D18;
