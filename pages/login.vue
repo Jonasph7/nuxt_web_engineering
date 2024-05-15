@@ -10,8 +10,9 @@
         <label for="password">Passwort</label>
         <input type="password" id="password" v-model="password" placeholder="Geben Sie Ihr Passwort ein" required />
       </div>
-      <button type="submit">Einloggen</button>
+      <button type="submit" :disabled="loading">{{ loading ? 'Lädt...' : 'Einloggen' }}</button>
     </form>
+    <p v-if="error" class="error-message">{{ error }}</p>
   </div>
 </template>
 
@@ -20,35 +21,32 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      loading: false,
+      error: null
     };
   },
   methods: {
-    onSubmit() {
-      // Beispiel für eine Backend-Verbindung: POST-Anfrage senden
-      const credentials = {
-        username: this.username,
-        password: this.password
-      };
-
-      fetch('https://example-backend.com/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Login fehlgeschlagen');
-          }
-          return response.json();
-        })
-        .then(data => {
-          alert('Login erfolgreich!');
-          // Beispielweise einen Token speichern oder zur Dashboard-Seite navigieren
-        })
-        .catch(error => {
-          alert(error.message);
+    async onSubmit() {
+      this.loading = true;
+      const credentials = { username: this.username, password: this.password };
+      try {
+        const response = await fetch('https://fh-kiel.com/login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(credentials)
         });
+
+        if (!response.ok) throw new Error('Login fehlgeschlagen');
+
+        const { token } = await response.json();
+        localStorage.setItem('auth_token', token); // Speichere den JWT im localStorage
+        this.$router.push('/'); // Weiterleitung zur Hauptseite
+      } catch (error) {
+        this.error = error.message;
+      } finally {
+        this.loading = false;
+      }
     }
   }
 };
