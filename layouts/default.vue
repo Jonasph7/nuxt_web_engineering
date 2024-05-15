@@ -24,7 +24,7 @@
         <ul>
           <li><NuxtLink to="/" active-class="active-link">Homepage</NuxtLink></li>
           <li><NuxtLink to="/contactform" active-class="active-link">Kontakt</NuxtLink></li>
-          <li><NuxtLink to="/qualificationform" active-class="active-link">Qualifikation</NuxtLink></li>
+          <li><NuxtLink to="/qualificationform" active-class="active-link">Bewerbungsformular</NuxtLink></li>
           <li><NuxtLink to="/impressum" active-class="active-link">Impressum</NuxtLink></li>
           <li><NuxtLink to="/login" active-class="active-link">Login für Interne</NuxtLink></li>
         </ul>
