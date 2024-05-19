@@ -10,48 +10,44 @@
         <label for="password">Passwort</label>
         <input type="password" id="password" v-model="password" placeholder="Geben Sie Ihr Passwort ein" required />
       </div>
-      <button type="submit">Einloggen</button>
+      <button type="submit" :disabled="loading">{{ loading ? 'Lädt...' : 'Einloggen' }}</button>
     </form>
+    <p v-if="error" class="error-message">{{ error }}</p>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      username: '',
-      password: ''
-    };
-  },
-  methods: {
-    onSubmit() {
-      // Beispiel für eine Backend-Verbindung: POST-Anfrage senden
-      const credentials = {
-        username: this.username,
-        password: this.password
-      };
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-      fetch('https://example-backend.com/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Login fehlgeschlagen');
-          }
-          return response.json();
-        })
-        .then(data => {
-          alert('Login erfolgreich!');
-          // Beispielweise einen Token speichern oder zur Dashboard-Seite navigieren
-        })
-        .catch(error => {
-          alert(error.message);
-        });
-    }
+const username = ref('')
+const password = ref('')
+const loading = ref(false)
+const error = ref(null)
+const router = useRouter()
+
+const onSubmit = async () => {
+  loading.value = true
+  error.value = null
+  const credentials = { username: username.value, password: password.value }
+  try {
+    const response = await fetch('https://fh-kiel.com/login.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+      credentials: 'include' // WICHTIG: Sendet Cookies mit
+    })
+
+    const data = await response.json()
+    if (!response.ok) throw new Error(data.error || 'Login fehlgeschlagen')
+
+    router.push('/protected')
+  } catch (err) {
+    error.value = err.message
+  } finally {
+    loading.value = false
   }
-};
+}
 </script>
 
 <style scoped>
@@ -113,5 +109,10 @@ button:hover {
   background-color: #0056b3;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.error-message {
+  color: red;
+  margin-top: 1rem;
 }
 </style>
