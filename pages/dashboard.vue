@@ -1,6 +1,6 @@
 <template>
   <div v-if="isAuthenticated">
-    <h1>Geschützte Seite</h1>
+    <h1>Dashboard</h1>
     <p>Sie haben sich erfolgreich eingeloggt und können diese geschützte Seite sehen.</p>
     <button @click="logout">Abmelden</button>
   </div>

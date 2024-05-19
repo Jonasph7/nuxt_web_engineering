@@ -41,7 +41,7 @@ const onSubmit = async () => {
     const data = await response.json()
     if (!response.ok) throw new Error(data.error || 'Login fehlgeschlagen')
 
-    router.push('/protected')
+    router.push('/dashboard')
   } catch (err) {
     error.value = err.message
   } finally {
