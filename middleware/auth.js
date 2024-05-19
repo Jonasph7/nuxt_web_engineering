@@ -1,12 +1,14 @@
-export default function ({ store, redirect, app }) {
-    // Hier kannst du prüfen, ob ein Token vorhanden ist
-    // Beispiel mit localStorage (für Client-seitige Middleware)
-    if (process.client) {
-      const token = localStorage.getItem('auth_token');
-      if (!token) {
-        // Wenn kein Token vorhanden ist, umleiten zur Login-Seite
-        redirect('/login');
-      }
-    }
+// middleware/auth.js
+import { defineNuxtRouteMiddleware, navigateTo } from '#app'
+
+export default defineNuxtRouteMiddleware(async (to, from) => {
+  const response = await fetch('https://fh-kiel.com/check_auth.php', {
+    method: 'GET',
+    credentials: 'include' // WICHTIG: Sendet Cookies mit
+  })
+  const isAuthenticated = await response.json()
+
+  if (!isAuthenticated && to.path !== '/login') {
+    return navigateTo('/login')
   }
-  
+})
