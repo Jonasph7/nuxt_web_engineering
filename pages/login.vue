@@ -29,20 +29,26 @@ export default {
   methods: {
     async onSubmit() {
       this.loading = true;
+      this.error = null; // Reset the error message
       const credentials = { username: this.username, password: this.password };
       try {
+        console.log('Form submitted'); // Debugging line
+        console.log('Sending request to login:', credentials); // Debugging line
         const response = await fetch('https://fh-kiel.com/login.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(credentials)
         });
 
-        if (!response.ok) throw new Error('Login fehlgeschlagen');
+        console.log('Response status:', response.status); // Debugging line
+        const data = await response.json(); // Always try to parse JSON
+        if (!response.ok) throw new Error(data.error || 'Login fehlgeschlagen');
 
-        const { token } = await response.json();
-        localStorage.setItem('auth_token', token); // Speichere den JWT im localStorage
-        this.$router.push('/'); // Weiterleitung zur Hauptseite
+        console.log('Received token:', data.token); // Debugging line
+        localStorage.setItem('auth_token', data.token); // Save the JWT in localStorage
+        this.$router.push('/'); // Redirect to the main page
       } catch (error) {
+        console.error('Login error:', error); // Debugging line
         this.error = error.message;
       } finally {
         this.loading = false;
@@ -111,5 +117,10 @@ button:hover {
   background-color: #0056b3;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.error-message {
+  color: red;
+  margin-top: 1rem;
 }
 </style>
