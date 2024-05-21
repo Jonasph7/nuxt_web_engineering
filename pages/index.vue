@@ -122,6 +122,17 @@ export default {
 </script>
 
 <style scoped>
+#about-us {
+  width: 100%;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  text-align: center;
+  background-color: #F7F7F7;
+  color: #1C1D18;
+  box-sizing: border-box;
+  margin: 0;
+}
+
 #hero {
   display: flex;
   justify-content: center;
@@ -134,14 +145,6 @@ export default {
   width: 50%;
   height: auto;
   border-radius: 500px; /* Runde Ecken */
-}
-
-#about-us {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  text-align: center;
-  background-color: #F7F7F7;
-  color: #1C1D18;
 }
 
 .slideshow-container {
