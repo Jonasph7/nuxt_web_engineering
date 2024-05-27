@@ -1,44 +1,110 @@
 <template>
-  <div class="qualifications-form">
-    <h2>Bewerbungsformular für Systemadministrator</h2>
+  <div class="recruiting-funnel">
+    <h2 class="title">Bewerbungsformular für Systemadministrator*in</h2>
     <div class="logo-container">
       <img src="/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" />
     </div>
-    <form @submit.prevent="submitForm">
-      <fieldset>
-        <legend>Persönliche Informationen</legend>
-        <label for="name">Vollständiger Name:</label>
-        <input type="text" id="name" v-model="form.name" required>
-        <label for="email">E-Mail-Adresse:</label>
-        <input type="email" id="email" v-model="form.email" required>
-        <label for="phone">Telefonnummer:</label>
-        <input type="tel" id="phone" v-model="form.phone">
-      </fieldset>
-      <fieldset>
-        <legend>Berufserfahrung</legend>
-        <label for="experience">Jahre der Erfahrung als Systemadministrator:</label>
-        <input type="number" id="experience" v-model="form.experience" min="0" required>
-      </fieldset>
-      <fieldset>
-        <legend>Technische Fähigkeiten</legend>
-        <label for="skills">Liste der technischen Fähigkeiten:</label>
-        <textarea id="skills" v-model="form.skills" placeholder="Trennen Sie verschiedene Fähigkeiten mit einem Komma."></textarea>
-      </fieldset>
-      <fieldset>
-        <legend>Bildungsabschlüsse</legend>
-        <label for="education">Höchster erreichter Bildungsabschluss:</label>
-        <select id="education" v-model="form.education">
-          <option value="bachelor">Bachelor</option>
-          <option value="master">Master</option>
-          <option value="doctorate">Doktor</option>
-          <option value="other">Andere</option>
-        </select>
-      </fieldset>
-      <button type="submit">Bewerbung absenden</button>
-      <p v-if="formHasErrors" class="error-message">Bitte füllen Sie alle erforderlichen Felder aus.</p>
-      <p v-if="formSuccessMessage" class="success-message">{{ formSuccessMessage }}</p>
-      <p v-if="formErrorMessage" class="error-message">{{ formErrorMessage }}</p>
-    </form>
+    <div class="funnel-stages">
+      <div class="funnel-stage" @click="setActiveStage('personal')" :class="{ active: activeStage === 'personal', completed: isCompleted('personal') }">
+        <h3>1. Persönliche Informationen</h3>
+      </div>
+      <div class="funnel-stage" @click="setActiveStage('experience')" :class="{ active: activeStage === 'experience', completed: isCompleted('experience') }" v-if="isCompleted('personal')">
+        <h3>2. Berufserfahrung</h3>
+      </div>
+      <div class="funnel-stage" @click="setActiveStage('skills')" :class="{ active: activeStage === 'skills', completed: isCompleted('skills') }" v-if="isCompleted('experience')">
+        <h3>3. Technische Fähigkeiten</h3>
+      </div>
+      <div class="funnel-stage" @click="setActiveStage('education')" :class="{ active: activeStage === 'education', completed: isCompleted('education') }" v-if="isCompleted('skills')">
+        <h3>4. Bildungsabschlüsse</h3>
+      </div>
+      <div class="funnel-stage" @click="setActiveStage('review')" :class="{ active: activeStage === 'review', completed: isCompleted('review') }" v-if="isCompleted('education')">
+        <h3>5. Überprüfung und Absenden</h3>
+      </div>
+    </div>
+    <div class="stage-content">
+      <div v-if="activeStage === 'personal'" class="form-content">
+        <h3>Persönliche Informationen</h3>
+        <form @submit.prevent="nextStage('experience')">
+          <fieldset>
+            <div class="input-group">
+              <div class="input-item">
+                <label for="name">Vollständiger Name:</label>
+                <input type="text" id="name" v-model="form.name" required>
+              </div>
+              <div class="input-item">
+                <label for="email">E-Mail-Adresse:</label>
+                <input type="email" id="email" v-model="form.email" required>
+              </div>
+            </div>
+            <div class="input-group">
+              <div class="input-item">
+                <label for="phone">Telefonnummer:</label>
+                <input type="number" id="phone" v-model="form.phone" required>
+              </div>
+            </div>
+          </fieldset>
+          <br>
+          <button type="submit" class="next-button">Weiter</button>
+        </form>
+      </div>
+      <div v-if="activeStage === 'experience'" class="form-content">
+        <h3>Berufserfahrung</h3>
+        <form @submit.prevent="nextStage('skills')">
+          <fieldset>
+            <label for="experience">Jahre der Erfahrung als Systemadministrator:</label>
+            <input type="number" id="experience" v-model="form.experience" min="0" required>
+          </fieldset>
+          <br>
+          <button type="submit" class="next-button">Weiter</button>
+        </form>
+      </div>
+      <div v-if="activeStage === 'skills'" class="form-content">
+        <h3>Technische Fähigkeiten</h3>
+        <form @submit.prevent="nextStage('education')">
+          <fieldset>
+            <label for="skills">Liste der technischen Fähigkeiten:</label>
+            <textarea id="skills" v-model="form.skills" placeholder="Trennen Sie verschiedene Fähigkeiten mit einem Komma." required></textarea>
+          </fieldset>
+          <br>
+          <button type="submit" class="next-button">Weiter</button>
+        </form>
+      </div>
+      <div v-if="activeStage === 'education'" class="form-content">
+        <h3>Bildungsabschlüsse</h3>
+        <form @submit.prevent="nextStage('review')">
+          <fieldset>
+            <label for="education">Höchster erreichter Bildungsabschluss:</label>
+            <select id="education" v-model="form.education" required>
+              <option value="Bachelor">Bachelor</option>
+              <option value="Master">Master</option>
+              <option value="Doktor">Doktor</option>
+              <option value="Andere">Andere</option>
+            </select>
+          </fieldset>
+          <br>
+          <button type="submit" class="next-button">Weiter</button>
+        </form>
+      </div>
+      <div v-if="activeStage === 'review'" class="form-content">
+        <h3>Überprüfen und Absenden</h3>
+        <form @submit.prevent="submitForm">
+          <fieldset>
+            <legend>Überprüfung Ihrer Informationen</legend>
+            <p><strong>Name:</strong> {{ form.name }}</p>
+            <p><strong>E-Mail:</strong> {{ form.email }}</p>
+            <p><strong>Telefonnummer:</strong> {{ form.phone }}</p>
+            <p><strong>Erfahrung:</strong> {{ form.experience }} Jahre</p>
+            <p><strong>Fähigkeiten:</strong> {{ form.skills }}</p>
+            <p><strong>Bildungsabschluss:</strong> {{ form.education }}</p>
+          </fieldset>
+          
+          <button type="submit" class="submit-button">Bewerbung absenden</button>
+        </form>
+        <p v-if="formHasErrors" class="error-message">Bitte füllen Sie alle erforderlichen Felder aus.</p>
+        <p v-if="formSuccessMessage" class="success-message">{{ formSuccessMessage }}</p>
+        <p v-if="formErrorMessage" class="error-message">{{ formErrorMessage }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,6 +113,7 @@ export default {
   name: "QualificationForm",
   data() {
     return {
+      activeStage: 'personal',
       form: {
         name: "",
         email: "",
@@ -61,9 +128,54 @@ export default {
     };
   },
   methods: {
+    setActiveStage(stage) {
+      if (this.isCompleted(stage) || this.activeStage === stage) {
+        this.activeStage = stage;
+      }
+    },
+    nextStage(stage) {
+      if (this.validateStage()) {
+        this.activeStage = stage;
+      }
+    },
+    validateStage() {
+      this.formHasErrors = false;
+      if (this.activeStage === 'personal' && (!this.form.name || !this.form.email)) {
+        this.formHasErrors = true;
+        return false;
+      }
+      if (this.activeStage === 'experience' && !this.form.experience) {
+        this.formHasErrors = true;
+        return false;
+      }
+      if (this.activeStage === 'skills' && !this.form.skills) {
+        this.formHasErrors = true;
+        return false;
+      }
+      if (this.activeStage === 'education' && !this.form.education) {
+        this.formHasErrors = true;
+        return false;
+      }
+      return true;
+    },
+    isCompleted(stage) {
+      switch(stage) {
+        case 'personal':
+          return this.form.name && this.form.email;
+        case 'experience':
+          return this.form.experience;
+        case 'skills':
+          return this.form.skills;
+        case 'education':
+          return this.form.education;
+        case 'review':
+          return this.form.name && this.form.email && this.form.experience && this.form.skills && this.form.education;
+        default:
+          return false;
+      }
+    },
     async submitForm() {
-      // Frontend-Validierung
-      if (!this.form.name || !this.form.email || !this.form.experience) {
+      if (!this.isCompleted('review')) {
         this.formHasErrors = true;
         return;
       }
@@ -80,15 +192,7 @@ export default {
         const data = await response.json();
         if (response.ok) {
           this.formSuccessMessage = data.message;
-          // Formularfelder zurücksetzen
-          this.form = {
-            name: "",
-            email: "",
-            phone: "",
-            experience: "",
-            skills: "",
-            education: "",
-          };
+          this.activeStage = 'review'; // Ensure the stage remains on review
         } else {
           this.formErrorMessage = data.error;
         }
@@ -102,11 +206,17 @@ export default {
 </script>
 
 <style scoped>
-/* Allgemeine Formularstile */
-.qualifications-form {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
+/* Stile für den Titel */
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Allgemeine Stile für das Recruiting Funnel */
+.recruiting-funnel {
+  max-width: 1200px;
+  margin: 2rem;
+  padding: 10rem;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -121,13 +231,71 @@ export default {
   margin-bottom: 2rem;
 }
 
-/* Feldset-Stile */
+/* Stile für die Funnel-Stufen */
+.funnel-stages {
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.funnel-stage {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.funnel-stage.active {
+  background: #e0eaff;
+  border: 2px solid #0044cc;
+}
+
+.funnel-stage.completed {
+  background: #d4edda;
+}
+
+.funnel-stage:hover {
+  background: #e1e1e1;
+}
+
+.funnel-stage h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #0044cc;
+}
+
+/* Stile für das Formular und die Inhaltsbereiche */
+.stage-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px; /* Festgelegte Mindesthöhe für Konsistenz */
+  height: 400px; /* Feste Höhe */
+  transition: height 0.3s;
+}
+
+.form-content {
+  width: 100%;
+}
+
 .qualifications-form fieldset {
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   padding: 2rem;
   margin-bottom: 2rem;
   background: #f9f9f9;
+}
+
+.input-group {
+  display: solid;
+  gap: 1rem;
+}
+
+.input-item {
+  flex: 1;
 }
 
 /* Legendenstil */
@@ -155,9 +323,9 @@ export default {
   border-radius: 5px;
   margin-bottom: 1rem;
   font-size: 1rem;
+  transition: border-color 0.3s;
 }
 
-/* Stile für Interaktionen */
 .qualifications-form input:focus,
 .qualifications-form textarea:focus,
 .qualifications-form select:focus {
@@ -167,10 +335,10 @@ export default {
 }
 
 /* Button-Stile */
-.qualifications-form button {
+.next-button, .submit-button {
   background-color: #0044cc;
   color: white;
-  padding: 1rem;
+  padding: 1rem 2rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -178,24 +346,29 @@ export default {
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
 }
 
-.qualifications-form button:hover,
-.qualifications-form button:focus {
+.next-button:hover, .submit-button:hover {
   background-color: #003399;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.qualifications-form button:active {
+.next-button:active, .submit-button:active {
   transform: translateY(1px);
 }
 
 .error-message {
   color: red;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 .success-message {
   color: green;
+  text-align: center;
+  margin-top: 1rem;
 }
 </style>
