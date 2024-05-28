@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { supabase } from '@/supabase' // Adjust the path according to your project structure
+
 export default {
   name: "ContactForm",
   data() {
@@ -52,18 +54,18 @@ export default {
         return;
       }
 
-      try {
-        const response = await fetch("https://fh-kiel.com/contact.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: new URLSearchParams(this.form).toString()
-        });
+      this.formHasErrors = false; // reset error state
 
-        const data = await response.json();
-        if (response.ok) {
-          this.formSuccessMessage = data.success;
+      try {
+        const { error } = await supabase
+          .from('kontakt') // Replace 'contact_form' with your table name
+          .insert([this.form]);
+
+        if (error) {
+          console.error("Error details:", error);
+          this.formErrorMessage = error.message;
+        } else {
+          this.formSuccessMessage = "Nachricht erfolgreich gesendet!";
           // Formularfelder zurücksetzen
           this.form = {
             name: "",
@@ -71,17 +73,15 @@ export default {
             subject: "",
             message: ""
           };
-        } else {
-          this.formErrorMessage = data.error;
+          this.formErrorMessage = ""; // Clear previous error message
         }
       } catch (error) {
         console.error("Fehler beim Senden des Formulars:", error);
         this.formErrorMessage = "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
       }
-      return (filledFields / Object.keys(this.form).length) * 100;
     }
-  },
-}
+  }
+};
 </script>
 
 <style scoped>
@@ -163,7 +163,7 @@ export default {
 }
 
 .contact-form button:hover,
-contact-form button:focus {
+.contact-form button:focus {
   background-color: #003399;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

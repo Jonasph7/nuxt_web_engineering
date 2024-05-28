@@ -109,6 +109,8 @@
 </template>
 
 <script>
+import { supabase } from '@/supabase' // Adjust the path according to your project structure
+
 export default {
   name: "QualificationForm",
   data() {
@@ -179,22 +181,28 @@ export default {
         this.formHasErrors = true;
         return;
       }
+      this.formHasErrors = false; // reset error state
 
       try {
-        const response = await fetch("https://fh-kiel.com/qualifications.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams(this.form),
-        });
+        const { error } = await supabase
+          .from('bewerbung') // Replace 'bewerbung' with your table name
+          .insert([this.form]);
 
-        const data = await response.json();
-        if (response.ok) {
-          this.formSuccessMessage = data.message;
-          this.activeStage = 'review'; // Ensure the stage remains on review
+        if (error) {
+          console.error("Error details:", error);
+          this.formErrorMessage = error.message;
         } else {
-          this.formErrorMessage = data.error;
+          this.formSuccessMessage = "Bewerbung erfolgreich eingereicht!";
+          // Formularfelder zurücksetzen
+          this.form = {
+            name: "",
+            email: "",
+            phone: "",
+            experience: "",
+            skills: "",
+            education: "",
+          };
+          this.formErrorMessage = ""; // Clear previous error message
         }
       } catch (error) {
         console.error("Fehler beim Senden des Formulars:", error);
@@ -206,6 +214,7 @@ export default {
 </script>
 
 <style scoped>
+
 /* Stile für den Titel */
 .title {
   text-align: center;
