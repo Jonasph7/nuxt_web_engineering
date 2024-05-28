@@ -193,15 +193,6 @@ export default {
           this.formErrorMessage = error.message;
         } else {
           this.formSuccessMessage = "Bewerbung erfolgreich eingereicht!";
-          // Formularfelder zurücksetzen
-          this.form = {
-            name: "",
-            email: "",
-            phone: "",
-            experience: "",
-            skills: "",
-            education: "",
-          };
           this.formErrorMessage = ""; // Clear previous error message
         }
       } catch (error) {

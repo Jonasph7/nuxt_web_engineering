@@ -1,47 +1,126 @@
-<script setup>
-   const supabase = useSupabaseClient()
-   const router = useRouter()
-  // ref ist  reaktive Referenz ist ein Vue-Objekt, dessen Wert sich ändern kann 
-  // und solche Änderungen automatisch in die Benutzeroberfläche oder andere Teile des Codes einfließen lassen kann.
-  const email = ref("")
-  const password = ref(null) 
-  const errorMsg = ref(null)
-  const successMsg = ref(null)
-  async function logIn() {
-    try {
-        const {data, error} = await supabase.auth.signInWithPassword({
-            email: email.value,
-            password: password.value,
-        })
-        if (error) throw error
-        router.push("/backend")
-    } catch (error) {
-        errorMsg.value = error.message
-    }
-  }
-</script>
 <template>
-    <div class="flex justify-center">
-      <div class="w-full max-w-md p-8 space-y-3 rounded-xl bg-white shadow-md">
-        <h1 class="text-2xl font-bold text-center">Log In</h1>
-        <h3 class="text-red-500">{{ errorMsg }}</h3>
-        <form class="space-y-6" action="#" method="POST" @submit.prevent="logIn">
-          <div>
-            <label for="email" class="text-sm font-semibold">Email</label>
-            <input type="email" id="email" placeholder="Email" v-model="email"
-              class="w-full p-2 mt-1 border rounded-md focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300" />
-          </div>
-          <div>
-            <label for="password" class="text-sm font-semibold">Password</label>
-            <input type="password" id="password" placeholder="Password" v-model="password"
-              class="w-full p-2 mt-1 border rounded-md focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300" />
-          </div>
-          <button type="submit"
-            class="w-full py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-            Log In
-          </button>
-          <h3 class="text-green-500">{{ successMsg }}</h3>
-        </form>
+  <div class="login-container">
+    <h2>Login für Interne</h2>
+    <form @submit.prevent="logIn">
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input type="email" id="email" v-model="email" placeholder="Geben Sie Ihre Email ein" required />
       </div>
-    </div>
+      <div class="form-field">
+        <label for="password">Passwort</label>
+        <input type="password" id="password" v-model="password" placeholder="Geben Sie Ihr Passwort ein" required />
+      </div>
+      <button type="submit" :disabled="loading">{{ loading ? 'Lädt...' : 'Einloggen' }}</button>
+    </form>
+    <p v-if="errorMsg" class="error-message">{{ errorMsg }}</p>
+    <p v-if="successMsg" class="success-message">{{ successMsg }}</p>
+  </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const supabase = useSupabaseClient()
+const router = useRouter()
+const email = ref<string>("")
+const password = ref<string>("")
+const errorMsg = ref<string | null>(null)
+const successMsg = ref<string | null>(null)
+const loading = ref<boolean>(false)
+
+async function logIn() {
+  loading.value = true
+  errorMsg.value = null
+  successMsg.value = null
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
+    })
+    if (error) throw error
+    router.push("/backend")
+  } catch (error: any) {
+    errorMsg.value = error.message
+  } finally {
+    loading.value = false
+  }
+}
+</script>
+
+<style scoped>
+.login-container {
+  max-width: 400px;
+  margin: 5rem auto;
+  padding: 4rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-container h2 {
+  color: #007BFF;
+  margin-bottom: 2rem;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #444444;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.form-field input:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: red;
+  margin-top: 1rem;
+}
+
+.success-message {
+  color: green;
+  margin-top: 1rem;
+}
+</style>
