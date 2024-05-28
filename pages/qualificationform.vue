@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { supabase } from '@/supabase' // Adjust the path according to your project structure
+
 export default {
   name: "QualificationForm",
   data() {
@@ -67,19 +69,18 @@ export default {
         this.formHasErrors = true;
         return;
       }
+      this.formHasErrors = false; // reset error state
 
       try {
-        const response = await fetch("https://fh-kiel.com/qualifications.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams(this.form),
-        });
+        const { error } = await supabase
+          .from('bewerbung') // Replace 'bewerbung' with your table name
+          .insert([this.form]);
 
-        const data = await response.json();
-        if (response.ok) {
-          this.formSuccessMessage = data.message;
+        if (error) {
+          console.error("Error details:", error);
+          this.formErrorMessage = error.message;
+        } else {
+          this.formSuccessMessage = "Bewerbung erfolgreich eingereicht!";
           // Formularfelder zurücksetzen
           this.form = {
             name: "",
@@ -89,8 +90,7 @@ export default {
             skills: "",
             education: "",
           };
-        } else {
-          this.formErrorMessage = data.error;
+          this.formErrorMessage = ""; // Clear previous error message
         }
       } catch (error) {
         console.error("Fehler beim Senden des Formulars:", error);
@@ -102,100 +102,5 @@ export default {
 </script>
 
 <style scoped>
-/* Allgemeine Formularstile */
-.qualifications-form {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
-}
-
-/* Stile für den Logo-Container */
-.logo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-/* Feldset-Stile */
-.qualifications-form fieldset {
-  border: 1px solid #e1e1e1;
-  border-radius: 10px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  background: #f9f9f9;
-}
-
-/* Legendenstil */
-.qualifications-form legend {
-  font-size: 1.2rem;
-  color: #0044cc;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-/* Input- und Label-Stile */
-.qualifications-form label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #333;
-  font-size: 1rem;
-}
-
-.qualifications-form input,
-.qualifications-form textarea,
-.qualifications-form select {
-  width: 100%;
-  padding: 0.8rem;
-  border: 2px solid #e1e1e1;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-
-/* Stile für Interaktionen */
-.qualifications-form input:focus,
-.qualifications-form textarea:focus,
-.qualifications-form select:focus {
-  border-color: #0044cc;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.2);
-}
-
-/* Button-Stile */
-.qualifications-form button {
-  background-color: #0044cc;
-  color: white;
-  padding: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-}
-
-.qualifications-form button:hover,
-.qualifications-form button:focus {
-  background-color: #003399;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.qualifications-form button:active {
-  transform: translateY(1px);
-}
-
-.error-message {
-  color: red;
-}
-
-.success-message {
-  color: green;
-}
+/* Your existing styles */
 </style>
