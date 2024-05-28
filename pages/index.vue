@@ -178,11 +178,16 @@ export default {
   color: #007BFF; /* Blaue Schrift */
   font-weight: bold;
   text-transform: uppercase; /* Text in Großbuchstaben */
-  padding: 10px 50px; /* 50 Pixel Abstand zu beiden Seiten */
-  border: 2px solid #007BFF; /* Blaue Umrandung */
+  padding: 10px; /* 10 Pixel Abstand zu beiden Seiten */
+  border: 3px solid #007BFF; /* Blaue Umrandung */
   border-radius: 25px; /* Runde Ecken für die Umrandung */
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
   transition: transform 0.3s ease; /* Übergangseffekt für das Hover */
+  
 }
+
 
 .slideshow-text:hover {
   transform: scale(1.05); /* Vergrößert den Text beim Hover */

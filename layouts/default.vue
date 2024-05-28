@@ -3,13 +3,13 @@
     <header id="main-header">
       <nav>
         <div class="nav-wrapper">
-          <!-- Burger Menu -->
+          <!-- Burger Menü -->
           <div class="burger-menu" @click="toggleMenu">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
           </div>
-          <!-- Navigation Links -->
+          <!-- Navigationslinks -->
           <ul :class="{'open': isMenuOpen}">
             <li><NuxtLink to="/" active-class="active-link" @click.native="closeMenu">Homepage</NuxtLink></li>
             <li><NuxtLink to="/contactform" active-class="active-link" @click.native="closeMenu">Kontakt</NuxtLink></li>
@@ -23,7 +23,7 @@
     </header>
     
     <div class="content-wrapper">
-      <!-- Page Content -->
+      <!-- Seiteninhalt -->
       <slot />
     </div>
 
@@ -47,57 +47,44 @@
 export default {
   data() {
     return {
-      isMenuOpen: false
+      isMenuOpen: false // Zustand des Menüs (geöffnet/geschlossen)
     };
   },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll);
-
-    // Close the burger menu when the route changes
-    this.$router.beforeEach((to, from, next) => {
-      this.closeMenu();
-      next();
-    });
-  },
   methods: {
-    handleScroll() {
-      const header = document.getElementById('main-header');
-      if (window.scrollY > 50) {
-        header.style.backgroundColor = 'rgba(0, 123, 255, 0.9)';
-      } else {
-        header.style.backgroundColor = 'rgba(0, 123, 255, 0.6)';
-      }
-    },
     toggleMenu() {
+      // Menüstatus umschalten (öffnen/schließen)
       this.isMenuOpen = !this.isMenuOpen;
     },
     closeMenu() {
+      // Menü schließen
       this.isMenuOpen = false;
     }
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll);
   }
 }
 </script>
 
 <style>
+/* Grundlegende Stile für den Body */
 body {
   margin: 0;
   padding: 0;
 }
 
+/* Wrapper für die gesamte Seite */
 .page-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Macht die Wrapper-Höhe mindestens so groß wie die Höhe des Ansichtsfensters */
-  transition: padding-top 0.3s ease;
+  min-height: 100vh;
+  transition: transform 0.3s ease;
+
 }
 
+/* Verschobener Zustand des Page Wrappers, wenn das Menü geöffnet ist */
 .page-wrapper.shifted {
-  padding-top: calc(40px + var(--menu-height));
+  transform: translateX(250px); /* Anpassung entsprechend der Menübreite */
 }
 
+/* Header-Stile */
 #main-header {
   background-color: rgba(0, 123, 255, 0.6);
   color: white;
@@ -106,15 +93,17 @@ body {
   top: 0;
   z-index: 1000;
   transition: background-color 0.3s ease;
-  height: 40px;
+  height: 55px;
   display: flex;
   align-items: center;
 }
 
+/* Navigation im Header */
 #main-header nav {
   width: 100%;
 }
 
+/* Wrapper für die Navigation */
 .nav-wrapper {
   display: flex;
   align-items: center;
@@ -122,11 +111,16 @@ body {
   width: 100%;
 }
 
+/* Burger Menü-Stile */
 .burger-menu {
   display: none;
   flex-direction: column;
   cursor: pointer;
   padding: 10px;
+  position: fixed;
+  left: 10px; /* Anpassung um Überlappung zu vermeiden */
+  top: 5px; /* Anpassung um Überlappung zu vermeiden */
+  z-index: 1001;
 }
 
 .burger-menu .bar {
@@ -136,6 +130,7 @@ body {
   margin: 4px 0;
 }
 
+/* Navigationsliste im Header */
 #main-header nav ul {
   list-style-type: none;
   margin: 0;
@@ -146,10 +141,12 @@ body {
   height: 100%;
 }
 
+/* Listenelemente in der Navigation */
 #main-header nav ul li {
   margin: 0 10px;
 }
 
+/* Links in der Navigation */
 #main-header nav ul li a {
   text-decoration: none;
   color: white;
@@ -163,28 +160,33 @@ body {
   transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Hover-Effekte für Links in der Navigation */
 #main-header nav ul li a:hover {
   border-color: rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Aktiver Link */
 .active-link {
   border-color: white;
 }
 
+/* Platzhalter für Flex-Grow */
 .spacer {
-  flex-grow: 1; /* Dieser Platzhalter sorgt dafür, dass "Login für Interne" rechts ausgerichtet wird */
+  flex-grow: 1;
 }
 
+/* Wrapper für den Seiteninhalt */
 .content-wrapper {
-  flex: 1; /* Vergrößert den Inhaltsbereich, damit der Footer unten bleibt */
-  padding-top: 60px; /* Platz für den fixierten Header */
+  flex: 1;
+  padding-top: 60px;
   display: flex;
-  justify-content: center; /* Center the content horizontally */
-  align-items: flex-start; /* Align the content at the top */
+  justify-content: center;
+  align-items: flex-start;
 }
 
+/* Footer-Stile */
 #main-footer {
   background-color: rgba(0, 123, 255, 0.6);
   color: white;
@@ -219,34 +221,40 @@ body {
   font-size: 0.9rem;
 }
 
-/* Responsive Styles */
+/* Responsive Stile für kleinere Bildschirme */
 @media (max-width: 768px) {
   :root {
     --menu-height: 300px; 
+    
   }
 
+  /* Burger Menü wird sichtbar */
   .burger-menu {
     display: flex;
   }
 
+  /* Anpassung der Navigationsliste für mobile Ansicht */
   #main-header nav ul {
     flex-direction: column;
-    position: fixed;
-    top: 40px;
-    left: 0;
-    width: 100%;
+    top: 0;
+    left: -250px; /* Start außerhalb des Viewports */
+    width: 250px;
+    height: 100%; /* Höhe 100% */
     background-color: rgba(0, 123, 255, 0.9);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    overflow-y: auto; /* Ermöglicht Scrollen im Menü */
+    transition: left 0.3s ease; /* Übergangseffekt */
+    z-index: 1000;
+    position: fixed; /* Fixiert bei geöffnetem Menü */
   }
 
-  #main-header nav ul.open {
-    max-height: var(--menu-height); 
-  }
 
   #main-header nav ul li {
     margin: 10px 0;
   }
+}
+
+/* Verschieben des Inhalts, wenn das Menü geöffnet ist */
+.page-wrapper.shifted .content-wrapper {
+  transform: translateX(250px);
 }
 </style>
