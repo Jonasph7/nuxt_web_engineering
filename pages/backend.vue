@@ -1,5 +1,7 @@
 <script setup>
-
+definePageMeta({
+  middleware: 'auth'
+})
 
 const user = ref(null)
 const kommentare = ref([])
