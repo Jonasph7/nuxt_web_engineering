@@ -3,15 +3,15 @@
     <h1>Impressum</h1>
 
     <div class="contact-info">
-      <p><strong>Alfred Mustermann</strong><br />
-      [Straße]<br />
-      [Postleitzahl] [Ort]</p>
+      <p><strong>Alfred Schmitz</strong><br />
+        Tulpenstraße 312<br />
+      360420 Wolfenstein</p>
 
       <p><strong>Handelsregister:</strong> 360420<br />
       <strong>Registergericht:</strong> Kiel</p>
 
       <p><strong>Vertreten durch:</strong><br />
-      [Vor- und Nachnamen der vertretungsberechtigten Personen]</p>
+      Alfred Schmitz, Erika Schmitz</p>
     </div>
 
     <h2>Kontakt</h2>

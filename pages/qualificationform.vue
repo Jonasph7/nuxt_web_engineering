@@ -4,21 +4,23 @@
     <div class="logo-container">
       <img src="/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" />
     </div>
-    <div class="funnel-stages">
-      <div class="funnel-stage" @click="setActiveStage('experience')" :class="{ active: activeStage === 'experience', completed: isCompleted('experience') }">
-        <h3>1. Berufserfahrung</h3>
-      </div>
-      <div class="funnel-stage" @click="setActiveStage('skills')" :class="{ active: activeStage === 'skills', completed: isCompleted('skills') }" v-if="isCompleted('experience')">
-        <h3>2. Technische Fähigkeiten</h3>
-      </div>
-      <div class="funnel-stage" @click="setActiveStage('education')" :class="{ active: activeStage === 'education', completed: isCompleted('education') }" v-if="isCompleted('skills')">
-        <h3>3. Bildungsabschlüsse</h3>
-      </div>
-      <div class="funnel-stage" @click="setActiveStage('personal')" :class="{ active: activeStage === 'personal', completed: isCompleted('personal') }" v-if="isCompleted('education')">
-        <h3>4. Persönliche Informationen</h3>
-      </div>
-      <div class="funnel-stage" @click="setActiveStage('review')" :class="{ active: activeStage === 'review', completed: isCompleted('review') }" v-if="isCompleted('personal')">
-        <h3>5. Überprüfung und Absenden</h3>
+    <div class="funnel-stages-container">
+      <div class="funnel-stages">
+        <div class="funnel-stage" @click="setActiveStage('experience')" :class="{ active: activeStage === 'experience', completed: isCompleted('experience') }">
+          <h3>1. Berufserfahrung</h3>
+        </div>
+        <div class="funnel-stage" @click="setActiveStage('skills')" :class="{ active: activeStage === 'skills', completed: isCompleted('skills') }" v-if="isCompleted('experience')">
+          <h3>2. Technische Fähigkeiten</h3>
+        </div>
+        <div class="funnel-stage" @click="setActiveStage('education')" :class="{ active: activeStage === 'education', completed: isCompleted('education') }" v-if="isCompleted('skills')">
+          <h3>3. Bildungsabschlüsse</h3>
+        </div>
+        <div class="funnel-stage" @click="setActiveStage('personal')" :class="{ active: activeStage === 'personal', completed: isCompleted('personal') }" v-if="isCompleted('education')">
+          <h3>4. Persönliche Informationen</h3>
+        </div>
+        <div class="funnel-stage" @click="setActiveStage('review')" :class="{ active: activeStage === 'review', completed: isCompleted('review') }" v-if="isCompleted('personal')">
+          <h3>5. Überprüfung und Absenden</h3>
+        </div>
       </div>
     </div>
     <div class="stage-content">
@@ -27,7 +29,12 @@
         <form @submit.prevent="nextStage('skills')">
           <fieldset>
             <label for="experience">Jahre der Erfahrung als Systemadministrator:</label>
-            <input type="number" id="experience" v-model.number="form.experience" min="0" required>
+            <select id="experience" v-model="form.experience" required>
+              <option value="0">0 Jahre</option>
+              <option value="1-3">1-3 Jahre</option>
+              <option value="4-10">4-10 Jahre</option>
+              <option value=">10">>10 Jahre</option>
+            </select>
           </fieldset>
           <br>
           <button type="submit" class="next-button">Weiter</button>
@@ -114,9 +121,6 @@
   </div>
 </template>
 
-
-
-
 <script>
 import { supabase } from '@/supabase' // Adjust the path according to your project structure
 
@@ -130,7 +134,7 @@ export default {
         lastName: "",
         email: "",
         phone: null,
-        experience: null,
+        experience: "",
         skills: "",
         education: "",
       },
@@ -156,7 +160,7 @@ export default {
         this.formHasErrors = true;
         return false;
       }
-      if (this.activeStage === 'experience' && this.form.experience === null) {
+      if (this.activeStage === 'experience' && !this.form.experience) {
         this.formHasErrors = true;
         return false;
       }
@@ -175,13 +179,13 @@ export default {
         case 'personal':
           return this.form.firstName && this.form.lastName && this.form.email && this.form.phone !== null;
         case 'experience':
-          return this.form.experience !== null;
+          return this.form.experience;
         case 'skills':
           return this.form.skills;
         case 'education':
           return this.form.education;
         case 'review':
-          return this.form.firstName && this.form.lastName && this.form.email && this.form.phone !== null && this.form.experience !== null && this.form.skills && this.form.education;
+          return this.form.firstName && this.form.lastName && this.form.email && this.form.phone !== null && this.form.experience && this.form.skills && this.form.education;
         default:
           return false;
       }
@@ -197,7 +201,7 @@ export default {
       const formData = {
         ...this.form,
         phone: parseInt(this.form.phone, 10),
-        experience: parseInt(this.form.experience, 10)
+        experience: this.form.experience
       };
 
       try {
@@ -220,11 +224,6 @@ export default {
   },
 };
 </script>
-
-
-
-
-
 
 <style scoped>
 /* Stile für den Titel */
@@ -253,6 +252,11 @@ export default {
 }
 
 /* Stile für die Funnel-Stufen */
+.funnel-stages-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .funnel-stages {
   display: flex;
   flex-direction: column; /* Vertikale Anordnung */
@@ -294,7 +298,6 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 400px; /* Festgelegte Mindesthöhe für Konsistenz */
-  height: 400px; /* Feste Höhe */
   transition: height 0.3s;
 }
 
@@ -302,7 +305,7 @@ export default {
   width: 100%;
 }
 
-.qualifications-form fieldset {
+.form-content fieldset {
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   padding: 2rem;
@@ -321,7 +324,7 @@ export default {
 }
 
 /* Legendenstil */
-.qualifications-form legend {
+.form-content legend {
   font-size: 1.2rem;
   color: #0044cc;
   margin-bottom: 1rem;
@@ -329,16 +332,16 @@ export default {
 }
 
 /* Input- und Label-Stile */
-.qualifications-form label {
+.form-content label {
   display: block;
   margin-bottom: 0.5rem;
   color: #333;
   font-size: 1rem;
 }
 
-.qualifications-form input,
-.qualifications-form textarea,
-.qualifications-form select {
+.form-content input,
+.form-content textarea,
+.form-content select {
   width: 100%;
   padding: 1rem;
   border: 2px solid #0044cc; /* Blaue Umrandung */
@@ -348,9 +351,9 @@ export default {
   transition: border-color 0.3s;
 }
 
-.qualifications-form input:focus,
-.qualifications-form textarea:focus,
-.qualifications-form select:focus {
+.form-content input:focus,
+.form-content textarea:focus,
+.form-content select:focus {
   border-color: #0044cc;
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.2);
@@ -398,6 +401,10 @@ export default {
 @media (max-width: 768px) {
   .input-item {
     flex: 1 1 100%;
+  }
+
+  .funnel-stages {
+    flex-direction: column; /* Vertikale Anordnung auf kleinen Bildschirmen */
   }
 }
 </style>
