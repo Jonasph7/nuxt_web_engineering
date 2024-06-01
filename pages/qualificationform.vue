@@ -5,54 +5,29 @@
       <img src="/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" />
     </div>
     <div class="funnel-stages">
-      <div class="funnel-stage" @click="setActiveStage('personal')" :class="{ active: activeStage === 'personal', completed: isCompleted('personal') }">
-        <h3>1. Persönliche Informationen</h3>
-      </div>
-      <div class="funnel-stage" @click="setActiveStage('experience')" :class="{ active: activeStage === 'experience', completed: isCompleted('experience') }" v-if="isCompleted('personal')">
-        <h3>2. Berufserfahrung</h3>
+      <div class="funnel-stage" @click="setActiveStage('experience')" :class="{ active: activeStage === 'experience', completed: isCompleted('experience') }">
+        <h3>1. Berufserfahrung</h3>
       </div>
       <div class="funnel-stage" @click="setActiveStage('skills')" :class="{ active: activeStage === 'skills', completed: isCompleted('skills') }" v-if="isCompleted('experience')">
-        <h3>3. Technische Fähigkeiten</h3>
+        <h3>2. Technische Fähigkeiten</h3>
       </div>
       <div class="funnel-stage" @click="setActiveStage('education')" :class="{ active: activeStage === 'education', completed: isCompleted('education') }" v-if="isCompleted('skills')">
-        <h3>4. Bildungsabschlüsse</h3>
+        <h3>3. Bildungsabschlüsse</h3>
       </div>
-      <div class="funnel-stage" @click="setActiveStage('review')" :class="{ active: activeStage === 'review', completed: isCompleted('review') }" v-if="isCompleted('education')">
+      <div class="funnel-stage" @click="setActiveStage('personal')" :class="{ active: activeStage === 'personal', completed: isCompleted('personal') }" v-if="isCompleted('education')">
+        <h3>4. Persönliche Informationen</h3>
+      </div>
+      <div class="funnel-stage" @click="setActiveStage('review')" :class="{ active: activeStage === 'review', completed: isCompleted('review') }" v-if="isCompleted('personal')">
         <h3>5. Überprüfung und Absenden</h3>
       </div>
     </div>
     <div class="stage-content">
-      <div v-if="activeStage === 'personal'" class="form-content">
-        <h3>Persönliche Informationen</h3>
-        <form @submit.prevent="nextStage('experience')">
-          <fieldset>
-            <div class="input-group">
-              <div class="input-item">
-                <label for="name">Vollständiger Name:</label>
-                <input type="text" id="name" v-model="form.name" required>
-              </div>
-              <div class="input-item">
-                <label for="email">E-Mail-Adresse:</label>
-                <input type="email" id="email" v-model="form.email" required>
-              </div>
-            </div>
-            <div class="input-group">
-              <div class="input-item">
-                <label for="phone">Telefonnummer:</label>
-                <input type="number" id="phone" v-model="form.phone" required>
-              </div>
-            </div>
-          </fieldset>
-          <br>
-          <button type="submit" class="next-button">Weiter</button>
-        </form>
-      </div>
       <div v-if="activeStage === 'experience'" class="form-content">
         <h3>Berufserfahrung</h3>
         <form @submit.prevent="nextStage('skills')">
           <fieldset>
             <label for="experience">Jahre der Erfahrung als Systemadministrator:</label>
-            <input type="number" id="experience" v-model="form.experience" min="0" required>
+            <input type="number" id="experience" v-model.number="form.experience" min="0" required>
           </fieldset>
           <br>
           <button type="submit" class="next-button">Weiter</button>
@@ -71,7 +46,7 @@
       </div>
       <div v-if="activeStage === 'education'" class="form-content">
         <h3>Bildungsabschlüsse</h3>
-        <form @submit.prevent="nextStage('review')">
+        <form @submit.prevent="nextStage('personal')">
           <fieldset>
             <label for="education">Höchster erreichter Bildungsabschluss:</label>
             <select id="education" v-model="form.education" required>
@@ -85,12 +60,43 @@
           <button type="submit" class="next-button">Weiter</button>
         </form>
       </div>
+      <div v-if="activeStage === 'personal'" class="form-content">
+        <h3>Persönliche Informationen</h3>
+        <form @submit.prevent="nextStage('review')">
+          <fieldset>
+            <div class="input-group">
+              <div class="input-item">
+                <label for="firstName">Vorname:</label>
+                <input type="text" id="firstName" v-model="form.firstName" required>
+              </div>
+              <div class="input-item">
+                <label for="lastName">Nachname:</label>
+                <input type="text" id="lastName" v-model="form.lastName" required>
+              </div>
+            </div>
+            <br>
+            <div class="input-group">
+              <div class="input-item">
+                <label for="email">E-Mail-Adresse:</label>
+                <input type="email" id="email" v-model="form.email" required>
+              </div>
+              <div class="input-item">
+                <label for="phone">Telefonnummer:</label>
+                <input type="number" id="phone" v-model.number="form.phone" required>
+              </div>
+            </div>
+          </fieldset>
+          <br>
+          <button type="submit" class="next-button">Weiter</button>
+        </form>
+      </div>
       <div v-if="activeStage === 'review'" class="form-content">
         <h3>Überprüfen und Absenden</h3>
         <form @submit.prevent="submitForm">
           <fieldset>
             <legend>Überprüfung Ihrer Informationen</legend>
-            <p><strong>Name:</strong> {{ form.name }}</p>
+            <p><strong>Vorname:</strong> {{ form.firstName }}</p>
+            <p><strong>Nachname:</strong> {{ form.lastName }}</p>
             <p><strong>E-Mail:</strong> {{ form.email }}</p>
             <p><strong>Telefonnummer:</strong> {{ form.phone }}</p>
             <p><strong>Erfahrung:</strong> {{ form.experience }} Jahre</p>
@@ -108,6 +114,9 @@
   </div>
 </template>
 
+
+
+
 <script>
 import { supabase } from '@/supabase' // Adjust the path according to your project structure
 
@@ -115,12 +124,13 @@ export default {
   name: "QualificationForm",
   data() {
     return {
-      activeStage: 'personal',
+      activeStage: 'experience',
       form: {
-        name: "",
+        firstName: "",
+        lastName: "",
         email: "",
-        phone: "",
-        experience: "",
+        phone: null,
+        experience: null,
         skills: "",
         education: "",
       },
@@ -142,11 +152,11 @@ export default {
     },
     validateStage() {
       this.formHasErrors = false;
-      if (this.activeStage === 'personal' && (!this.form.name || !this.form.email)) {
+      if (this.activeStage === 'personal' && (!this.form.firstName || !this.form.lastName || !this.form.email || this.form.phone === null)) {
         this.formHasErrors = true;
         return false;
       }
-      if (this.activeStage === 'experience' && !this.form.experience) {
+      if (this.activeStage === 'experience' && this.form.experience === null) {
         this.formHasErrors = true;
         return false;
       }
@@ -163,15 +173,15 @@ export default {
     isCompleted(stage) {
       switch(stage) {
         case 'personal':
-          return this.form.name && this.form.email;
+          return this.form.firstName && this.form.lastName && this.form.email && this.form.phone !== null;
         case 'experience':
-          return this.form.experience;
+          return this.form.experience !== null;
         case 'skills':
           return this.form.skills;
         case 'education':
           return this.form.education;
         case 'review':
-          return this.form.name && this.form.email && this.form.experience && this.form.skills && this.form.education;
+          return this.form.firstName && this.form.lastName && this.form.email && this.form.phone !== null && this.form.experience !== null && this.form.skills && this.form.education;
         default:
           return false;
       }
@@ -183,10 +193,17 @@ export default {
       }
       this.formHasErrors = false; // reset error state
 
+      // Ensure data types are correct before sending
+      const formData = {
+        ...this.form,
+        phone: parseInt(this.form.phone, 10),
+        experience: parseInt(this.form.experience, 10)
+      };
+
       try {
         const { error } = await supabase
           .from('bewerbung') // Replace 'bewerbung' with your table name
-          .insert([this.form]);
+          .insert([formData]);
 
         if (error) {
           console.error("Error details:", error);
@@ -204,8 +221,12 @@ export default {
 };
 </script>
 
-<style scoped>
 
+
+
+
+
+<style scoped>
 /* Stile für den Titel */
 .title {
   text-align: center;
@@ -214,9 +235,9 @@ export default {
 
 /* Allgemeine Stile für das Recruiting Funnel */
 .recruiting-funnel {
-  max-width: 1200px;
-  margin: 2rem;
-  padding: 10rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -233,7 +254,9 @@ export default {
 
 /* Stile für die Funnel-Stufen */
 .funnel-stages {
-  justify-content: space-between;
+  display: flex;
+  flex-direction: column; /* Vertikale Anordnung */
+  gap: 1rem; /* Abstand zwischen den Stufen */
   margin-bottom: 2rem;
 }
 
@@ -244,8 +267,6 @@ export default {
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s;
-  flex: 1;
-  margin: 0 5px;
 }
 
 .funnel-stage.active {
@@ -290,7 +311,8 @@ export default {
 }
 
 .input-group {
-  display: solid;
+  display: flex;
+  flex-direction: column; /* Vertikale Anordnung der Eingabefelder */
   gap: 1rem;
 }
 
@@ -318,10 +340,10 @@ export default {
 .qualifications-form textarea,
 .qualifications-form select {
   width: 100%;
-  padding: 0.8rem;
-  border: 2px solid #e1e1e1;
+  padding: 1rem;
+  border: 2px solid #0044cc; /* Blaue Umrandung */
   border-radius: 5px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 1rem;
   transition: border-color 0.3s;
 }
@@ -347,7 +369,7 @@ export default {
   letter-spacing: 1px;
   transition: all 0.3s ease;
   display: block;
-  margin: 0 auto;
+  margin: 2rem auto 0;
 }
 
 .next-button:hover, .submit-button:hover {
@@ -370,5 +392,12 @@ export default {
   color: green;
   text-align: center;
   margin-top: 1rem;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .input-item {
+    flex: 1 1 100%;
+  }
 }
 </style>
