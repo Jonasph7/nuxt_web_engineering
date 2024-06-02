@@ -1,289 +1,181 @@
-<!-- src/components/Home.vue -->
 <template>
-  <div>
-    <!-- Abschnitt "Über uns" -->
-    <section id="about-us">
-      <h1>Willkommen bei TechInnovate Solutions</h1>
-      <p>Wir stehen an der Spitze der technologischen Innovation und sind verpflichtet, bahnbrechende Lösungen zu entwickeln, die unsere Kunden und Mitarbeiter stärken.</p>
-    </section>
-
-    <!-- Hero Banner -->
-    <div id="hero">
-      <img src="/hero-banner.jpg" alt="Hero Banner" />    
+  <section id="home" class="bg-white py-16">
+    <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+      <div class="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
+        <h2 class="text-5xl font-bold mb-4">Wir bauen die <span class="text-primary">Zukunft</span></h2>
+        <p class="my-7">TechInnovate Solutions ist nicht nur ein Arbeitsplatz. Es ist ein Ort, wo kreative Köpfe zusammenkommen, um außergewöhnliche Ideen zum Leben zu erwecken. Wenn Sie bereit sind, Ihre Karriere auf das nächste Level zu heben und echte Herausforderungen anzunehmen, dann sind Sie bei uns richtig.</p>
+        <div class="space-x-2">
+          <nuxt-link to="/qualificationform" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">JETZT BEWERBEN!</nuxt-link>
+        </div>
+      </div>
+      <div class="md:w-1/2">
+        <img src="/Büro1.png" alt="Image" class="w-full md:mx-auto md:max-w-md rounded-lg bg-gray-100 shadow-lg" />
+      </div>
     </div>
+  </section>
 
-    <!-- Slideshow -->
-    <div class="slideshow-container">
-      <div class="slide">
-        <img :src="images[currentSlide]" alt="Slide Image" />
+  <section id="aboutus" class="py-16 bg-gray-dark">
+    <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+      <div class="md:w-1/2 mb-8 md:mb-0">
+        <img src="/Unternehmen1.png" alt="Image" class="w-full md:mx-auto md:max-w-md rounded-lg bg-gray-100 shadow-lg" />
       </div>
-      <button class="prev" @click="prevSlide">
-        <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-        </svg>
-      </button>
-      <button class="next" @click="nextSlide">
-        <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
-        </svg>
-      </button>
+      <div class="md:w-1/2">
+        <h2 class="text-5xl font-bold mb-4 text-white">Unser <span class="text-primary">Versprechen</span></h2>
+        <p class="my-5 text-white">Bei TechInnovate Solutions ist es unser Versprechen an Sie, nicht nur einen Arbeitsplatz, sondern eine Plattform für Wachstum und Erfüllung zu bieten. Hier sind fünf Gründe, warum Sie Teil unseres Teams werden sollten:</p>
+        <ol class="mt-5 mb-10 list-outside">
+          <li class="flex items-center mb-4">
+              <strong class="bg-primary text-white rounded-full w-8 h-8 text-lg font-semibold flex items-center justify-center mr-3">1</strong>
+              <span class="text-white">Flexible Arbeitsmodelle: Flexibilität im Büro oder zu Hause.</span>
+          </li>
+          <li class="flex items-center mb-4">
+              <strong class="bg-primary text-white rounded-full w-8 h-8 text-lg font-semibold flex items-center justify-center mr-3">2</strong>
+              <span class="text-white">Übertarifliches Gehalt: Überdurchschnittliche Bezahlung als Anerkennung Ihrer Leistung.</span>
+          </li>
+          <li class="flex items-center mb-4">
+              <strong class="bg-primary text-white rounded-full w-8 h-8 text-lg font-semibold flex items-center justify-center mr-3">3</strong>
+              <span class="text-white">Innovative Projekte: Führend in Technologie und Branchentrends.</span>
+          </li>
+          <li class="flex items-center mb-4">
+              <strong class="bg-primary text-white rounded-full w-8 h-8 text-lg font-semibold flex items-center justify-center mr-3">4</strong>
+              <span class="text-white">Fort- und Weiterbildung: Regelmäßige Schulungen zur beruflichen Entwicklung.</span>
+          </li>
+          <li class="flex items-center mb-4">
+              <strong class="bg-primary text-white rounded-full w-8 h-8 text-lg font-semibold flex items-center justify-center mr-3">5</strong>
+              <span class="text-white">Gesundheits- und Wellnessprogramme: Umfassende Angebote für Ihr Wohlbefinden.</span>
+          </li>
+        </ol>
+        <nuxt-link to="/qualificationform" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full">JETZT BEWERBEN!</nuxt-link>
+      </div>
     </div>
+  </section>
 
-    <!-- Moderner Text unter der Slideshow -->
-    <p class="slideshow-text">Werfen Sie einen Blick in unser modernes Bürogebäude!</p>
+  <section id="clients" class="bg-white py-16 px-4">
+    <div class="container mx-auto max-w-screen-xl px-4 testimonials">
+      <div class="text-center mb-12 lg:mb-20">
+        <h2 class="text-5xl font-bold mb-4">Unsere <span class="text-primary">Partner</span> in Innovation</h2>
+        <p class="my-7">Bei TechInnovate Solutions schaffen wir Lösungen, die Branchen prägen</p>
+      </div>
+    </div> 
+    <swiper
+    :effect="'cube'"
+    :grabCursor="true"
+    :cubeEffect="{
+      shadow: true,
+      slideShadows: true,
+      shadowOffset: 20,
+      shadowScale: 0.94,
+    }"
+    :pagination="true"
+    :modules="modules"
+    class="mySwiper"
+  >
+    <swiper-slide
+      ><img
+        src="/public/netflix.svg" /></swiper-slide
+    ><swiper-slide
+      ><img
+        src="/public/yahoo.svg" /></swiper-slide
+    >
+    <swiper-slide
+      ><img
+        src="/public/amazon.svg" /></swiper-slide
+    >
+    <swiper-slide
+      ><img
+        src="/public/invision.svg" /></swiper-slide
+    ><swiper-slide
+      ><img src="/public/walmart.svg"
+    /></swiper-slide>
+  </swiper>
 
-    <!-- Trenner -->
-    <hr class="section-divider">
 
-    <!-- Inhaltslayout -->
-    <section id="content-layout">
-      <div class="content-wrapper">
-        <div class="text">
-          <h2>Warum bei uns arbeiten?</h2>
-          <p>Teil von TechInnovate Solution zu werden bedeutet, Teil eines unterstützenden und dynamischen Teams zu sein. Hier ist, was wir bieten:</p>
-          <ul>
-            <li>Wettbewerbsfähige Gehälter</li>
-            <li>Flexible Arbeitszeiten</li>
-            <li>Gesundheits- und Wellnessprogramme</li>
-            <li>Fortlaufende Lern- und Entwicklungsmöglichkeiten</li>
-          </ul>
+
+  </section>
+
+  <section class="py-16">
+    <div class="text-center mb-12 lg:mb-20">
+      <h2 class="text-5xl font-bold mb-4">Entdecke <span class="text-primary">unser</span> Team</h2>
+      <p class="my-7">Hinter jedem großen Projekt steht ein noch größeres Team</p>
+    </div>
+    <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
+      <div class="grid w-full grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
+        <div class="p-6">
+          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/50.webp" alt="blog">
+          <h2 class="mb-8 text-xs font-semibold tracking-widest text-primary uppercase">Thomas Hummels</h2>
+          <h1 class="mx-auto mb-8 text-2xl font-semibold leading-none tracking-tighter text-gray-dark lg:text-3xl">IT-Admin</h1>
+          <p class="mx-auto text-base font-medium leading-relaxed text-gray-txt">"Bei TechInnovate ist jeder Tag eine Gelegenheit, zu lernen und zu wachsen. Hier wird Kreativität großgeschrieben, und das macht unsere Arbeit so spannend."</p>
         </div>
-        <div class="image">
-          <img src="/Büro1.png" alt="Arbeitsplatz" />
+        <div class="p-6">
+          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/52.webp" alt="blog">
+          <h2 class="mb-8 text-xs font-semibold tracking-widest text-primary uppercase">Isi Glück</h2>
+          <h1 class="mx-auto mb-8 text-2xl font-semibold leading-none tracking-tighter text-gray-dark lg:text-3xl">Projektleiterin</h1>
+          <p class="mx-auto text-base font-medium leading-relaxed text-gray-txt">"Von dem Moment an, als ich bei TechInnovate angefangen habe, wurde ich ermutigt, meine Ideen einzubringen und zu verwirklichen. Diese Art von Umfeld ist selten und wertvoll."</p>
+        </div>
+        <div class="p-6">
+          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/51.webp" alt="blog">
+          <h2 class="mb-8 text-xs font-semibold tracking-widest text-primary uppercase">Mats Müller</h2>
+          <h1 class="mx-auto mb-8 text-2xl font-semibold leading-none tracking-tighter text-gray-dark lg:text-3xl">Developer</h1>
+          <p class="mx-auto text-base font-medium leading-relaxed text-gray-txt">"Was mich hier hält, ist das unglaubliche Teamgefühl und die Unterstützung, die wir alle bekommen. Es fühlt sich wirklich an, als könnten wir gemeinsam Berge versetzen."</p>
         </div>
       </div>
-      <div class="content-wrapper reverse">
-        <div class="text">
-          <h2>Anforderungen an Systemadministratoren</h2>
-          <ul>
-            <li>Erfahrung mit Windows- und Linux-Servern</li>
-            <li>Kenntnisse in Netzwerkadministration und -sicherheit</li>
-            <li>Vertrautheit mit Cloud-Computing und Virtualisierungstechnologien</li>
-            <li>Problemlösungs- und Troubleshooting-Fähigkeiten</li>
-            <li>Teamfähigkeit und gute Kommunikationskompetenzen</li>
-            <li>Organisationstalent und Zeitmanagement</li>
-          </ul>
+    </div>
+  </section>
+
+  <section id="subscribe" class="bg-primary py-4">
+    <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
+      <div class="flex flex-col items-center rounded-lg bg-gray-100 p-4 sm:p-8 lg:flex-row lg:justify-between">
+        <div class="mb-4 sm:mb-8 lg:mb-0">
+          <h2 class="text-center text-xl font-bold text-white sm:text-2xl lg:text-left lg:text-3xl">IT-Administratoren gesucht</h2>
+          <p class="text-center text-white lg:text-left">Werde Teil unseres Teams</p>
         </div>
-        <div class="image">
-          <img src="/Cafeteria.png" alt="Technologie und Teamarbeit" />
+        <div class="flex flex-col items-center w-96 lg:items-end">
+          <nuxt-link to="/qualificationform" class="inline-block rounded-full bg-white px-4 py-2 font-semibold text-primary hover:bg-gray-dark hover:text-white">JETZT BEWERBEN!</nuxt-link>
         </div>
       </div>
-    </section>
-
-    <!-- Bewerbungsaufforderung -->
-    <section id="bewerbung">
-      <h2>Bereit für neue Herausforderungen? Jetzt bewerben und Teil unseres Teams werden!</h2>
-      <button @click="navigateToQualificationForm" class="button-home-styling">JETZT BEWERBEN!</button>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script>
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css'; 
+import 'swiper/css/navigation'; 
+import 'swiper/css/pagination'; 
+import 'swiper/css/effect-cube'; 
+
+import SwiperCore, { EffectCube, Pagination } from 'swiper';
+
+SwiperCore.use([EffectCube, Pagination]);
+
 export default {
-  name: "Home",
+  components: {
+    Swiper,
+    SwiperSlide
+  },
   data() {
     return {
-      images: [
-        '/Konferenzraum.png', // Pfad zum ersten Bild
-        '/Serverraum1.png',   // Pfad zum zweiten Bild
-        '/Unternehmen1.png',  // Pfad zum dritten Bild
-      ],
-      currentSlide: 0,
-      slideshowInterval: null,
+      modules: [EffectCube, Pagination]
     };
-  },
-  mounted() {
-    this.startSlideshow();
-  },
-  beforeDestroy() {
-    clearInterval(this.slideshowInterval);
-  },
-  methods: {
-    // Startet die Slideshow
-    startSlideshow() {
-      this.slideshowInterval = setInterval(() => {
-        this.nextSlide();
-      }, 6000); // Wechselt die Slides alle 6 Sekunden
-    },
-    // Zeigt das nächste Bild
-    nextSlide() {
-      this.currentSlide = (this.currentSlide + 1) % this.images.length;
-    },
-    // Zeigt das vorherige Bild
-    prevSlide() {
-      this.currentSlide = (this.currentSlide + this.images.length - 1) % this.images.length;
-    },
-    // Navigiert zum Bewerbungsformular
-    navigateToQualificationForm() {
-      this.$router.push('/qualificationform');
-    }
   }
 };
 </script>
 
 <style scoped>
-#about-us {
-  width: 100%;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  text-align: center;
-  background-color: #F7F7F7;
-  color: #1C1D18;
-  box-sizing: border-box;
-  margin: 0;
-}
-
-#hero {
-  display: flex;
-  justify-content: center;
-  padding-top: 30px;
-  padding-bottom: 30px;
-  border-radius: 500px; /* Runde Ecken für das Hero Banner */
-}
-
-#hero img {
-  width: 50%;
-  height: auto;
-  border-radius: 500px; /* Runde Ecken */
-}
-
-.slideshow-container {
-  position: relative;
-  max-width: 50%;
-  margin: 30px auto;
-  text-align: center;
-  color: #1C1D18;
-  background-color: #F7F7F7;
-  padding: 30px;
-  border-radius: 500px; /* Runde Ecken */
-  overflow: hidden;
-}
-
-.slide {
-  display: flex;
-  justify-content: center;
-  transition: opacity 0.5s ease-in-out; /* Sanfter Übergang */
-}
-
-.slide img {
-  width: 100%;
-  height: auto;
-  border-radius: 500px; /* Runde Ecken */
-}
-
-.slideshow-text {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 18px;
-  color: #007BFF; /* Blaue Schrift */
-  font-weight: bold;
-  text-transform: uppercase; /* Text in Großbuchstaben */
-  padding: 10px; /* 10 Pixel Abstand zu beiden Seiten */
-  border: 3px solid #007BFF; /* Blaue Umrandung */
-  border-radius: 25px; /* Runde Ecken für die Umrandung */
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
-  transition: transform 0.3s ease; /* Übergangseffekt für das Hover */
-  
-}
-
-
-.slideshow-text:hover {
-  transform: scale(1.05); /* Vergrößert den Text beim Hover */
-}
-
-.arrow-icon {
-  fill: white;
-  width: 24px;
-  height: 24px;
-  transition: all 0.2s ease-in-out;
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 50%;
-  padding: 4px;
-}
-
-.arrow-icon:hover {
-  transform: scale(1.1);
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-button.prev, button.next {
-  position: absolute;
+.swiper {
+  width: 300px;
+  height: 300px;
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
+  margin-left: -150px;
 }
 
-button.prev {
-  left: 10px;
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
 }
 
-button.next {
-  right: 10px;
-}
-
-.section-divider {
-  margin: 40px 0;
-  border: 0;
-  border-top: 1px solid #ccc;
-}
-
-.content-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-}
-
-.content-wrapper.reverse {
-  flex-direction: row-reverse;
-}
-
-.text {
-  flex: 1;
-  padding: 10px;
-}
-
-.image {
-  flex: 1;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-.image img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-#benefits, #requirements, #contact-us, #bewerbung {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 30px;
-  background-color: #F7F7F7;
-  color: #1C1D18;
-}
-
-.button-home-styling {
-  color: #FFF;
-  background-color: #1C1D18;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  text-transform: uppercase;
-  transition: background-color 0.3s ease;
-}
-
-.button-home-styling:hover {
-  background-color: #333;
+.swiper-slide img {
+  display: block;
+  width: 100%;
 }
 </style>
