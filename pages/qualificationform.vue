@@ -73,12 +73,12 @@
           <fieldset>
             <div class="input-group">
               <div class="input-item">
-                <label for="firstName">Vorname:</label>
-                <input type="text" id="firstName" v-model="form.firstName" required>
+                <label for="firstname">Vorname:</label>
+                <input type="text" id="firstname" v-model="form.firstname" required>
               </div>
               <div class="input-item">
-                <label for="lastName">Nachname:</label>
-                <input type="text" id="lastName" v-model="form.lastName" required>
+                <label for="lastname">Nachname:</label>
+                <input type="text" id="lastname" v-model="form.lastname" required>
               </div>
             </div>
             <br>
@@ -102,8 +102,8 @@
         <form @submit.prevent="submitForm">
           <fieldset>
             <legend>Überprüfung Ihrer Informationen</legend>
-            <p><strong>Vorname:</strong> {{ form.firstName }}</p>
-            <p><strong>Nachname:</strong> {{ form.lastName }}</p>
+            <p><strong>Vorname:</strong> {{ form.firstname }}</p>
+            <p><strong>Nachname:</strong> {{ form.lastname }}</p>
             <p><strong>E-Mail:</strong> {{ form.email }}</p>
             <p><strong>Telefonnummer:</strong> {{ form.phone }}</p>
             <p><strong>Erfahrung:</strong> {{ form.experience }} Jahre</p>
@@ -130,8 +130,8 @@ export default {
     return {
       activeStage: 'experience',
       form: {
-        firstName: "",
-        lastName: "",
+        firstname: "",
+        lastname: "",
         email: "",
         phone: null,
         experience: "",
@@ -156,7 +156,7 @@ export default {
     },
     validateStage() {
       this.formHasErrors = false;
-      if (this.activeStage === 'personal' && (!this.form.firstName || !this.form.lastName || !this.form.email || this.form.phone === null)) {
+      if (this.activeStage === 'personal' && (!this.form.firstname || !this.form.lastname || !this.form.email || this.form.phone === null)) {
         this.formHasErrors = true;
         return false;
       }
@@ -177,7 +177,7 @@ export default {
     isCompleted(stage) {
       switch(stage) {
         case 'personal':
-          return this.form.firstName && this.form.lastName && this.form.email && this.form.phone !== null;
+          return this.form.firstname && this.form.lastname && this.form.email && this.form.phone !== null;
         case 'experience':
           return this.form.experience;
         case 'skills':
@@ -185,7 +185,7 @@ export default {
         case 'education':
           return this.form.education;
         case 'review':
-          return this.form.firstName && this.form.lastName && this.form.email && this.form.phone !== null && this.form.experience && this.form.skills && this.form.education;
+          return this.form.firstname && this.form.lastname && this.form.email && this.form.phone !== null && this.form.experience && this.form.skills && this.form.education;
         default:
           return false;
       }
