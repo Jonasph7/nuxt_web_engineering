@@ -19,10 +19,12 @@
             <li><nuxt-link to="/contactform" class="hover:text-secondary font-bold">Kontakt</nuxt-link></li>
             <li><nuxt-link to="/qualificationform" class="hover:text-secondary font-bold">Karriere</nuxt-link></li>
             <li><nuxt-link to="/impressum" class="hover:text-secondary font-bold">Impressum</nuxt-link></li>
+            <li v-if="isLoggedIn"><nuxt-link to="/backend" class="hover:text-secondary font-bold">Backend</nuxt-link></li>
           </ul>
         </nav>
         <div class="hidden lg:flex items-center space-x-4">
-          <nuxt-link to="/login" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">Login</nuxt-link>
+          <button v-if="isLoggedIn" @click="logout" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">Logout</button>
+          <nuxt-link v-else to="/login" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">Login</nuxt-link>
         </div>
       </div>
     </header>
@@ -32,9 +34,11 @@
         <li><nuxt-link to="/contactform" class="hover:text-secondary font-bold">Kontakt</nuxt-link></li>
         <li><nuxt-link to="/qualificationform" class="hover:text-secondary font-bold">Karriere</nuxt-link></li>
         <li><nuxt-link to="/impressum" class="hover:text-secondary font-bold">Impressum</nuxt-link></li>
+        <li v-if="isLoggedIn"><nuxt-link to="/backend" class="hover:text-secondary font-bold">Backend</nuxt-link></li>
       </ul>
       <div class="flex flex-col mt-6 space-y-2 items-center">
-        <nuxt-link to="/login" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Login</nuxt-link>
+        <button v-if="isLoggedIn" @click="logout" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Logout</button>
+        <nuxt-link v-else to="/login" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Login</nuxt-link>
       </div>
     </nav>
     
@@ -57,19 +61,35 @@
 </template>
 
 <script>
+import { supabase } from '@/supabase'
+
 export default {
   data() {
     return {
-      isMenuVisible: false // Zustand des Menüs (geöffnet/geschlossen)
+      isMenuVisible: false,
+      isLoggedIn: false
     };
   },
+  mounted() {
+    this.checkAuthStatus();
+    supabase.auth.onAuthStateChange((event, session) => {
+      this.isLoggedIn = !!session;
+    });
+  },
   methods: {
+    async checkAuthStatus() {
+      const { data: { session } } = await supabase.auth.getSession();
+      this.isLoggedIn = !!session;
+    },
+    async logout() {
+      await supabase.auth.signOut();
+      this.isLoggedIn = false;
+      this.$router.push('/'); // Weiterleitung zur Startseite nach dem Logout
+    },
     toggleMenu() {
-      // Menüstatus umschalten (öffnen/schließen)
       this.isMenuVisible = !this.isMenuVisible;
     },
     closeMenu() {
-      // Menü schließen
       this.isMenuVisible = false;
     }
   }
