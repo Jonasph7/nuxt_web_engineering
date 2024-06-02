@@ -32,6 +32,7 @@
 
 <script>
 import { supabase } from '@/supabase'
+import axios from 'axios';
 
 export default {
   data() {
@@ -82,7 +83,7 @@ export default {
       }
 
       try {
-        const response = await this.$axios.post('/api/send-invitation', {
+        const response = await axios.post('https://fh-kiel.com/api/mail.php', {
           email,
           firstname,
           lastname,
