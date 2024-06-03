@@ -1,85 +1,135 @@
 <template>
-<div class="backend-container">
-  <h1>Backend Ticket Dashboard</h1>
-  <div class="sort-container">
-    <label for="sortCriteria">Sort by:</label>
-    <select id="sortCriteria" v-model="sortCriteria" @change="sortTickets">
-      <option value="experience">Experience</option>
-      <option value="education">Education</option>
-    </select>
-    <label for="sortOrder">Order:</label>
-    <select id="sortOrder" v-model="sortOrder" @change="sortTickets">
-      <option value="asc">Ascending</option>
-      <option value="desc">Descending</option>
-    </select>
-  </div>
-  <div class="tickets-grid">
-    <div
-      v-for="ticket in sortedTickets"
-      :key="ticket.id"
-      class="ticket"
-      @click="selectTicket(ticket)"
-    >
-      <div class="ticket-content">
-        <h3>{{ ticket.firstname }} {{ ticket.lastname }}</h3>
-        <div class="ticket-info">
-          <div class="info-row">
-            <p class="info-parameter">Email:</p>
-            <p class="info-value truncate">{{ ticket.email }}</p>
+  <div class="backend-container">
+    <h1>Backend Ticket Dashboard</h1>
+    <div class="tab-container">
+      <button :class="{ active: currentTab === 'bewerbung' }" @click="currentTab = 'bewerbung'">Bewerbung</button>
+      <button :class="{ active: currentTab === 'kontakt' }" @click="currentTab = 'kontakt'">Kontakt</button>
+    </div>
+    <div v-if="currentTab === 'bewerbung'">
+      <!-- Bewerbung view -->
+      <div class="sort-container">
+        <label for="sortCriteria">Sort by:</label>
+        <select id="sortCriteria" v-model="sortCriteria" @change="sortTickets">
+          <option value="experience">Experience</option>
+          <option value="education">Education</option>
+        </select>
+        <label for="sortOrder">Order:</label>
+        <select id="sortOrder" v-model="sortOrder" @change="sortTickets">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </div>
+      <div class="tickets-grid">
+        <div
+          v-for="ticket in sortedTickets"
+          :key="ticket.id"
+          class="ticket"
+          @click="selectTicket(ticket)"
+        >
+          <div class="ticket-content">
+            <h3>{{ ticket.firstname }} {{ ticket.lastname }}</h3>
+            <div class="ticket-info">
+              <div class="info-row">
+                <p class="info-parameter">Email:</p>
+                <p class="info-value truncate">{{ ticket.email }}</p>
+              </div>
+              <div class="info-row">
+                <p class="info-parameter">Phone:</p>
+                <p class="info-value truncate">{{ ticket.phone }}</p>
+              </div>
+              <div class="info-row">
+                <p class="info-parameter">Experience:</p>
+                <p class="info-value truncate">{{ ticket.experience }}</p>
+              </div>
+              <div class="info-row">
+                <p class="info-parameter">Skills:</p>
+                <p class="info-value truncate">{{ ticket.skills }}</p>
+              </div>
+              <div class="info-row">
+                <p class="info-parameter">Education:</p>
+                <p class="info-value truncate">{{ ticket.education }}</p>
+              </div>
+            </div>
           </div>
-          <div class="info-row">
-            <p class="info-parameter">Phone:</p>
-            <p class="info-value truncate">{{ ticket.phone }}</p>
-          </div>
-          <div class="info-row">
-            <p class="info-parameter">Experience:</p>
-            <p class="info-value truncate">{{ ticket.experience }}</p>
-          </div>
-          <div class="info-row">
-            <p class="info-parameter">Skills:</p>
-            <p class="info-value truncate">{{ ticket.skills }}</p>
-          </div>
-          <div class="info-row">
-            <p class="info-parameter">Education:</p>
-            <p class="info-value truncate">{{ ticket.education }}</p>
+          <div class="ticket-actions">
+            <button @click.stop="inviteTicket(ticket)">Invite</button>
+            <button @click.stop="confirmDelete(ticket.id)">Delete</button>
           </div>
         </div>
       </div>
-      <div class="ticket-actions">
-        <button @click.stop="inviteTicket(ticket)">Invite</button>
-        <button @click.stop="confirmDelete(ticket.id)">Delete</button>
+    </div>
+    <div v-else>
+      <!-- Kontakt view -->
+      <div class="tickets-grid">
+        <div
+          v-for="ticket in kontaktTickets"
+          :key="ticket.id"
+          class="ticket"
+          @click="selectKontaktTicket(ticket)"
+        >
+          <div class="ticket-content">
+            <h3>{{ ticket.name }}</h3>
+            <div class="ticket-info">
+              <div class="info-row">
+                <p class="info-parameter">Email:</p>
+                <p class="info-value truncate">{{ ticket.email }}</p>
+              </div>
+              <div class="info-row">
+                <p class="info-parameter">Subject:</p>
+                <p class="info-value truncate">{{ ticket.subject }}</p>
+              </div>
+              <div class="info-row">
+                <p class="info-parameter">Message:</p>
+                <p class="info-value truncate">{{ ticket.message }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="ticket-actions">
+            <button @click.stop="confirmDeleteKontakt(ticket.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="selectedTicket" class="modal-overlay" @click="clearSelection">
+      <div class="modal" @click.stop>
+        <h2>Details for {{ selectedTicket.firstname }} {{ selectedTicket.lastname }}</h2>
+        <p>Email: {{ selectedTicket.email }}</p>
+        <p>Phone: {{ selectedTicket.phone }}</p>
+        <p>Experience: {{ selectedTicket.experience }}</p>
+        <p>Skills: {{ selectedTicket.skills }}</p>
+        <p>Education: {{ selectedTicket.education }}</p>
+        <input type="datetime-local" v-model="selectedDate" />
+        <button @click="sendInvitation">Send Invitation</button>
+        <button @click="confirmDelete(selectedTicket.id)">Delete</button>
+        <button @click="clearSelection">Close</button>
+      </div>
+    </div>
+    <div v-if="selectedKontaktTicket" class="modal-overlay" @click="clearKontaktSelection">
+      <div class="modal" @click.stop>
+        <h2>Details for {{ selectedKontaktTicket.name }}</h2>
+        <p>Email: {{ selectedKontaktTicket.email }}</p>
+        <p>Subject: {{ selectedKontaktTicket.subject }}</p>
+        <p>Message: {{ selectedKontaktTicket.message }}</p>
+        <button @click="confirmDeleteKontakt(selectedKontaktTicket.id)">Delete</button>
+        <button @click="clearKontaktSelection">Close</button>
+      </div>
+    </div>
+    <div v-if="showConfirmDelete" class="confirm-modal-overlay">
+      <div class="confirm-modal">
+        <p>Are you sure you want to delete this ticket?</p>
+        <button @click="deleteTicket(selectedTicketId)">Yes</button>
+        <button @click="cancelDelete">No</button>
+      </div>
+    </div>
+    <div v-if="showConfirmDeleteKontakt" class="confirm-modal-overlay">
+      <div class="confirm-modal">
+        <p>Are you sure you want to delete this contact ticket?</p>
+        <button @click="deleteKontaktTicket(selectedKontaktTicketId)">Yes</button>
+        <button @click="cancelDeleteKontakt">No</button>
       </div>
     </div>
   </div>
-  <div v-if="selectedTicket" class="modal-overlay" @click="clearSelection">
-    <div class="modal" @click.stop>
-      <h2>Details for {{ selectedTicket.firstname }} {{ selectedTicket.lastname }}</h2>
-      <p>Email: {{ selectedTicket.email }}</p>
-      <p>Phone: {{ selectedTicket.phone }}</p>
-      <p>Experience: {{ selectedTicket.experience }}</p>
-      <p>Skills: {{ selectedTicket.skills }}</p>
-      <p>Education: {{ selectedTicket.education }}</p>
-      <input type="datetime-local" v-model="selectedDate" />
-      <button @click="sendInvitation">Send Invitation</button>
-      <button @click="confirmDelete(selectedTicket.id)">Delete</button>
-      <button @click="clearSelection">Close</button>
-    </div>
-  </div>
-  <div v-if="showConfirmDelete" class="confirm-modal-overlay">
-    <div class="confirm-modal">
-      <p>Are you sure you want to delete this ticket?</p>
-      <button @click="deleteTicket(selectedTicketId)">Yes</button>
-      <button @click="cancelDelete">No</button>
-    </div>
-  </div>
-</div>
-
 </template>
-
-
-
-
-
 
 <script>
 import { supabase } from '@/supabase'
@@ -89,12 +139,17 @@ export default {
   data() {
     return {
       tickets: [],
+      kontaktTickets: [],
       selectedTicket: null,
+      selectedKontaktTicket: null,
       selectedDate: null,
       showConfirmDelete: false,
+      showConfirmDeleteKontakt: false,
       selectedTicketId: null,
+      selectedKontaktTicketId: null,
       sortCriteria: 'experience',
       sortOrder: 'asc',
+      currentTab: 'bewerbung',
     }
   },
   computed: {
@@ -128,6 +183,17 @@ export default {
         console.error('Error fetching tickets:', error)
       } else {
         this.tickets = data
+      }
+    },
+    async fetchKontaktTickets() {
+      const { data, error } = await supabase
+        .from('kontakt')
+        .select('id, created_at, name, email, subject, message')
+
+      if (error) {
+        console.error('Error fetching kontakt tickets:', error)
+      } else {
+        this.kontaktTickets = data
       }
     },
     experienceValue(experience) {
@@ -191,20 +257,48 @@ export default {
         this.selectedTicket = null;
       }
     },
+    async deleteKontaktTicket(ticketId) {
+      const { error } = await supabase
+        .from('kontakt')
+        .delete()
+        .eq('id', ticketId)
+      
+      if (error) {
+        console.error('Error deleting kontakt ticket:', error)
+      } else {
+        this.kontaktTickets = this.kontaktTickets.filter(ticket => ticket.id !== ticketId)
+        this.showConfirmDeleteKontakt = false;
+        this.selectedKontaktTicket = null;
+      }
+    },
     confirmDelete(ticketId) {
       this.selectedTicketId = ticketId;
       this.showConfirmDelete = true;
+    },
+    confirmDeleteKontakt(ticketId) {
+      this.selectedKontaktTicketId = ticketId;
+      this.showConfirmDeleteKontakt = true;
     },
     cancelDelete() {
       this.showConfirmDelete = false;
       this.selectedTicketId = null;
     },
+    cancelDeleteKontakt() {
+      this.showConfirmDeleteKontakt = false;
+      this.selectedKontaktTicketId = null;
+    },
     selectTicket(ticket) {
       this.selectedTicket = ticket;
+    },
+    selectKontaktTicket(ticket) {
+      this.selectedKontaktTicket = ticket;
     },
     clearSelection() {
       this.selectedTicket = null;
       this.selectedDate = null;
+    },
+    clearKontaktSelection() {
+      this.selectedKontaktTicket = null;
     },
     async sendInvitation() {
       const { email, firstname, lastname } = this.selectedTicket;
@@ -242,11 +336,10 @@ export default {
   },
   async mounted() {
     await this.fetchTickets();
+    await this.fetchKontaktTickets();
   }
 }
 </script>
-
-
 
 <style scoped>
 .backend-container {
@@ -256,6 +349,25 @@ export default {
   margin: auto;
   position: relative;
   box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.tab-container {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.tab-container button {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.tab-container button.active {
+  background-color: #0056b3;
 }
 
 .sort-container {
@@ -431,7 +543,3 @@ button:hover {
   }
 }
 </style>
-
-
-
-
