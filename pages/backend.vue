@@ -255,16 +255,26 @@ export default {
   max-width: 1200px;
   margin: auto;
   position: relative;
+  box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
 .sort-container {
   margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sort-container label,
+.sort-container select {
+  flex: 1 1 100px; /* Allow flex items to shrink and grow */
 }
 
 .tickets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
+  box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
 .ticket {
@@ -278,6 +288,7 @@ export default {
   justify-content: space-between;
   cursor: pointer;
   overflow: hidden; /* Prevent content overflow */
+  box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
 .ticket:hover {
@@ -297,11 +308,13 @@ export default {
 .info-row {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap; /* Allow content to wrap */
 }
 
 .info-parameter {
   font-weight: bold;
   flex: 1;
+  min-width: 100px; /* Ensure minimum width to prevent overflow */
 }
 
 .info-value {
@@ -341,6 +354,8 @@ export default {
   border: 1px solid #ddd;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 101;
+  box-sizing: border-box; /* Ensure padding is included in the width */
+  max-width: 90%; /* Prevent modal from being too wide */
 }
 
 .confirm-modal-overlay {
@@ -361,6 +376,8 @@ export default {
   padding: 20px;
   border: 1px solid #ddd;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box; /* Ensure padding is included in the width */
+  max-width: 90%; /* Prevent modal from being too wide */
 }
 
 button {
@@ -384,7 +401,37 @@ button:hover {
   white-space: nowrap;
 }
 
+@media (max-width: 320px) {
+  .sort-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sort-container label,
+  .sort-container select {
+    flex: 1 1 auto;
+  }
+
+  .tickets-grid {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+  }
+
+  .ticket {
+    padding: 8px;
+  }
+
+  .info-row {
+    flex-direction: column;
+  }
+
+  .info-parameter,
+  .info-value {
+    flex: 1 1 auto;
+    min-width: auto;
+  }
+}
 </style>
+
 
 
 
