@@ -100,9 +100,10 @@ yarn preview
 
 ## 👥 Mitwirkende
 
-- **Max Mustermann** - [GitHub](https://github.com/maxmustermann)
-- **Erika Musterfrau** - [GitHub](https://github.com/erikamusterfrau)
-- **John Doe** - [GitHub](https://github.com/johndoe)
+- **Johannes Möller** - [GitHub](https://github.com/JohannesLks)
+- **Marek Weiß** - [GitHub](https://github.com/MarekW98)
+- **Erik Jungjohann** - [GitHub](https://github.com/Er1kJungjo)
+- **Jonas Braun** - [GitHub](https://github.com/Jonasph7)
 
 ## 📄 Lizenz
 
