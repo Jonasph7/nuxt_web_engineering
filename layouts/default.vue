@@ -97,4 +97,25 @@ export default {
 </script>
 
 <style scoped>
+.mobile-menu {
+  position: fixed;  
+    top: 80px;           
+    left: 0;          
+    right: 0;         
+    padding: 2rem;    
+    background-color: white; 
+    z-index: 1;
+    opacity: 0.9; 
+}
+
+.mobile-menu ul {
+    width: 100%;
+    text-align: center;
+}
+
+.mobile-menu li {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
 </style>
