@@ -1,83 +1,148 @@
 <template>
-<div class="backend-container">
-  <h1>Backend Ticket Dashboard</h1>
-  <div class="sort-container">
-    <label for="sortCriteria">Sort by:</label>
-    <select id="sortCriteria" v-model="sortCriteria" @change="sortTickets">
-      <option value="experience">Experience</option>
-      <option value="education">Education</option>
-    </select>
-    <label for="sortOrder">Order:</label>
-    <select id="sortOrder" v-model="sortOrder" @change="sortTickets">
-      <option value="asc">Ascending</option>
-      <option value="desc">Descending</option>
-    </select>
-  </div>
-  <div class="tickets-grid">
-    <div
-      v-for="ticket in sortedTickets"
-      :key="ticket.id"
-      class="ticket"
-      @click="selectTicket(ticket)"
-    >
-      <div class="ticket-content">
-        <h3>{{ ticket.firstname }} {{ ticket.lastname }}</h3>
-        <div class="ticket-info">
-          <div class="info-row">
-            <p class="info-parameter">Email:</p>
-            <p class="info-value truncate">{{ ticket.email }}</p>
-          </div>
-          <div class="info-row">
-            <p class="info-parameter">Phone:</p>
-            <p class="info-value truncate">{{ ticket.phone }}</p>
-          </div>
-          <div class="info-row">
-            <p class="info-parameter">Experience:</p>
-            <p class="info-value truncate">{{ ticket.experience }}</p>
-          </div>
-          <div class="info-row">
-            <p class="info-parameter">Skills:</p>
-            <p class="info-value truncate">{{ ticket.skills }}</p>
-          </div>
-          <div class="info-row">
-            <p class="info-parameter">Education:</p>
-            <p class="info-value truncate">{{ ticket.education }}</p>
+  <div class="bg-white py-16">
+    <div class="container mx-auto max-w-screen-xl px-4 relative">
+      <h1 class="text-5xl font-bold mb-4 text-center md:text-left">Backend Ticket Dashboard</h1>
+      <div class="mb-8 flex justify-center md:justify-start space-x-2">
+        <button :class="{ 'bg-primary': currentTab === 'bewerbung', 'bg-secondary': currentTab !== 'bewerbung' }" class="px-4 py-2 text-white font-semibold rounded-full transition-colors" @click="currentTab = 'bewerbung'">Bewerbung</button>
+        <button :class="{ 'bg-primary': currentTab === 'kontakt', 'bg-secondary': currentTab !== 'kontakt' }" class="px-4 py-2 text-white font-semibold rounded-full transition-colors" @click="currentTab = 'kontakt'">Kontakt</button>
+      </div>
+      <div v-if="currentTab === 'bewerbung'">
+        <div class="mb-4 flex flex-wrap gap-2">
+          <label for="sortCriteria" class="w-full sm:w-auto">Sort by:</label>
+          <select id="sortCriteria" v-model="sortCriteria" @change="sortTickets" class="w-full sm:w-auto p-2 border rounded-lg">
+            <option value="experience">Experience</option>
+            <option value="education">Education</option>
+          </select>
+          <label for="sortOrder" class="w-full sm:w-auto">Order:</label>
+          <select id="sortOrder" v-model="sortOrder" @change="sortTickets" class="w-full sm:w-auto p-2 border rounded-lg">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            v-for="ticket in sortedTickets"
+            :key="ticket.id"
+            class="border p-4 bg-white rounded-lg shadow-lg transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between"
+            @click="selectTicket(ticket)"
+          >
+            <div>
+              <h3 class="text-xl font-semibold">{{ ticket.firstname }} {{ ticket.lastname }}</h3>
+              <div class="mt-2 space-y-2">
+                <div class="flex justify-between">
+                  <p class="font-bold">Email:</p>
+                  <p class="truncate">{{ ticket.email }}</p>
+                </div>
+                <div class="flex justify-between">
+                  <p class="font-bold">Phone:</p>
+                  <p class="truncate">{{ ticket.phone }}</p>
+                </div>
+                <div class="flex justify-between">
+                  <p class="font-bold">Experience:</p>
+                  <p class="truncate">{{ ticket.experience }}</p>
+                </div>
+                <div class="flex justify-between">
+                  <p class="font-bold">Skills:</p>
+                  <p class="truncate">{{ ticket.skills }}</p>
+                </div>
+                <div class="flex justify-between">
+                  <p class="font-bold">Education:</p>
+                  <p class="truncate">{{ ticket.education }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-between">
+              <button @click.stop="inviteTicket(ticket)" class="bg-primary text-white px-4 py-2 rounded-full">Invite</button>
+              <button @click.stop="confirmDelete(ticket.id)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="ticket-actions">
-        <button @click.stop="inviteTicket(ticket)">Invite</button>
-        <button @click.stop="confirmDelete(ticket.id)">Delete</button>
+      <div v-else>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            v-for="ticket in kontaktTickets"
+            :key="ticket.id"
+            class="border p-4 bg-white rounded-lg shadow-lg transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between"
+            @click="selectTicket(ticket)"
+          >
+            <div>
+              <h3 class="text-xl font-semibold">{{ ticket.name }}</h3>
+              <div class="mt-2 space-y-2">
+                <div class="flex justify-between">
+                  <p class="font-bold">Email:</p>
+                  <p class="truncate">{{ ticket.email }}</p>
+                </div>
+                <div class="flex justify-between">
+                  <p class="font-bold">Subject:</p>
+                  <p class="truncate">{{ ticket.subject }}</p>
+                </div>
+                <div class="flex justify-between">
+                  <p class="font-bold">Message:</p>
+                  <p class="truncate">{{ ticket.message }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-between">
+              <button @click.stop="replyToTicket(ticket)" class="bg-primary text-white px-4 py-2 rounded-full">Reply</button>
+              <button @click.stop="confirmDeleteKontakt(ticket.id)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="selectedTicket" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="clearSelection">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Details for {{ selectedTicket.firstname || selectedTicket.name }} {{ selectedTicket.lastname || '' }}</h2>
+          <p>Email: {{ selectedTicket.email }}</p>
+          <p v-if="selectedTicket.phone">Phone: {{ selectedTicket.phone }}</p>
+          <p v-if="selectedTicket.experience">Experience: {{ selectedTicket.experience }}</p>
+          <p v-if="selectedTicket.skills">Skills: {{ selectedTicket.skills }}</p>
+          <p v-if="selectedTicket.education">Education: {{ selectedTicket.education }}</p>
+          <p v-if="selectedTicket.subject">Subject: {{ selectedTicket.subject }}</p>
+          <p v-if="selectedTicket.message">Message: {{ selectedTicket.message }}</p>
+          <div class="mt-4 flex flex-col space-y-2">
+            <button v-if="selectedTicket.experience" @click="inviteTicket(selectedTicket)" class="bg-primary text-white px-4 py-2 rounded-full">Invite</button>
+            <input v-if="selectedTicket.experience" type="datetime-local" v-model="selectedDate" class="border p-2 rounded-lg" />
+            <button v-if="selectedTicket.experience" @click="sendInvitation" class="bg-green-500 text-white px-4 py-2 rounded-full">Send Invitation</button>
+            <button @click="confirmDelete(selectedTicket.id)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="clearSelection" class="bg-gray-500 text-white px-4 py-2 rounded-full">Close</button>
+          </div>
+        </div>
+      </div>
+      <div v-if="selectedKontaktTicket" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="clearKontaktSelection">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Reply to {{ selectedKontaktTicket.name }}</h2>
+          <p>To: {{ selectedKontaktTicket.email }}</p>
+          <input type="text" v-model="emailSubject" placeholder="Subject" class="border p-2 w-full mt-2 rounded-lg" />
+          <textarea v-model="emailBody" placeholder="Message" class="border p-2 w-full mt-2 h-32 rounded-lg"></textarea>
+          <div class="mt-4 flex flex-col space-y-2">
+            <button @click="sendReply" class="bg-green-500 text-white px-4 py-2 rounded-full">Send Reply</button>
+            <button @click="confirmDeleteKontakt(selectedKontaktTicket.id)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="clearKontaktSelection" class="bg-gray-500 text-white px-4 py-2 rounded-full">Close</button>
+          </div>
+        </div>
+      </div>
+      <div v-if="showConfirmDelete" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
+          <p>Are you sure you want to delete this ticket?</p>
+          <div class="mt-4 flex space-x-4">
+            <button @click="deleteTicket(selectedTicketId)" class="bg-red-500 text-white px-4 py-2 rounded-full">Yes</button>
+            <button @click="cancelDelete" class="bg-gray-500 text-white px-4 py-2 rounded-full">No</button>
+          </div>
+        </div>
+      </div>
+      <div v-if="showConfirmDeleteKontakt" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
+          <p>Are you sure you want to delete this ticket?</p>
+          <div class="mt-4 flex space-x-4">
+            <button @click="deleteKontaktTicket(selectedKontaktTicketId)" class="bg-red-500 text-white px-4 py-2 rounded-full">Yes</button>
+            <button @click="cancelDeleteKontakt" class="bg-gray-500 text-white px-4 py-2 rounded-full">No</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div v-if="selectedTicket" class="modal-overlay" @click="clearSelection">
-    <div class="modal" @click.stop>
-      <h2>Details for {{ selectedTicket.firstname }} {{ selectedTicket.lastname }}</h2>
-      <p>Email: {{ selectedTicket.email }}</p>
-      <p>Phone: {{ selectedTicket.phone }}</p>
-      <p>Experience: {{ selectedTicket.experience }}</p>
-      <p>Skills: {{ selectedTicket.skills }}</p>
-      <p>Education: {{ selectedTicket.education }}</p>
-      <input type="datetime-local" v-model="selectedDate" />
-      <button @click="sendInvitation">Send Invitation</button>
-      <button @click="confirmDelete(selectedTicket.id)">Delete</button>
-      <button @click="clearSelection">Close</button>
-    </div>
-  </div>
-  <div v-if="showConfirmDelete" class="confirm-modal-overlay">
-    <div class="confirm-modal">
-      <p>Are you sure you want to delete this ticket?</p>
-      <button @click="deleteTicket(selectedTicketId)">Yes</button>
-      <button @click="cancelDelete">No</button>
-    </div>
-  </div>
-</div>
-
 </template>
-
-
-
 
 
 
@@ -89,12 +154,19 @@ export default {
   data() {
     return {
       tickets: [],
+      kontaktTickets: [],
       selectedTicket: null,
+      selectedKontaktTicket: null,
       selectedDate: null,
       showConfirmDelete: false,
+      showConfirmDeleteKontakt: false,
       selectedTicketId: null,
+      selectedKontaktTicketId: null,
       sortCriteria: 'experience',
       sortOrder: 'asc',
+      currentTab: 'bewerbung',
+      emailSubject: '',
+      emailBody: ''
     }
   },
   computed: {
@@ -130,6 +202,17 @@ export default {
         this.tickets = data
       }
     },
+    async fetchKontaktTickets() {
+      const { data, error } = await supabase
+        .from('kontakt')
+        .select('id, created_at, name, email, subject, message')
+
+      if (error) {
+        console.error('Error fetching kontakt tickets:', error)
+      } else {
+        this.kontaktTickets = data
+      }
+    },
     experienceValue(experience) {
       switch (experience) {
         case '0':
@@ -152,14 +235,12 @@ export default {
           return 2;
         case 'Doktor':
           return 3;
-        case 'Andere':
-          return 0;
         default:
           return 0;
       }
     },
     sortTickets() {
-      this.tickets = [...this.tickets].sort((a, b) => {
+      this.tickets.sort((a, b) => {
         let valueA, valueB;
 
         if (this.sortCriteria === 'experience') {
@@ -177,12 +258,48 @@ export default {
         }
       });
     },
+    selectTicket(ticket) {
+      this.selectedTicket = ticket;
+    },
+    selectKontaktTicket(ticket) {
+      this.selectedKontaktTicket = ticket;
+    },
+    clearSelection() {
+      this.selectedTicket = null;
+    },
+    clearKontaktSelection() {
+      this.selectedKontaktTicket = null;
+    },
+    inviteTicket(ticket) {
+      this.selectedTicket = ticket;
+      this.selectedDate = null; // Reset the date input field
+    },
+    async sendInvitation() {
+      if (!this.selectedDate || !this.selectedTicket) {
+        return;
+      }
+
+      const response = await axios.post('/api/send-invitation', {
+        email: this.selectedTicket.email,
+        date: this.selectedDate,
+      });
+
+      if (response.data.success) {
+        alert('Invitation sent successfully');
+      } else {
+        alert('Failed to send invitation');
+      }
+    },
+    confirmDelete(ticketId) {
+      this.selectedTicketId = ticketId;
+      this.showConfirmDelete = true;
+    },
     async deleteTicket(ticketId) {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('bewerbung')
         .delete()
         .eq('id', ticketId)
-      
+
       if (error) {
         console.error('Error deleting ticket:', error)
       } else {
@@ -191,247 +308,48 @@ export default {
         this.selectedTicket = null;
       }
     },
-    confirmDelete(ticketId) {
-      this.selectedTicketId = ticketId;
-      this.showConfirmDelete = true;
-    },
     cancelDelete() {
       this.showConfirmDelete = false;
       this.selectedTicketId = null;
     },
-    selectTicket(ticket) {
-      this.selectedTicket = ticket;
+    confirmDeleteKontakt(ticketId) {
+      this.selectedKontaktTicketId = ticketId;
+      this.showConfirmDeleteKontakt = true;
     },
-    clearSelection() {
-      this.selectedTicket = null;
-      this.selectedDate = null;
-    },
-    async sendInvitation() {
-      const { email, firstname, lastname } = this.selectedTicket;
-      const date = this.selectedDate;
+    async deleteKontaktTicket(ticketId) {
+      const { data, error } = await supabase
+        .from('kontakt')
+        .delete()
+        .eq('id', ticketId)
 
-      if (!date) {
-        alert('Please select a date and time.');
+      if (error) {
+        console.error('Error deleting kontakt ticket:', error)
+      } else {
+        this.kontaktTickets = this.kontaktTickets.filter(ticket => ticket.id !== ticketId)
+        this.showConfirmDeleteKontakt = false;
+        this.selectedKontaktTicket = null;
+      }
+    },
+    cancelDeleteKontakt() {
+      this.showConfirmDeleteKontakt = false;
+      this.selectedKontaktTicketId = null;
+    },
+    replyToTicket(ticket) {
+      this.selectedKontaktTicket = ticket;
+    },
+    sendReply() {
+      if (!this.emailSubject || !this.emailBody || !this.selectedKontaktTicket) {
         return;
       }
 
-      try {
-        const response = await axios.post('https://fh-kiel.com/api/mail.php', {
-          email,
-          firstname,
-          lastname,
-          date
-        })
-
-        if (response.status === 200) {
-          alert('Invitation sent successfully.');
-        } else {
-          alert('Failed to send invitation.');
-        }
-      } catch (error) {
-        console.error('Error sending invitation:', error);
-        alert('An error occurred while sending the invitation.');
-      }
-
-      this.selectedTicket = null;
-      this.selectedDate = null;
-    },
-    inviteTicket(ticket) {
-      this.selectedTicket = ticket;
+      const mailtoLink = `mailto:${this.selectedKontaktTicket.email}?subject=${encodeURIComponent(this.emailSubject)}&body=${encodeURIComponent(this.emailBody)}`;
+      window.location.href = mailtoLink;
     }
   },
   async mounted() {
     await this.fetchTickets();
+    await this.fetchKontaktTickets();
   }
 }
 </script>
-
-
-
-<style scoped>
-.backend-container {
-  padding: 20px;
-  background-color: #f9f9f9;
-  max-width: 1200px;
-  margin: auto;
-  position: relative;
-  box-sizing: border-box; /* Ensure padding is included in the width */
-}
-
-.sort-container {
-  margin-bottom: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.sort-container label,
-.sort-container select {
-  flex: 1 1 100px; /* Allow flex items to shrink and grow */
-}
-
-.tickets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  box-sizing: border-box; /* Ensure padding is included in the width */
-}
-
-.ticket {
-  border: 1px solid #ddd;
-  padding: 16px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  overflow: hidden; /* Prevent content overflow */
-  box-sizing: border-box; /* Ensure padding is included in the width */
-}
-
-.ticket:hover {
-  transform: scale(1.05);
-}
-
-.ticket-content {
-  flex-grow: 1;
-}
-
-.ticket-info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap; /* Allow content to wrap */
-}
-
-.info-parameter {
-  font-weight: bold;
-  flex: 1;
-  min-width: 100px; /* Ensure minimum width to prevent overflow */
-}
-
-.info-value {
-  flex: 2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ticket-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.ticket-actions button {
-  pointer-events: all;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-
-.modal {
-  background: white;
-  padding: 20px;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  z-index: 101;
-  box-sizing: border-box; /* Ensure padding is included in the width */
-  max-width: 90%; /* Prevent modal from being too wide */
-}
-
-.confirm-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 102;
-}
-
-.confirm-modal {
-  background: white;
-  padding: 20px;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box; /* Ensure padding is included in the width */
-  max-width: 90%; /* Prevent modal from being too wide */
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-.truncate {
-  display: inline-block;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-@media (max-width: 320px) {
-  .sort-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .sort-container label,
-  .sort-container select {
-    flex: 1 1 auto;
-  }
-
-  .tickets-grid {
-    grid-template-columns: 1fr; /* Single column on very small screens */
-  }
-
-  .ticket {
-    padding: 8px;
-  }
-
-  .info-row {
-    flex-direction: column;
-  }
-
-  .info-parameter,
-  .info-value {
-    flex: 1 1 auto;
-    min-width: auto;
-  }
-}
-</style>
-
-
-
 
