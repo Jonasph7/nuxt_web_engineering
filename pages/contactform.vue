@@ -1,6 +1,6 @@
 <template>
   <div class="contact-form-container">
-    <h2>Kontaktformular</h2>
+    <h2>Kontakt</h2>
     <div class="progress-container">
       <div class="progress-bar" :style="{ width: progress + '%' }">
         <span class="progress-percent" :style="{ color: progress > 0 ? 'white' : '#007BFF' }">{{ progress.toFixed(0) }}%</span>
