@@ -128,7 +128,7 @@
           <h2 class="text-center text-xl font-bold text-white sm:text-2xl lg:text-left lg:text-3xl">IT-Administratoren gesucht</h2>
           <p class="text-center text-white lg:text-left">Werde Teil unseres Teams</p>
         </div>
-        <div class="flex flex-col items-center w-96 lg:items-end">
+        <div class="flex flex-col items-center w-72 lg:items-end">
           <nuxt-link to="/qualificationform" class="inline-block rounded-full bg-white px-4 py-2 font-semibold text-primary hover:bg-gray-dark hover:text-white">JETZT BEWERBEN!</nuxt-link>
         </div>
       </div>
