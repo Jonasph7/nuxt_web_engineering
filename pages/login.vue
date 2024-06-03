@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const supabase = useSupabaseClient()
 const router = useRouter()
@@ -46,6 +46,13 @@ async function logIn() {
     loading.value = false
   }
 }
+
+onMounted(async () => {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (session) {
+    router.push("/backend")
+  }
+})
 </script>
 
 <style scoped>
