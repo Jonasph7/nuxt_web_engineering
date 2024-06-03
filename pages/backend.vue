@@ -85,6 +85,7 @@
             </div>
           </div>
           <div class="ticket-actions">
+            <button @click.stop="replyTicket(ticket)">Reply</button>
             <button @click.stop="confirmDeleteKontakt(ticket.id)">Delete</button>
           </div>
         </div>
@@ -106,10 +107,11 @@
     </div>
     <div v-if="selectedKontaktTicket" class="modal-overlay" @click="clearKontaktSelection">
       <div class="modal" @click.stop>
-        <h2>Details for {{ selectedKontaktTicket.name }}</h2>
-        <p>Email: {{ selectedKontaktTicket.email }}</p>
-        <p>Subject: {{ selectedKontaktTicket.subject }}</p>
-        <p>Message: {{ selectedKontaktTicket.message }}</p>
+        <h2>Reply to {{ selectedKontaktTicket.name }}</h2>
+        <p>To: {{ selectedKontaktTicket.email }}</p>
+        <input type="text" v-model="emailSubject" placeholder="Subject" />
+        <textarea v-model="emailBody" placeholder="Message"></textarea>
+        <button @click="sendReply">Send Reply</button>
         <button @click="confirmDeleteKontakt(selectedKontaktTicket.id)">Delete</button>
         <button @click="clearKontaktSelection">Close</button>
       </div>
@@ -150,6 +152,8 @@ export default {
       sortCriteria: 'experience',
       sortOrder: 'asc',
       currentTab: 'bewerbung',
+      emailSubject: '',
+      emailBody: ''
     }
   },
   computed: {
@@ -292,6 +296,8 @@ export default {
     },
     selectKontaktTicket(ticket) {
       this.selectedKontaktTicket = ticket;
+      this.emailSubject = `Re: ${ticket.subject}`;
+      this.emailBody = '';
     },
     clearSelection() {
       this.selectedTicket = null;
@@ -299,6 +305,8 @@ export default {
     },
     clearKontaktSelection() {
       this.selectedKontaktTicket = null;
+      this.emailSubject = '';
+      this.emailBody = '';
     },
     async sendInvitation() {
       const { email, firstname, lastname } = this.selectedTicket;
@@ -329,6 +337,37 @@ export default {
 
       this.selectedTicket = null;
       this.selectedDate = null;
+    },
+    async sendReply() {
+      const { email } = this.selectedKontaktTicket;
+      const subject = this.emailSubject;
+      const body = this.emailBody;
+
+      if (!subject || !body) {
+        alert('Please fill in both subject and message.');
+        return;
+      }
+
+      try {
+        const response = await axios.post('https://fh-kiel.com/api/mail.php', {
+          email,
+          subject,
+          body
+        })
+
+        if (response.status === 200) {
+          alert('Reply sent successfully.');
+        } else {
+          alert('Failed to send reply.');
+        }
+      } catch (error) {
+        console.error('Error sending reply:', error);
+        alert('An error occurred while sending the reply.');
+      }
+
+      this.selectedKontaktTicket = null;
+      this.emailSubject = '';
+      this.emailBody = '';
     },
     inviteTicket(ticket) {
       this.selectedTicket = ticket;
@@ -511,6 +550,14 @@ button:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+textarea {
+  width: 100%;
+  height: 150px;
+  margin-top: 10px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 320px) {
