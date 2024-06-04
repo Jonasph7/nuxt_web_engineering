@@ -58,7 +58,7 @@
               </div>
             </div>
             <div class="mt-4 flex justify-between">
-              <button @click.stop="inviteTicket(ticket)"
+              <button @click.stop="inviteTicket(ticket)" :disabled="isNameInCalendar(ticket)"
                 class="bg-primary text-white px-4 py-2 rounded-full">Invite</button>
               <button @click.stop="confirmDelete(ticket.id)"
                 class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
@@ -505,6 +505,10 @@ export default {
       this.showConfirmDeleteEvent = false;
       this.selectedEventId = null;
     },
+    isNameInCalendar(ticket) {
+      const fullName = `${ticket.firstname} ${ticket.lastname}`;
+      return this.calendarEvents.some(event => event.title === fullName);
+    }
   },
   async mounted() {
     await this.fetchTickets();
