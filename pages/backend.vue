@@ -59,7 +59,10 @@
             </div>
             <div class="mt-4 flex justify-between">
               <button @click.stop="inviteTicket(ticket)" :disabled="isNameInCalendar(ticket)"
-                class="bg-primary text-white px-4 py-2 rounded-full">Invite</button>
+                :class="{ 'bg-gray-light': isNameInCalendar(ticket), 'bg-primary': !isNameInCalendar(ticket) }"
+                class="text-white px-4 py-2 rounded-full">
+                {{ isNameInCalendar(ticket) ? 'Invited' : 'Invite' }}
+              </button>
               <button @click.stop="confirmDelete(ticket.id)"
                 class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
             </div>
