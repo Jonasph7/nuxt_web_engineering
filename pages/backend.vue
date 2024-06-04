@@ -53,7 +53,7 @@
             </div>
             <div class="mt-4 flex justify-between">
               <button @click.stop="inviteTicket(ticket)" class="bg-primary text-white px-4 py-2 rounded-full">Invite</button>
-              <button @click.stop="confirmDelete(ticket.id)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+              <button @click.stop="confirmDelete(ticket.id)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
             </div>
           </div>
         </div>
@@ -85,7 +85,9 @@
             </div>
             <div class="mt-4 flex justify-between">
               <button @click.stop="replyToTicket(ticket)" class="bg-primary text-white px-4 py-2 rounded-full">Reply</button>
-              <button @click.stop="confirmDeleteKontakt(ticket.id)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+
+
+              <button @click.stop="confirmDeleteKontakt(ticket.id)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
             </div>
           </div>
         </div>
@@ -101,24 +103,7 @@
           <p v-if="selectedTicket.subject">Subject: {{ selectedTicket.subject }}</p>
           <p v-if="selectedTicket.message">Message: {{ selectedTicket.message }}</p>
           <div class="mt-4 flex flex-col space-y-2">
-            <button v-if="selectedTicket.experience" @click="inviteTicket(selectedTicket)" class="bg-primary text-white px-4 py-2 rounded-full">Invite</button>
-            <input v-if="selectedTicket.experience" type="datetime-local" v-model="selectedDate" class="border p-2 rounded-lg" />
-            <button v-if="selectedTicket.experience" @click="sendInvitation" class="bg-green-500 text-white px-4 py-2 rounded-full">Send Invitation</button>
-            <button @click="confirmDelete(selectedTicket.id)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
-            <button @click="clearSelection" class="bg-gray-500 text-white px-4 py-2 rounded-full">Close</button>
-          </div>
-        </div>
-      </div>
-      <div v-if="selectedKontaktTicket" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="clearKontaktSelection">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Reply to {{ selectedKontaktTicket.name }}</h2>
-          <p>To: {{ selectedKontaktTicket.email }}</p>
-          <input type="text" v-model="emailSubject" placeholder="Subject" class="border p-2 w-full mt-2 rounded-lg" />
-          <textarea v-model="emailBody" placeholder="Message" class="border p-2 w-full mt-2 h-32 rounded-lg"></textarea>
-          <div class="mt-4 flex flex-col space-y-2">
-            <button @click="sendReply" class="bg-green-500 text-white px-4 py-2 rounded-full">Send Reply</button>
-            <button @click="confirmDeleteKontakt(selectedKontaktTicket.id)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
-            <button @click="clearKontaktSelection" class="bg-gray-500 text-white px-4 py-2 rounded-full">Close</button>
+            <button @click="clearSelection" class="bg-gray-light text-white px-4 py-2 rounded-full">Close</button>
           </div>
         </div>
       </div>
@@ -126,8 +111,8 @@
         <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
           <p>Are you sure you want to delete this ticket?</p>
           <div class="mt-4 flex space-x-4">
-            <button @click="deleteTicket(selectedTicketId)" class="bg-red-500 text-white px-4 py-2 rounded-full">Yes</button>
-            <button @click="cancelDelete" class="bg-gray-500 text-white px-4 py-2 rounded-full">No</button>
+            <button @click="deleteTicket(selectedTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Yes</button>
+            <button @click="cancelDelete" class="bg-gray-light text-white px-4 py-2 rounded-full">No</button>
           </div>
         </div>
       </div>
@@ -135,22 +120,48 @@
         <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
           <p>Are you sure you want to delete this ticket?</p>
           <div class="mt-4 flex space-x-4">
-            <button @click="deleteKontaktTicket(selectedKontaktTicketId)" class="bg-red-500 text-white px-4 py-2 rounded-full">Yes</button>
-            <button @click="cancelDeleteKontakt" class="bg-gray-500 text-white px-4 py-2 rounded-full">No</button>
+            <button @click="deleteKontaktTicket(selectedKontaktTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Yes</button>
+            <button @click="cancelDeleteKontakt" class="bg-gray-light text-white px-4 py-2 rounded-full">No</button>
           </div>
+        </div>
+      </div>
+
+      <!-- Datepicker -->
+      <div v-if="showDatePicker" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Choose Date and Time</h2>
+          <flat-pickr v-model="selectedDate" :config="datePickerConfig"></flat-pickr>
+          <button @click="sendInvitation" class="bg-green text-white px-4 py-2 rounded-full mt-4">Send Invitation</button>
+          <button @click="closeDatePicker" class="bg-gray-light text-white px-4 py-2 rounded-full mt-2">Cancel</button>
         </div>
       </div>
     </div>
   </div>
+  <div v-if="showEmailReplyWindow" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
+    <h2 class="text-2xl font-bold">Reply to {{ selectedKontaktTicket.name }}</h2>
+    <div class="mt-4 flex flex-col space-y-2">
+      <input v-model="emailSubject" type="text" placeholder="Subject" class="border rounded-lg px-3 py-2">
+      <textarea v-model="emailBody" placeholder="Your message" class="border rounded-lg px-3 py-2"></textarea>
+      <button @click="sendReply" class="bg-primary text-white px-4 py-2 rounded-full">Send</button>
+      <button @click="showEmailReplyWindow = false" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+    </div>
+  </div>
+</div>
+
 </template>
-
-
 
 <script>
 import { supabase } from '@/supabase'
 import axios from 'axios';
+import FlatPickr from 'vue-flatpickr-component';
+
+import 'flatpickr/dist/flatpickr.css';
 
 export default {
+  components: {
+    FlatPickr,
+  },
   data() {
     return {
       tickets: [],
@@ -158,15 +169,23 @@ export default {
       selectedTicket: null,
       selectedKontaktTicket: null,
       selectedDate: null,
+      showEmailReplyWindow: false,
       showConfirmDelete: false,
       showConfirmDeleteKontakt: false,
       selectedTicketId: null,
       selectedKontaktTicketId: null,
+      datePickerOpen: false, // fügen Sie diese Variable hinzu
       sortCriteria: 'experience',
       sortOrder: 'asc',
       currentTab: 'bewerbung',
       emailSubject: '',
-      emailBody: ''
+      emailBody: '',
+      showDatePicker: false,
+      datePickerConfig: {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true,
+      },
     }
   },
   computed: {
@@ -271,9 +290,17 @@ export default {
       this.selectedKontaktTicket = null;
     },
     inviteTicket(ticket) {
-      this.selectedTicket = ticket;
-      this.selectedDate = null; // Reset the date input field
+  if (this.currentTab === 'bewerbung' && !this.datePickerOpen) {
+    this.selectedTicket = ticket;
+    this.showDatePicker = true;
+    this.datePickerOpen = true;
+    this.selectedTicket = null; // Schließen Sie das Detailfenster, indem Sie selectedTicket auf null setzen
+  }
     },
+    closeDatePicker() {
+  this.showDatePicker = false;
+  this.datePickerOpen = false; // Setzen Sie datePickerOpen zurück, wenn das Datepicker-Element geschlossen wird
+},
     async sendInvitation() {
       if (!this.selectedDate || !this.selectedTicket) {
         return;
@@ -286,13 +313,19 @@ export default {
 
       if (response.data.success) {
         alert('Invitation sent successfully');
+        this.showDatePicker = false;
       } else {
         alert('Failed to send invitation');
       }
     },
     confirmDelete(ticketId) {
-      this.selectedTicketId = ticketId;
-      this.showConfirmDelete = true;
+      if (this.currentTab === 'bewerbung') {
+        this.selectedTicketId = ticketId;
+        this.showConfirmDelete = true;
+      } else if (this.currentTab === 'kontakt') {
+        this.selectedKontaktTicketId = ticketId;
+        this.showConfirmDeleteKontakt = true;
+      }
     },
     async deleteTicket(ticketId) {
       const { data, error } = await supabase
@@ -334,17 +367,30 @@ export default {
       this.showConfirmDeleteKontakt = false;
       this.selectedKontaktTicketId = null;
     },
-    replyToTicket(ticket) {
-      this.selectedKontaktTicket = ticket;
-    },
-    sendReply() {
-      if (!this.emailSubject || !this.emailBody || !this.selectedKontaktTicket) {
-        return;
-      }
+      replyToTicket(ticket) {
+  if (this.currentTab === 'kontakt') {
+    this.selectedKontaktTicket = ticket;
+    // Öffnen Sie das Fenster, das die E-Mail-Antwort ermöglicht
+    this.showEmailReplyWindow = true;
+  }
 
-      const mailtoLink = `mailto:${this.selectedKontaktTicket.email}?subject=${encodeURIComponent(this.emailSubject)}&body=${encodeURIComponent(this.emailBody)}`;
-      window.location.href = mailtoLink;
-    }
+},
+sendReply() {
+  if (!this.emailSubject || !this.emailBody || !this.selectedKontaktTicket) {
+    return;
+  }
+
+  const mailtoLink = `mailto:${this.selectedKontaktTicket.email}?subject=${encodeURIComponent(this.emailSubject)}&body=${encodeURIComponent(this.emailBody)}`;
+  
+  // Hier prüfen wir, ob der aktuelle Tab "kontakt" ist, bevor wir den Mailto-Link öffnen
+  if (this.currentTab === 'kontakt') {
+    window.location.href = mailtoLink;
+  }
+},
+    closeDatePicker() {
+      this.showDatePicker = false;
+      this.datePickerOpen = false; // Setzen Sie datePickerOpen zurück, wenn das Datepicker-Element geschlossen wird
+    },
   },
   async mounted() {
     await this.fetchTickets();
@@ -353,3 +399,6 @@ export default {
 }
 </script>
 
+<style>
+/* Add your custom styles here */
+</style>
