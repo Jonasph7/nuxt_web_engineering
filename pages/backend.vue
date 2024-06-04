@@ -60,23 +60,23 @@
         </div>
       </div>
       <div v-if="currentTab === 'kalender'">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div v-for="event in calendarEvents" :key="event.id" class="border p-4 bg-white rounded-lg shadow-lg transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between">
-      <div>
-        <h3 class="text-xl font-semibold">{{ event.title }}</h3>
-        <div class="mt-2 space-y-2">
-          <div class="flex justify-between">
-            <p class="font-bold">Date:</p>
-            <p class="truncate">{{ formatDate(event.date) }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div v-for="event in calendarEvents" :key="event.id" class="border p-4 bg-white rounded-lg shadow-lg transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-semibold">{{ event.title }}</h3>
+              <div class="mt-2 space-y-2">
+                <div class="flex justify-between">
+                  <p class="font-bold">Date:</p>
+                  <p class="truncate">{{ formatDate(event.date) }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 flex justify-between">
+              <button @click="confirmDeleteEvent(event.id)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
+            </div>
           </div>
-          </div>
+        </div>
       </div>
-      <div class="mt-4 flex justify-between">
-        <button @click="confirmDeleteEvent(event.id)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
       <div v-if="currentTab === 'kontakt'">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
@@ -104,8 +104,6 @@
             </div>
             <div class="mt-4 flex justify-between">
               <button @click.stop="replyToTicket(ticket)" class="bg-primary text-white px-4 py-2 rounded-full">Reply</button>
-
-
               <button @click.stop="confirmDeleteKontakt(ticket.id)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
             </div>
           </div>
@@ -157,17 +155,16 @@
     </div>
   </div>
   <div v-if="showEmailReplyWindow" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
-    <h2 class="text-2xl font-bold">Reply to {{ selectedKontaktTicket.name }}</h2>
-    <div class="mt-4 flex flex-col space-y-2">
-      <input v-model="emailSubject" type="text" placeholder="Subject" class="border rounded-lg px-3 py-2">
-      <textarea v-model="emailBody" placeholder="Your message" class="border rounded-lg px-3 py-2"></textarea>
-      <button @click="sendReply" class="bg-primary text-white px-4 py-2 rounded-full">Send</button>
-      <button @click="showEmailReplyWindow = false" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+    <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
+      <h2 class="text-2xl font-bold">Reply to {{ selectedKontaktTicket.name }}</h2>
+      <div class="mt-4 flex flex-col space-y-2">
+        <input v-model="emailSubject" type="text" placeholder="Subject" class="border rounded-lg px-3 py-2">
+        <textarea v-model="emailBody" placeholder="Your message" class="border rounded-lg px-3 py-2"></textarea>
+        <button @click="sendReply" class="bg-primary text-white px-4 py-2 rounded-full">Send</button>
+        <button @click="showEmailReplyWindow = false" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+      </div>
     </div>
   </div>
-</div>
-
 </template>
 
 <script>
@@ -175,7 +172,6 @@ import { supabase } from '@/supabase'
 import axios from 'axios';
 import FlatPickr from 'vue-flatpickr-component';
 import dayjs from 'dayjs';
-
 
 import 'flatpickr/dist/flatpickr.css';
 
@@ -187,7 +183,7 @@ export default {
     return {
       tickets: [],
       kontaktTickets: [],
-      calendarEvents:[],
+      calendarEvents: [],
       selectedTicket: null,
       selectedKontaktTicket: null,
       selectedDate: null,
@@ -196,7 +192,7 @@ export default {
       showConfirmDeleteKontakt: false,
       selectedTicketId: null,
       selectedKontaktTicketId: null,
-      datePickerOpen: false, // fügen Sie diese Variable hinzu
+      datePickerOpen: false,
       sortCriteria: 'experience',
       sortOrder: 'asc',
       currentTab: 'bewerbung',
@@ -233,10 +229,9 @@ export default {
   },
   methods: {
     formatDate(dateString) {
-            const date = dayjs(dateString);
-                // Then specify how you want your dates to be formatted
-            return date.format('dddd MMMM D, YYYY');
-        },
+      const date = dayjs(dateString);
+      return date.format('dddd MMMM D, YYYY');
+    },
     async fetchTickets() {
       const { data, error } = await supabase
         .from('bewerbung')
@@ -260,16 +255,16 @@ export default {
       }
     },
     async fetchCalendarEvents() {
-  const { data, error } = await supabase
-    .from('kalender')
-    .select('id, title, date')
+      const { data, error } = await supabase
+        .from('kalender')
+        .select('id, title, date')
 
-  if (error) {
-    console.error('Error fetching calendar events:', error)
-  } else {
-    this.calendarEvents = data
-  }
-},
+      if (error) {
+        console.error('Error fetching calendar events:', error)
+      } else {
+        this.calendarEvents = data
+      }
+    },
     experienceValue(experience) {
       switch (experience) {
         case '0':
@@ -328,34 +323,54 @@ export default {
       this.selectedKontaktTicket = null;
     },
     inviteTicket(ticket) {
-    if (this.currentTab === 'bewerbung' && !this.datePickerOpen) {
-      this.selectedTicket = ticket;
-      this.showDatePicker = true;
-      this.datePickerOpen = true;
-      this.selectedTicket = null; // Schließen Sie das Detailfenster, indem Sie selectedTicket auf null setzen
-    }
-      },
-      closeDatePicker() {
-    this.showDatePicker = false;
-    this.datePickerOpen = false; // Setzen Sie datePickerOpen zurück, wenn das Datepicker-Element geschlossen wird
-  },
-async sendInvitation() {
-  const fullName = `${this.firstname} ${this.lastname}`;
+      if (this.currentTab === 'bewerbung' && !this.datePickerOpen) {
+        this.selectedTicket = ticket;
+        this.showDatePicker = true;
+        this.datePickerOpen = true;
+      }
+    },
+    closeDatePicker() {
+      this.showDatePicker = false;
+      this.datePickerOpen = false;
+    },
+    async sendInvitation() {
+      if (!this.selectedTicket) {
+        console.error('No ticket selected');
+        return;
+      }
 
-    const { data, error } = await supabase
-      .from('kalender')
-      .insert([{ title: fullName, date: this.selectedDate }]);
+      const formattedDate = dayjs(this.selectedDate).format('MMMM D, YYYY HH:mm');
+      const fullName = `${this.selectedTicket.firstname} ${this.selectedTicket.lastname}`;
+      const { data, error } = await supabase
+        .from('kalender')
+        .insert([{ title: fullName, date: this.selectedDate }]);
 
-    if (error) {
-      console.error('Error adding calendar event:', error);
-    } else {
-      console.log('Calendar event added successfully:', data);
-      // Hier könnten Sie eine Benachrichtigung anzeigen oder andere Aktionen ausführen
-    }
+      if (error) {
+        console.error('Error adding calendar event:', error);
+      } else {
+        console.log('Calendar event added successfully:', data);
+      }
 
-  // Schließe den Datepicker nach dem Senden der Einladung
-  this.showDatePicker = false;
-},
+      try {
+        const response = await axios.post('/api/send-email', {
+          to: this.selectedTicket.email,
+          subject: 'Invitation',
+          html: `<strong>You are invited!</strong><br>Date and Time: ${formattedDate} <br>We are looking forward to seeing you!<br>You can join the meeting <a href="https://example.com/meeting">here</a>.<br>Best regards, TechInnovate Solutions`,
+        });
+
+        if (response.data.error) {
+          console.error('Error sending email:', response.data.error);
+        } else {
+          console.log('Email sent successfully:', response.data);
+        }
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
+
+      this.showDatePicker = false;
+      this.datePickerOpen = false;
+      this.selectedTicket = null; // Set to null after processing
+    },
     confirmDelete(ticketId) {
       if (this.currentTab === 'bewerbung') {
         this.selectedTicketId = ticketId;
@@ -405,35 +420,40 @@ async sendInvitation() {
       this.showConfirmDeleteKontakt = false;
       this.selectedKontaktTicketId = null;
     },
-      replyToTicket(ticket) {
-  if (this.currentTab === 'kontakt') {
-    this.selectedKontaktTicket = ticket;
-    // Öffnen Sie das Fenster, das die E-Mail-Antwort ermöglicht
-    this.showEmailReplyWindow = true;
-  }
+    replyToTicket(ticket) {
+      if (this.currentTab === 'kontakt') {
+        this.selectedKontaktTicket = ticket;
+        this.showEmailReplyWindow = true;
+      }
+    },
+    async sendReply() {
+      if (!this.emailSubject || !this.emailBody || !this.selectedKontaktTicket) {
+        return;
+      }
 
-},
-sendReply() {
-  if (!this.emailSubject || !this.emailBody || !this.selectedKontaktTicket) {
-    return;
-  }
+      try {
+        const response = await axios.post('/api/send-email', {
+          to: this.selectedKontaktTicket.email,
+          subject: this.emailSubject,
+          html: this.emailBody,
+        });
 
-  const mailtoLink = `mailto:${this.selectedKontaktTicket.email}?subject=${encodeURIComponent(this.emailSubject)}&body=${encodeURIComponent(this.emailBody)}`;
-  
-  // Hier prüfen wir, ob der aktuelle Tab "kontakt" ist, bevor wir den Mailto-Link öffnen
-  if (this.currentTab === 'kontakt') {
-    window.location.href = mailtoLink;
-  }
-},
-    closeDatePicker() {
-      this.showDatePicker = false;
-      this.datePickerOpen = false; // Setzen Sie datePickerOpen zurück, wenn das Datepicker-Element geschlossen wird
+        if (response.data.error) {
+          console.error('Error sending email:', response.data.error);
+        } else {
+          console.log('Email sent successfully:', response.data);
+        }
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
+
+      this.showEmailReplyWindow = false;
     },
   },
   async mounted() {
     await this.fetchTickets();
     await this.fetchKontaktTickets();
-    await this.fetchCalendarEvents(); // Kalenderdaten abrufen
+    await this.fetchCalendarEvents();
   }
 }
 </script>
