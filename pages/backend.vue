@@ -5,6 +5,7 @@
       <div class="mb-8 flex justify-center md:justify-start space-x-2">
         <button :class="{ 'bg-primary': currentTab === 'bewerbung', 'bg-secondary': currentTab !== 'bewerbung' }" class="px-4 py-2 text-white font-semibold rounded-full transition-colors" @click="currentTab = 'bewerbung'">Bewerbung</button>
         <button :class="{ 'bg-primary': currentTab === 'kontakt', 'bg-secondary': currentTab !== 'kontakt' }" class="px-4 py-2 text-white font-semibold rounded-full transition-colors" @click="currentTab = 'kontakt'">Kontakt</button>
+        <button :class="{ 'bg-primary': currentTab === 'kalender', 'bg-secondary': currentTab !== 'kalender' }" class="px-4 py-2 text-white font-semibold rounded-full transition-colors" @click="currentTab = 'kalender'">Kalender</button>
       </div>
       <div v-if="currentTab === 'bewerbung'">
         <div class="mb-4 flex flex-wrap gap-2">
@@ -58,7 +59,25 @@
           </div>
         </div>
       </div>
-      <div v-else>
+      <div v-if="currentTab === 'kalender'">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div v-for="event in calendarEvents" :key="event.id" class="border p-4 bg-white rounded-lg shadow-lg transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between">
+      <div>
+        <h3 class="text-xl font-semibold">{{ event.title }}</h3>
+        <div class="mt-2 space-y-2">
+          <div class="flex justify-between">
+            <p class="font-bold">Date:</p>
+            <p class="truncate">{{ formatDate(event.date) }}</p>
+          </div>
+          </div>
+      </div>
+      <div class="mt-4 flex justify-between">
+        <button @click="confirmDeleteEvent(event.id)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+      <div v-if="currentTab === 'kontakt'">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
             v-for="ticket in kontaktTickets"
@@ -155,6 +174,8 @@
 import { supabase } from '@/supabase'
 import axios from 'axios';
 import FlatPickr from 'vue-flatpickr-component';
+import dayjs from 'dayjs';
+
 
 import 'flatpickr/dist/flatpickr.css';
 
@@ -166,6 +187,7 @@ export default {
     return {
       tickets: [],
       kontaktTickets: [],
+      calendarEvents:[],
       selectedTicket: null,
       selectedKontaktTicket: null,
       selectedDate: null,
@@ -210,6 +232,11 @@ export default {
     }
   },
   methods: {
+    formatDate(dateString) {
+            const date = dayjs(dateString);
+                // Then specify how you want your dates to be formatted
+            return date.format('dddd MMMM D, YYYY');
+        },
     async fetchTickets() {
       const { data, error } = await supabase
         .from('bewerbung')
@@ -232,6 +259,17 @@ export default {
         this.kontaktTickets = data
       }
     },
+    async fetchCalendarEvents() {
+  const { data, error } = await supabase
+    .from('kalender')
+    .select('id, title, date')
+
+  if (error) {
+    console.error('Error fetching calendar events:', error)
+  } else {
+    this.calendarEvents = data
+  }
+},
     experienceValue(experience) {
       switch (experience) {
         case '0':
@@ -290,34 +328,34 @@ export default {
       this.selectedKontaktTicket = null;
     },
     inviteTicket(ticket) {
-  if (this.currentTab === 'bewerbung' && !this.datePickerOpen) {
-    this.selectedTicket = ticket;
-    this.showDatePicker = true;
-    this.datePickerOpen = true;
-    this.selectedTicket = null; // Schließen Sie das Detailfenster, indem Sie selectedTicket auf null setzen
-  }
-    },
-    closeDatePicker() {
+    if (this.currentTab === 'bewerbung' && !this.datePickerOpen) {
+      this.selectedTicket = ticket;
+      this.showDatePicker = true;
+      this.datePickerOpen = true;
+      this.selectedTicket = null; // Schließen Sie das Detailfenster, indem Sie selectedTicket auf null setzen
+    }
+      },
+      closeDatePicker() {
+    this.showDatePicker = false;
+    this.datePickerOpen = false; // Setzen Sie datePickerOpen zurück, wenn das Datepicker-Element geschlossen wird
+  },
+async sendInvitation() {
+  const fullName = `${this.firstname} ${this.lastname}`;
+
+    const { data, error } = await supabase
+      .from('kalender')
+      .insert([{ title: fullName, date: this.selectedDate }]);
+
+    if (error) {
+      console.error('Error adding calendar event:', error);
+    } else {
+      console.log('Calendar event added successfully:', data);
+      // Hier könnten Sie eine Benachrichtigung anzeigen oder andere Aktionen ausführen
+    }
+
+  // Schließe den Datepicker nach dem Senden der Einladung
   this.showDatePicker = false;
-  this.datePickerOpen = false; // Setzen Sie datePickerOpen zurück, wenn das Datepicker-Element geschlossen wird
 },
-    async sendInvitation() {
-      if (!this.selectedDate || !this.selectedTicket) {
-        return;
-      }
-
-      const response = await axios.post('/api/send-invitation', {
-        email: this.selectedTicket.email,
-        date: this.selectedDate,
-      });
-
-      if (response.data.success) {
-        alert('Invitation sent successfully');
-        this.showDatePicker = false;
-      } else {
-        alert('Failed to send invitation');
-      }
-    },
     confirmDelete(ticketId) {
       if (this.currentTab === 'bewerbung') {
         this.selectedTicketId = ticketId;
@@ -395,6 +433,7 @@ sendReply() {
   async mounted() {
     await this.fetchTickets();
     await this.fetchKontaktTickets();
+    await this.fetchCalendarEvents(); // Kalenderdaten abrufen
   }
 }
 </script>
