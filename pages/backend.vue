@@ -5,6 +5,7 @@
       <div class="mb-8 flex justify-center md:justify-start space-x-2">
         <button :class="{ 'bg-primary': currentTab === 'bewerbung', 'bg-secondary': currentTab !== 'bewerbung' }" class="px-4 py-2 text-white font-semibold rounded-full transition-colors" @click="currentTab = 'bewerbung'">Bewerbung</button>
         <button :class="{ 'bg-primary': currentTab === 'kontakt', 'bg-secondary': currentTab !== 'kontakt' }" class="px-4 py-2 text-white font-semibold rounded-full transition-colors" @click="currentTab = 'kontakt'">Kontakt</button>
+        <button :class="{ 'bg-primary': currentTab === 'kalender', 'bg-secondary': currentTab !== 'kalender' }" class="px-4 py-2 text-white font-semibold rounded-full transition-colors" @click="changeTab('kalender')">Kalender</button>
       </div>
       <div v-if="currentTab === 'bewerbung'">
         <div class="mb-4 flex flex-wrap gap-2">
@@ -58,7 +59,28 @@
           </div>
         </div>
       </div>
-      <div v-else>
+      <div v-if="currentTab === 'kalender'">
+        <!-- Inhalt für den Kalender -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            v-for="event in calendarEvents"
+            :key="event.id"
+            class="border p-4 bg-white rounded-lg shadow-lg transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between"
+          >
+            <div>
+              <h3 class="text-xl font-semibold">{{ event.title }}</h3>
+              <div class="mt-2 space-y-2">
+                <div class="flex justify-between">
+                  <p class="font-bold">Datum:</p>
+                  <p class="truncate">{{ event.date }}</p>
+                </div>
+                <!-- Weitere Details des Kalendereintrags können hier angezeigt werden -->
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+      <div v-if="currentTab === 'kontakt'">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
             v-for="ticket in kontaktTickets"
@@ -301,23 +323,26 @@ export default {
   this.showDatePicker = false;
   this.datePickerOpen = false; // Setzen Sie datePickerOpen zurück, wenn das Datepicker-Element geschlossen wird
 },
-    async sendInvitation() {
-      if (!this.selectedDate || !this.selectedTicket) {
-        return;
-      }
+async sendInvitation() {
 
-      const response = await axios.post('/api/send-invitation', {
-        email: this.selectedTicket.email,
-        date: this.selectedDate,
-      });
 
-      if (response.data.success) {
-        alert('Invitation sent successfully');
-        this.showDatePicker = false;
-      } else {
-        alert('Failed to send invitation');
-      }
-    },
+  // Wenn die Einladung erfolgreich gesendet wurde, füge den Kalendereintrag hinzu
+
+    console.error('test');
+    const { data, error } = await supabase
+      .from('kalender')
+      .insert([{ title: 'Einladung', date: this.selectedDate }]);
+
+    if (error) {
+      console.error('Error adding calendar event:', error);
+    } else {
+      console.log('Calendar event added successfully:', data);
+      // Hier könnten Sie eine Benachrichtigung anzeigen oder andere Aktionen ausführen
+    }
+
+  // Schließe den Datepicker nach dem Senden der Einladung
+  this.showDatePicker = false;
+},
     confirmDelete(ticketId) {
       if (this.currentTab === 'bewerbung') {
         this.selectedTicketId = ticketId;
