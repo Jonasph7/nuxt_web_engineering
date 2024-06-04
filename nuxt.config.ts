@@ -4,7 +4,8 @@ export default {
   },
   modules: [
     '@nuxtjs/supabase',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@vue-email/nuxt'
   ],
   supabase: {
     redirect: false,

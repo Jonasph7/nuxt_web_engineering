@@ -20,10 +20,14 @@
     "flatpickr": "^4.6.13",
     "nuxt": "^3.11.2",
     "postmark": "^4.0.2",
+    "resend": "^3.2.0",
     "swiper": "^7.4.1",
     "tailwindcss": "^3.4.3",
     "vue": "^3.4.21",
     "vue-flatpickr-component": "^11.0.5",
     "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vue-email/nuxt": "^0.8.19"
   }
 }
