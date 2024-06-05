@@ -1,107 +1,97 @@
 <template>
-  <div class="recruiting-funnel">
-    <h2 class="title">Bewerbungsformular für Systemadministrator*in</h2>
-    <div class="logo-container">
-      <img src="/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" />
+  <div class="container mx-auto p-4 bg-white rounded-lg shadow-md max-w-xl">
+    <h2 class="text-2xl text-primary text-center mb-4 font-bold">Bewerbungsformular für Systemadministrator*in</h2>
+    <div class="flex justify-center mb-4">
+      <img src="/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" class="w-32 h-auto" />
     </div>
-    <div class="funnel-stages-container">
-      <div class="funnel-stages">
-        <div class="funnel-stage" @click="setActiveStage('experience')" :class="{ active: activeStage === 'experience', completed: isCompleted('experience') }">
-          <h3>1. Berufserfahrung</h3>
-        </div>
-        <div class="funnel-stage" @click="setActiveStage('skills')" :class="{ active: activeStage === 'skills', completed: isCompleted('skills') }" v-if="isCompleted('experience')">
-          <h3>2. Technische Fähigkeiten</h3>
-        </div>
-        <div class="funnel-stage" @click="setActiveStage('education')" :class="{ active: activeStage === 'education', completed: isCompleted('education') }" v-if="isCompleted('skills')">
-          <h3>3. Bildungsabschlüsse</h3>
-        </div>
-        <div class="funnel-stage" @click="setActiveStage('personal')" :class="{ active: activeStage === 'personal', completed: isCompleted('personal') }" v-if="isCompleted('education')">
-          <h3>4. Persönliche Informationen</h3>
-        </div>
-        <div class="funnel-stage" @click="setActiveStage('review')" :class="{ active: activeStage === 'review', completed: isCompleted('review') }" v-if="isCompleted('personal')">
-          <h3>5. Überprüfung und Absenden</h3>
-        </div>
+    <div class="flex justify-around mb-4">
+      <div @click="setActiveStage('experience')" :class="{ 'bg-blue-100 border-blue-500': activeStage === 'experience', 'bg-green-100': isCompleted('experience') }" class="p-2 rounded-lg cursor-pointer transition-colors">
+        <h3 class="text-center text-sm font-semibold text-blue-700">1. Berufserfahrung</h3>
+      </div>
+      <div v-if="isCompleted('experience')" @click="setActiveStage('skills')" :class="{ 'bg-blue-100 border-blue-500': activeStage === 'skills', 'bg-green-100': isCompleted('skills') }" class="p-2 rounded-lg cursor-pointer transition-colors">
+        <h3 class="text-center text-sm font-semibold text-blue-700">2. Technische Fähigkeiten</h3>
+      </div>
+      <div v-if="isCompleted('skills')" @click="setActiveStage('education')" :class="{ 'bg-blue-100 border-blue-500': activeStage === 'education', 'bg-green-100': isCompleted('education') }" class="p-2 rounded-lg cursor-pointer transition-colors">
+        <h3 class="text-center text-sm font-semibold text-blue-700">3. Bildungsabschlüsse</h3>
+      </div>
+      <div v-if="isCompleted('education')" @click="setActiveStage('personal')" :class="{ 'bg-blue-100 border-blue-500': activeStage === 'personal', 'bg-green-100': isCompleted('personal') }" class="p-2 rounded-lg cursor-pointer transition-colors">
+        <h3 class="text-center text-sm font-semibold text-blue-700">4. Persönliche Informationen</h3>
+      </div>
+      <div v-if="isCompleted('personal')" @click="setActiveStage('review')" :class="{ 'bg-blue-100 border-blue-500': activeStage === 'review', 'bg-green-100': isCompleted('review') }" class="p-2 rounded-lg cursor-pointer transition-colors">
+        <h3 class="text-center text-sm font-semibold text-blue-700">5. Überprüfung und Absenden</h3>
       </div>
     </div>
-    <div class="stage-content">
+    <div class="transition-all duration-300">
       <div v-if="activeStage === 'experience'" class="form-content">
-        <h3>Berufserfahrung</h3>
-        <form @submit.prevent="nextStage('skills')">
-          <fieldset>
-            <label for="experience">Jahre der Erfahrung als Systemadministrator:</label>
-            <select id="experience" v-model="form.experience" required>
+        <h3 class="text-xl font-semibold mb-2">Berufserfahrung</h3>
+        <form @submit.prevent="nextStage('skills')" class="space-y-2">
+          <div>
+            <label for="experience" class="block mb-1">Jahre der Erfahrung als Systemadministrator:</label>
+            <select id="experience" v-model="form.experience" required class="w-full p-2 border border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary">
               <option value="0">0 Jahre</option>
               <option value="1-3">1-3 Jahre</option>
               <option value="4-10">4-10 Jahre</option>
               <option value=">10">>10 Jahre</option>
             </select>
-          </fieldset>
-          <br>
-          <button type="submit" class="next-button">Weiter</button>
+          </div>
+          <button type="submit" class="w-full py-2 bg-primary text-white rounded-md hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary">Weiter</button>
         </form>
       </div>
       <div v-if="activeStage === 'skills'" class="form-content">
-        <h3>Technische Fähigkeiten</h3>
-        <form @submit.prevent="nextStage('education')">
-          <fieldset>
-            <label for="skills">Liste der technischen Fähigkeiten:</label>
-            <textarea id="skills" v-model="form.skills" placeholder="Trennen Sie verschiedene Fähigkeiten mit einem Komma." required></textarea>
-          </fieldset>
-          <br>
-          <button type="submit" class="next-button">Weiter</button>
+        <h3 class="text-xl font-semibold mb-2">Technische Fähigkeiten</h3>
+        <form @submit.prevent="nextStage('education')" class="space-y-2">
+          <div>
+            <label for="skills" class="block mb-1">Liste der technischen Fähigkeiten:</label>
+            <textarea id="skills" v-model="form.skills" placeholder="Trennen Sie verschiedene Fähigkeiten mit einem Komma." required class="w-full p-2 border border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary"></textarea>
+          </div>
+          <button type="submit" class="w-full py-2 bg-primary text-white rounded-md hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary">Weiter</button>
         </form>
       </div>
       <div v-if="activeStage === 'education'" class="form-content">
-        <h3>Bildungsabschlüsse</h3>
-        <form @submit.prevent="nextStage('personal')">
-          <fieldset>
-            <label for="education">Höchster erreichter Bildungsabschluss:</label>
-            <select id="education" v-model="form.education" required>
+        <h3 class="text-xl font-semibold mb-2">Bildungsabschlüsse</h3>
+        <form @submit.prevent="nextStage('personal')" class="space-y-2">
+          <div>
+            <label for="education" class="block mb-1">Höchster erreichter Bildungsabschluss:</label>
+            <select id="education" v-model="form.education" required class="w-full p-2 border border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary">
               <option value="Bachelor">Bachelor</option>
               <option value="Master">Master</option>
               <option value="Doktor">Doktor</option>
               <option value="Andere">Andere</option>
             </select>
-          </fieldset>
-          <br>
-          <button type="submit" class="next-button">Weiter</button>
+          </div>
+          <button type="submit" class="w-full py-2 bg-primary text-white rounded-md hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary">Weiter</button>
         </form>
       </div>
       <div v-if="activeStage === 'personal'" class="form-content">
-        <h3>Persönliche Informationen</h3>
-        <form @submit.prevent="nextStage('review')">
-          <fieldset>
-            <div class="input-group">
-              <div class="input-item">
-                <label for="firstname">Vorname:</label>
-                <input type="text" id="firstname" v-model="form.firstname" required>
-              </div>
-              <div class="input-item">
-                <label for="lastname">Nachname:</label>
-                <input type="text" id="lastname" v-model="form.lastname" required>
-              </div>
+        <h3 class="text-xl font-semibold mb-2">Persönliche Informationen</h3>
+        <form @submit.prevent="nextStage('review')" class="space-y-2">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <label for="firstname" class="block mb-1">Vorname:</label>
+              <input type="text" id="firstname" v-model="form.firstname" required class="w-full p-2 border border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary">
             </div>
-            <br>
-            <div class="input-group">
-              <div class="input-item">
-                <label for="email">E-Mail-Adresse:</label>
-                <input type="email" id="email" v-model="form.email" required>
-              </div>
-              <div class="input-item">
-                <label for="phone">Telefonnummer:</label>
-                <input type="number" id="phone" v-model.number="form.phone" required>
-              </div>
+            <div>
+              <label for="lastname" class="block mb-1">Nachname:</label>
+              <input type="text" id="lastname" v-model="form.lastname" required class="w-full p-2 border border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary">
             </div>
-          </fieldset>
-          <br>
-          <button type="submit" class="next-button">Weiter</button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <label for="email" class="block mb-1">E-Mail-Adresse:</label>
+              <input type="email" id="email" v-model="form.email" required class="w-full p-2 border border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+              <label for="phone" class="block mb-1">Telefonnummer:</label>
+              <input type="number" id="phone" v-model.number="form.phone" required class="w-full p-2 border border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary">
+            </div>
+          </div>
+          <button type="submit" class="w-full py-2 bg-primary text-white rounded-md hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary">Weiter</button>
         </form>
       </div>
       <div v-if="activeStage === 'review'" class="form-content">
-        <h3>Überprüfen und Absenden</h3>
-        <form @submit.prevent="submitForm">
-          <fieldset>
-            <legend>Überprüfung Ihrer Informationen</legend>
+        <h3 class="text-xl font-semibold mb-2">Überprüfen und Absenden</h3>
+        <form @submit.prevent="submitForm" class="space-y-2">
+          <div class="p-2 border border-gray-300 rounded-md">
             <p><strong>Vorname:</strong> {{ form.firstname }}</p>
             <p><strong>Nachname:</strong> {{ form.lastname }}</p>
             <p><strong>E-Mail:</strong> {{ form.email }}</p>
@@ -109,13 +99,12 @@
             <p><strong>Erfahrung:</strong> {{ form.experience }} Jahre</p>
             <p><strong>Fähigkeiten:</strong> {{ form.skills }}</p>
             <p><strong>Bildungsabschluss:</strong> {{ form.education }}</p>
-          </fieldset>
-          
-          <button type="submit" class="submit-button">Bewerbung absenden</button>
+          </div>
+          <button type="submit" class="w-full py-2 bg-primary text-white rounded-md hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary">Bewerbung absenden</button>
         </form>
-        <p v-if="formHasErrors" class="error-message">Bitte füllen Sie alle erforderlichen Felder aus.</p>
-        <p v-if="formSuccessMessage" class="success-message">{{ formSuccessMessage }}</p>
-        <p v-if="formErrorMessage" class="error-message">{{ formErrorMessage }}</p>
+        <p v-if="formHasErrors" class="text-red-500 mt-2 text-center">Bitte füllen Sie alle erforderlichen Felder aus.</p>
+        <p v-if="formSuccessMessage" class="text-green-500 mt-2 text-center">{{ formSuccessMessage }}</p>
+        <p v-if="formErrorMessage" class="text-red-500 mt-2 text-center">{{ formErrorMessage }}</p>
       </div>
     </div>
   </div>
@@ -224,187 +213,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Stile für den Titel */
-.title {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-/* Allgemeine Stile für das Recruiting Funnel */
-.recruiting-funnel {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
-}
-
-/* Stile für den Logo-Container */
-.logo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-/* Stile für die Funnel-Stufen */
-.funnel-stages-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.funnel-stages {
-  display: flex;
-  flex-direction: column; /* Vertikale Anordnung */
-  gap: 1rem; /* Abstand zwischen den Stufen */
-  margin-bottom: 2rem;
-}
-
-.funnel-stage {
-  background: #f9f9f9;
-  padding: 1rem;
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.funnel-stage.active {
-  background: #e0eaff;
-  border: 2px solid #0044cc;
-}
-
-.funnel-stage.completed {
-  background: #d4edda;
-}
-
-.funnel-stage:hover {
-  background: #e1e1e1;
-}
-
-.funnel-stage h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  color: #0044cc;
-}
-
-/* Stile für das Formular und die Inhaltsbereiche */
-.stage-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px; /* Festgelegte Mindesthöhe für Konsistenz */
-  transition: height 0.3s;
-}
-
-.form-content {
-  width: 100%;
-}
-
-.form-content fieldset {
-  border: 1px solid #e1e1e1;
-  border-radius: 10px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  background: #f9f9f9;
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column; /* Vertikale Anordnung der Eingabefelder */
-  gap: 1rem;
-}
-
-.input-item {
-  flex: 1;
-}
-
-/* Legendenstil */
-.form-content legend {
-  font-size: 1.2rem;
-  color: #0044cc;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-/* Input- und Label-Stile */
-.form-content label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #333;
-  font-size: 1rem;
-}
-
-.form-content input,
-.form-content textarea,
-.form-content select {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid #0044cc; /* Blaue Umrandung */
-  border-radius: 5px;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-.form-content input:focus,
-.form-content textarea:focus,
-.form-content select:focus {
-  border-color: #0044cc;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.2);
-}
-
-/* Button-Stile */
-.next-button, .submit-button {
-  background-color: #0044cc;
-  color: white;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  display: block;
-  margin: 2rem auto 0;
-}
-
-.next-button:hover, .submit-button:hover {
-  background-color: #003399;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.next-button:active, .submit-button:active {
-  transform: translateY(1px);
-}
-
-.error-message {
-  color: red;
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.success-message {
-  color: green;
-  text-align: center;
-  margin-top: 1rem;
-}
-
-/* Responsiveness */
-@media (max-width: 768px) {
-  .input-item {
-    flex: 1 1 100%;
-  }
-
-  .funnel-stages {
-    flex-direction: column; /* Vertikale Anordnung auf kleinen Bildschirmen */
-  }
-}
-</style>
