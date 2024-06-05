@@ -1,4 +1,5 @@
 export default {
+  components: true,
   router: {
     middleware: ['auth']
   },
