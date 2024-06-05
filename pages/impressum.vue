@@ -5,8 +5,8 @@
     <div class="mb-6">
       <p class="bg-gray-100 border-l-4 border-primary p-3 mb-4">
         <strong>TechInnovate Solutions GmbH</strong><br />
-        An der Förde 0<br />
-        24113 Kiel
+        Sokratesplatz 1<br />
+        24149 Kiel
       </p>
       <p class="bg-gray-100 border-l-4 border-primary p-3 mb-4">
         <strong>Handelsregister:</strong> 360420<br />
