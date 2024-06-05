@@ -253,6 +253,12 @@ export default {
       this.showConfirmDelete = true;
     },
     async deleteTicket(ticketId) {
+      const ticketToDelete = this.tickets.find(ticket => ticket.id === ticketId);
+      if (!ticketToDelete) {
+        console.error('Ticket not found');
+        return;
+      }
+
       const { error } = await supabase
         .from('bewerbung')
         .delete()
@@ -263,6 +269,21 @@ export default {
         this.tickets = this.tickets.filter(ticket => ticket.id !== ticketId);
         this.showConfirmDelete = false;
         this.selectedTicketId = null;
+
+        try {
+          const response = await axios.post('/api/send-email', {
+            to: ticketToDelete.email,
+            subject: 'Absage zu Ihrer Bewerbung',
+            html: `<strong>Ihre Bewerbung wurde abgelehnt.</strong><br>Wir bedauern, Ihnen mitteilen zu müssen, dass Ihre Bewerbung abgelehnt wurde.<br>Best regards, TechInnovate Solutions`,
+          });
+          if (response.data.error) {
+            console.error('Error sending email:', response.data.error);
+          } else {
+            console.log('Cancellation email sent successfully:', response.data);
+          }
+        } catch (error) {
+          console.error('Error sending email:', error);
+        }
       }
     },
     cancelDelete() {
