@@ -81,6 +81,12 @@
                   <p class="truncate">{{ formatDate(event.date) }}</p>
                 </div>
               </div>
+              <div class="mt-2 space-y-2">
+                <div class="flex justify-between">
+                  <p class="font-bold">E-Mail:</p>
+                  <p class="truncate">{{ event.email }}</p>
+                </div>
+              </div>
             </div>
             <div class="mt-4 flex justify-between">
               <button @click="confirmDeleteEvent(event.id)"
@@ -294,7 +300,7 @@ export default {
     async fetchCalendarEvents() {
       const { data, error } = await supabase
         .from('kalender')
-        .select('id, title, date')
+        .select('id, title, date, email')
 
       if (error) {
         console.error('Error fetching calendar events:', error)
@@ -378,9 +384,10 @@ export default {
 
       const formattedDate = dayjs(this.selectedDate).format('MMMM D, YYYY HH:mm');
       const fullName = `${this.selectedTicket.firstname} ${this.selectedTicket.lastname}`;
+      const email = this.selectedTicket.email;
       const { data, error } = await supabase
         .from('kalender')
-        .insert([{ title: fullName, date: this.selectedDate }]);
+        .insert([{ title: fullName, date: this.selectedDate, email: email}]);
 
       if (error) {
         console.error('Error adding calendar event:', error);
@@ -491,19 +498,43 @@ export default {
       this.showConfirmDeleteEvent = true;
     },
     async deleteCalendarEvent(eventId) {
-      const { data, error } = await supabase
-        .from('kalender')
-        .delete()
-        .eq('id', eventId);
+    const event = this.calendarEvents.find(event => event.id === eventId);
+    
+    if (!event) {
+      console.error('Event not found');
+      return;
+    }
 
-      if (error) {
-        console.error('Error deleting event:', error);
-      } else {
-        this.calendarEvents = this.calendarEvents.filter(event => event.id !== eventId);
-        this.showConfirmDeleteEvent = false;
-        this.selectedEventId = null;
+    const { data, error } = await supabase
+      .from('kalender')
+      .delete()
+      .eq('id', eventId);
+
+    if (error) {
+      console.error('Error deleting event:', error);
+    } else {
+      this.calendarEvents = this.calendarEvents.filter(event => event.id !== eventId);
+      this.showConfirmDeleteEvent = false;
+      this.selectedEventId = null;
+
+      try {
+        const formattedDate = dayjs(event.date).format('MMMM D, YYYY HH:mm');
+        const response = await axios.post('/api/send-email', {
+          to: event.email,
+          subject: 'Absage des Termins',
+          html: `<strong>Ihr Termin wurde abgesagt.</strong><br>Termin: ${formattedDate} <br>Wir bedauern, Ihnen mitteilen zu müssen, dass Ihr Termin abgesagt wurde.<br>Best regards, TechInnovate Solutions`,
+        });
+
+        if (response.data.error) {
+          console.error('Error sending email:', response.data.error);
+        } else {
+          console.log('Cancellation email sent successfully:', response.data);
+        }
+      } catch (error) {
+        console.error('Error sending email:', error);
       }
-    },
+    }
+  },
     cancelDeleteEvent() {
       this.showConfirmDeleteEvent = false;
       this.selectedEventId = null;
