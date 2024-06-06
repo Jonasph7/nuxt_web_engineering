@@ -2,14 +2,39 @@
   <section id="home" class="bg-white py-16">
     <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
       <div class="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
-        <h2 class="text-5xl font-bold mb-4">Wir bauen die <span class="text-primary">Zukunft</span></h2>
-        <p class="my-7">TechInnovate Solutions ist nicht nur ein Arbeitsplatz. Es ist ein Ort, wo kreative Köpfe zusammenkommen, um außergewöhnliche Ideen zum Leben zu erwecken. Wenn Sie bereit sind, Ihre Karriere auf das nächste Level zu heben und echte Herausforderungen anzunehmen, dann sind Sie bei uns richtig.</p>
+        <h2 class="text-5xl font-bold mb-4">Willkommen bei<br><span class="text-primary">TechInnovate Solutions</span></h2>
+        <p class="my-7">Schön, dass Sie uns kennenlernen wollen! TechInnovate Solutions ist mehr als nur ein Arbeitsplatz – hier kommen kreative Köpfe zusammen, um außergewöhnliche Ideen Wirklichkeit werden zu lassen. Wenn Sie bereit sind, Ihre Karriere voranzutreiben und echte Herausforderungen anzunehmen, dann sind Sie hier genau richtig!</p>
         <div class="space-x-2">
           <nuxt-link to="/qualificationform" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">JETZT BEWERBEN!</nuxt-link>
         </div>
       </div>
       <div class="md:w-1/2">
-        <img src="/Büro1.png" alt="Image" class="w-full md:mx-auto md:max-w-md rounded-lg bg-gray-100 shadow-lg" />
+        <swiper
+    :effect="'cube'"
+    :grabCursor="true"
+    :cubeEffect="{
+      shadow: true,
+      slideShadows: true,
+      shadowOffset: 20,
+      shadowScale: 0.94,
+    }"
+    :pagination="true"
+    :modules="modules"
+    class="mySwiper business"
+  >
+    <swiper-slide
+      ><img
+        src="/Serverraum1.png" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
+    ><swiper-slide
+      ><img
+        src="/Büro1.png" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
+    ><swiper-slide
+      ><img
+        src="/Cafeteria.png" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
+    ><swiper-slide
+      ><img src="/Konferenzraum.png" class="rounded-lg bg-gray-100 shadow-lg"
+    /></swiper-slide>
+  </swiper>
       </div>
     </div>
   </section>
@@ -67,7 +92,7 @@
     }"
     :pagination="true"
     :modules="modules"
-    class="mySwiper"
+    class="mySwiper partners"
   >
     <swiper-slide
       ><img
@@ -161,9 +186,17 @@ export default {
 </script>
 
 <style scoped>
-.swiper {
+.partners {
   width: 300px;
   height: 300px;
+  left: 50%;
+  top: 50%;
+  margin-left: -150px;
+}
+
+.business {
+  width: 400px;
+  height: 400px;
   left: 50%;
   top: 50%;
   margin-left: -150px;
@@ -177,5 +210,12 @@ export default {
 .swiper-slide img {
   display: block;
   width: 100%;
+}
+
+@media screen and (max-width: 890px) {
+  .business {
+    width: 300px;
+    height: 300px;
+  }
 }
 </style>
