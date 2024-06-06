@@ -1,19 +1,19 @@
 <template>
-  <div class="login-container">
-    <h2>Login für Interne</h2>
+  <div class="max-w-md mx-auto mt-20 p-8 bg-white rounded-lg shadow-md text-center">
+    <h2 class="text-2xl font-semibold text-primary mb-6">Login für Interne</h2>
     <form @submit.prevent="logIn">
-      <div class="form-field">
-        <label for="email">Email</label>
-        <input type="email" id="email" v-model="email" placeholder="Geben Sie Ihre Email ein" required />
+      <div class="mb-4 text-left">
+        <label for="email" class="block text-gray-txt mb-2">Email</label>
+        <input type="email" id="email" v-model="email" placeholder="Geben Sie Ihre Email ein" required class="w-full p-2 border-2 border-gray-light rounded focus:outline-none focus:border-primary" />
       </div>
-      <div class="form-field">
-        <label for="password">Passwort</label>
-        <input type="password" id="password" v-model="password" placeholder="Geben Sie Ihr Passwort ein" required />
+      <div class="mb-6 text-left">
+        <label for="password" class="block text-gray-txt mb-2">Passwort</label>
+        <input type="password" id="password" v-model="password" placeholder="Geben Sie Ihr Passwort ein" required class="w-full p-2 border-2 border-gray-light rounded focus:outline-none focus:border-primary" />
       </div>
-      <button type="submit" :disabled="loading">{{ loading ? 'Lädt...' : 'Einloggen' }}</button>
+      <button type="submit" :disabled="loading" class="w-full py-3 bg-primary text-white rounded uppercase tracking-wider transition duration-300 ease-in-out hover:bg-secondary hover:shadow-lg disabled:bg-gray-light disabled:cursor-not-allowed">{{ loading ? 'Lädt...' : 'Einloggen' }}</button>
     </form>
-    <p v-if="errorMsg" class="error-message">{{ errorMsg }}</p>
-    <p v-if="successMsg" class="success-message">{{ successMsg }}</p>
+    <p v-if="errorMsg" class="text-red mt-4">{{ errorMsg }}</p>
+    <p v-if="successMsg" class="text-green mt-4">{{ successMsg }}</p>
   </div>
 </template>
 
@@ -54,80 +54,3 @@ onMounted(async () => {
   }
 })
 </script>
-
-<style scoped>
-.login-container {
-  max-width: 400px;
-  margin: 5rem auto;
-  padding: 4rem;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.login-container h2 {
-  color: #007BFF;
-  margin-bottom: 2rem;
-}
-
-.form-field {
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.form-field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #444444;
-}
-
-.form-field input {
-  width: 100%;
-  padding: 0.8rem;
-  border: 2px solid #e1e1e1;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-.form-field input:focus {
-  border-color: #007BFF;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-}
-
-button {
-  width: 100%;
-  padding: 1rem;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.error-message {
-  color: red;
-  margin-top: 1rem;
-}
-
-.success-message {
-  color: green;
-  margin-top: 1rem;
-}
-</style>
