@@ -221,6 +221,7 @@
   </div>
 </template>
 
+
 <script>
 import Bewerbung from '@/components/Bewerbung.vue';
 import Kontakt from '@/components/Kontakt.vue';
