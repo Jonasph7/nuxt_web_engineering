@@ -12,6 +12,9 @@
         <button :class="{ 'bg-primary': currentTab === 'kalender', 'bg-secondary': currentTab !== 'kalender' }"
           class="px-4 py-2 text-white font-semibold rounded-full transition-colors"
           @click="currentTab = 'kalender'">Kalender</button>
+        <button v-if="isAdmin" :class="{ 'bg-primary': currentTab === 'admin', 'bg-secondary': currentTab !== 'admin' }"
+          class="px-4 py-2 text-white font-semibold rounded-full transition-colors"
+          @click="currentTab = 'admin'">Admin</button>
       </div>
 
       <bewerbung v-if="currentTab === 'bewerbung'" :tickets="tickets" :calendarEvents="calendarEvents"
@@ -20,89 +23,83 @@
         @reply-to-ticket="replyToTicket" @confirm-delete-kontakt="confirmDeleteKontaktTicket" />
       <kalender v-if="currentTab === 'kalender'" :calendarEvents="calendarEvents"
         @confirm-delete-event="confirmDeleteEvent" />
+      <div v-if="currentTab === 'admin'" class="grid gap-4">
+        <div v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded-lg">
+          <h2 class="text-lg font-semibold">{{ ticket.firstname }} {{ ticket.lastname }}</h2>
+          <p>Email: {{ ticket.email }}</p>
+          <button @click="editTicket(ticket)" class="mt-2 px-4 py-2 bg-primary text-white rounded-full">Edit</button>
+        </div>
+      </div>
 
       <div v-if="selectedTicket" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="clearSelection">
         <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
           <h2 class="text-2xl font-bold">Details for {{ selectedTicket.firstname || selectedTicket.name }} {{
           selectedTicket.lastname || '' }}</h2>
-          <p>Email: {{ selectedTicket.email }}</p>
-          <p v-if="selectedTicket.phone">Phone: {{ selectedTicket.phone }}</p>
-          <p v-if="selectedTicket.experience">Experience: {{ selectedTicket.experience }}</p>
-          <p v-if="selectedTicket.skills">Skills: {{ selectedTicket.skills }}</p>
-          <p v-if="selectedTicket.education">Education: {{ selectedTicket.education }}</p>
-          <p v-if="selectedTicket.subject">Subject: {{ selectedTicket.subject }}</p>
-          <p v-if="selectedTicket.message">Message: {{ selectedTicket.message }}</p>
+          <label class="block mt-4">
+            <span class="text-gray-700">Email:</span>
+            <input v-model="selectedTicket.email" type="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          </label>
+          <label v-if="selectedTicket.phone !== undefined" class="block mt-4">
+            <span class="text-gray-700">Phone:</span>
+            <input v-model="selectedTicket.phone" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          </label>
+          <label v-if="selectedTicket.experience !== undefined" class="block mt-4">
+            <span class="text-gray-700">Experience:</span>
+            <input v-model="selectedTicket.experience" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          </label>
+          <label v-if="selectedTicket.skills !== undefined" class="block mt-4">
+            <span class="text-gray-700">Skills:</span>
+            <input v-model="selectedTicket.skills" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          </label>
+          <label v-if="selectedTicket.education !== undefined" class="block mt-4">
+            <span class="text-gray-700">Education:</span>
+            <input v-model="selectedTicket.education" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          </label>
+          <label v-if="selectedTicket.subject !== undefined" class="block mt-4">
+            <span class="text-gray-700">Subject:</span>
+            <input v-model="selectedTicket.subject" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          </label>
+          <label v-if="selectedTicket.message !== undefined" class="block mt-4">
+            <span class="text-gray-700">Message:</span>
+            <textarea v-model="selectedTicket.message" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+          </label>
           <div class="mt-4 flex flex-col space-y-2">
+            <button @click="saveTicket" class="bg-green text-white px-4 py-2 rounded-full">Save</button>
             <button @click="clearSelection" class="bg-gray-light text-white px-4 py-2 rounded-full">Close</button>
           </div>
         </div>
       </div>
 
+      <!-- Confirmation modal for deleting tickets -->
       <div v-if="showConfirmDelete" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
-          <p>Are you sure you want to delete this ticket?</p>
-          <div class="mt-4 flex space-x-4">
-            <button @click="deleteTicket(selectedTicketId)"
-              class="bg-red text-white px-4 py-2 rounded-full">Yes</button>
-            <button @click="cancelDelete" class="bg-gray-light text-white px-4 py-2 rounded-full">No</button>
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Are you sure you want to delete this ticket?</h2>
+          <div class="mt-4 flex justify-between">
+            <button @click="deleteTicket(selectedTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDelete" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
         </div>
       </div>
 
-      <div v-if="showConfirmDeleteKontakt"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
-          <p>Are you sure you want to delete this ticket?</p>
-          <div class="mt-4 flex space-x-4">
-            <button @click="deleteKontaktTicket(selectedKontaktTicketId)"
-              class="bg-red text-white px-4 py-2 rounded-full">Yes</button>
-            <button @click="cancelDeleteKontakt" class="bg-gray-light text-white px-4 py-2 rounded-full">No</button>
+      <!-- Confirmation modal for deleting kontakt tickets -->
+      <div v-if="showConfirmDeleteKontakt" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Are you sure you want to delete this kontakt ticket?</h2>
+          <div class="mt-4 flex justify-between">
+            <button @click="deleteKontaktTicket(selectedKontaktTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDeleteKontakt" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
         </div>
       </div>
 
-      <div v-if="showConfirmDeleteEvent"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
-          <p>Are you sure you want to delete this event?</p>
-          <div class="mt-4 flex space-x-4">
-            <button @click="deleteCalendarEvent(selectedEventId)"
-              class="bg-red text-white px-4 py-2 rounded-full">Yes</button>
-            <button @click="cancelDeleteEvent" class="bg-gray-light text-white px-4 py-2 rounded-full">No</button>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="showDatePicker" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full relative" @click.stop>
-          <h2 class="text-2xl font-bold mb-4">Choose Date and Time</h2>
-          <div class="space-y-4">
-            <div ref="datepickerContainer" class="relative">
-              <flat-pickr class="border border-gray-light w-full p-2 rounded-lg mb-4 align-middle"
-                v-model="selectedDate" :config="datePickerConfig"></flat-pickr>
-            </div>
-            <div class="flex space-x-4">
-              <button @click="sendInvitation" :disabled="!selectedDate"
-                class="bg-green text-white px-4 py-2 rounded-full flex-1"
-                :class="{ 'opacity-50 cursor-not-allowed': !selectedDate }">Send Invitation</button>
-              <button @click="closeDatePicker"
-                class="bg-gray-light text-white px-4 py-2 rounded-full flex-1">Cancel</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="showEmailReplyWindow"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full">
-          <h2 class="text-2xl font-bold">Reply to {{ selectedKontaktTicket.name }}</h2>
-          <div class="mt-4 flex flex-col space-y-2">
-            <input v-model="emailSubject" type="text" placeholder="Subject" class="border rounded-lg px-3 py-2">
-            <textarea v-model="emailBody" placeholder="Your message" class="border rounded-lg px-3 py-2"></textarea>
-            <button @click="sendReply" class="bg-primary text-white px-4 py-2 rounded-full">Send</button>
-            <button @click="showEmailReplyWindow = false"
-              class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+      <!-- Confirmation modal for deleting calendar events -->
+      <div v-if="showConfirmDeleteEvent" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Are you sure you want to delete this event?</h2>
+          <div class="mt-4 flex justify-between">
+            <button @click="deleteCalendarEvent(selectedEventId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDeleteEvent" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
         </div>
       </div>
@@ -153,6 +150,8 @@ export default {
         time_24hr: true,
         static: true,
       },
+      user: null,
+      isAdmin: false,
     };
   },
   methods: {
@@ -187,7 +186,7 @@ export default {
       }
     },
     selectTicket(ticket) {
-      this.selectedTicket = ticket;
+      this.selectedTicket = { ...ticket }; // create a copy of the ticket
     },
     selectKontaktTicket(ticket) {
       this.selectedKontaktTicket = ticket;
@@ -379,13 +378,51 @@ export default {
       this.showEmailReplyWindow = false;
       this.selectedKontaktTicket = null;
     },
+    async editTicket(ticket) {
+      this.selectedTicket = { ...ticket }; // Create a copy of the ticket
+    },
+    async saveTicket() {
+      if (!this.selectedTicket) return;
+
+      const { error } = await supabase
+        .from('bewerbung')
+        .update({
+          email: this.selectedTicket.email,
+          phone: this.selectedTicket.phone,
+          experience: this.selectedTicket.experience,
+          skills: this.selectedTicket.skills,
+          education: this.selectedTicket.education,
+          subject: this.selectedTicket.subject,
+          message: this.selectedTicket.message,
+        })
+        .eq('id', this.selectedTicket.id);
+
+      if (error) {
+        console.error('Error updating ticket:', error);
+      } else {
+        const index = this.tickets.findIndex(t => t.id === this.selectedTicket.id);
+        if (index !== -1) {
+          // Vue 3 reactive state update
+          this.tickets[index] = this.selectedTicket;
+        }
+        this.clearSelection();
+      }
+    },
   },
   async mounted() {
     await this.fetchTickets();
     await this.fetchKontaktTickets();
     await this.fetchCalendarEvents();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    this.user = user;
+    if (user?.email === 'admin@fh-kiel.com') {
+      this.isAdmin = true;
+    }
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Füge Tailwind-Klassen für das Styling hinzu */
+</style>
