@@ -3,7 +3,7 @@
     <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
       <div class="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
         <h2 class="text-5xl font-bold mb-4">Willkommen bei<br><span class="text-primary">TechInnovate Solutions</span></h2>
-        <p class="my-7">Schön, dass Sie uns kennenlernen wollen! TechInnovate Solutions ist mehr als nur ein Arbeitsplatz – hier kommen kreative Köpfe zusammen, um außergewöhnliche Ideen Wirklichkeit werden zu lassen. Wenn Sie bereit sind, Ihre Karriere voranzutreiben und echte Herausforderungen anzunehmen, dann sind Sie hier genau richtig!</p>
+        <p class="my-7">Schön, dass Sie uns kennenlernen wollen! TechInnovate Solutions ist mehr als nur ein Arbeitsplatz. Hier kommen kreative Köpfe zusammen, um außergewöhnliche Ideen Wirklichkeit werden zu lassen. Wenn Sie bereit sind, Ihre Karriere voranzutreiben und echte Herausforderungen anzunehmen, dann sind Sie hier genau richtig!</p>
         <div class="space-x-2">
           <nuxt-link to="/qualificationform" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">JETZT BEWERBEN!</nuxt-link>
         </div>
@@ -24,15 +24,15 @@
   >
     <swiper-slide
       ><img
-        src="/Serverraum1.png" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
+        src="/Serverraum1.png" alt="Serverraum" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
     ><swiper-slide
       ><img
-        src="/Büro1.png" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
+        src="/Büro1.png" alt="Büro" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
     ><swiper-slide
       ><img
-        src="/Cafeteria.png" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
+        src="/Cafeteria.png" alt="Cafeteria" class="rounded-lg bg-gray-100 shadow-lg"/></swiper-slide
     ><swiper-slide
-      ><img src="/Konferenzraum.png" class="rounded-lg bg-gray-100 shadow-lg"
+      ><img src="/Konferenzraum.png" alt="Konferenzraum" class="rounded-lg bg-gray-100 shadow-lg"
     /></swiper-slide>
   </swiper>
       </div>
@@ -42,7 +42,7 @@
   <section id="aboutus" class="py-16 bg-gray-dark">
     <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
       <div class="md:w-1/2 mb-8 md:mb-0">
-        <img src="/Unternehmen1.png" alt="Image" class="w-full md:mx-auto md:max-w-md rounded-lg bg-gray-100 shadow-lg" />
+        <img src="/Unternehmen1.png" alt="TechInnovate-Campus" class="w-full md:mx-auto md:max-w-md rounded-lg bg-gray-100 shadow-lg" />
       </div>
       <div class="md:w-1/2">
         <h2 class="text-5xl font-bold mb-4 text-white">Unser <span class="text-primary">Versprechen</span></h2>
@@ -96,20 +96,20 @@
   >
     <swiper-slide
       ><img
-        src="/public/netflix.svg" /></swiper-slide
+        src="/public/netflix.svg" alt="Netflix Logo"/></swiper-slide
     ><swiper-slide
       ><img
-        src="/public/yahoo.svg" /></swiper-slide
+        src="/public/yahoo.svg" alt="Yahoo Logo"/></swiper-slide
     >
     <swiper-slide
       ><img
-        src="/public/amazon.svg" /></swiper-slide
+        src="/public/amazon.svg" alt="Amazon Logo"/></swiper-slide
     >
     <swiper-slide
       ><img
-        src="/public/invision.svg" /></swiper-slide
+        src="/public/invision.svg" alt="Invision Logo"/></swiper-slide
     ><swiper-slide
-      ><img src="/public/walmart.svg"
+      ><img src="/public/walmart.svg" alt="Walmart Logo"
     /></swiper-slide>
   </swiper>
 
@@ -125,19 +125,19 @@
     <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
       <div class="grid w-full grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
         <div class="p-6">
-          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/50.webp" alt="blog">
+          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/thomas.webp" alt="Mitarbeiter Thomas">
           <h2 class="mb-8 text-xs font-semibold tracking-widest text-primary uppercase">Thomas Hummels</h2>
           <h1 class="mx-auto mb-8 text-2xl font-semibold leading-none tracking-tighter text-gray-dark lg:text-3xl">IT-Admin</h1>
           <p class="mx-auto text-base font-medium leading-relaxed text-gray-txt">"Bei TechInnovate ist jeder Tag eine Gelegenheit, zu lernen und zu wachsen. Hier wird Kreativität großgeschrieben, und das macht unsere Arbeit so spannend."</p>
         </div>
         <div class="p-6">
-          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/52.webp" alt="blog">
+          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/isi.webp" alt="Mitarbeiterin Isi">
           <h2 class="mb-8 text-xs font-semibold tracking-widest text-primary uppercase">Isi Glück</h2>
           <h1 class="mx-auto mb-8 text-2xl font-semibold leading-none tracking-tighter text-gray-dark lg:text-3xl">Projektleiterin</h1>
           <p class="mx-auto text-base font-medium leading-relaxed text-gray-txt">"Von dem Moment an, als ich bei TechInnovate angefangen habe, wurde ich ermutigt, meine Ideen einzubringen und zu verwirklichen. Diese Art von Umfeld ist selten und wertvoll."</p>
         </div>
         <div class="p-6">
-          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/51.webp" alt="blog">
+          <img class="object-cover object-center w-full mb-8 rounded-xl" src="/mats.webp" alt="Mitarbeiter Mats">
           <h2 class="mb-8 text-xs font-semibold tracking-widest text-primary uppercase">Mats Müller</h2>
           <h1 class="mx-auto mb-8 text-2xl font-semibold leading-none tracking-tighter text-gray-dark lg:text-3xl">Developer</h1>
           <p class="mx-auto text-base font-medium leading-relaxed text-gray-txt">"Was mich hier hält, ist das unglaubliche Teamgefühl und die Unterstützung, die wir alle bekommen. Es fühlt sich wirklich an, als könnten wir gemeinsam Berge versetzen."</p>

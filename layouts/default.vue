@@ -3,7 +3,7 @@
     <header class="bg-gray-dark sticky top-0 z-50">
       <div class="container mx-auto flex justify-between items-center py-4">
         <div class="flex items-center">
-          <nuxt-link to="/"><img src="@/public/Bild1-removebg-preview.png" alt="Logo" class="h-14 w-auto mr-4"></nuxt-link>
+          <nuxt-link to="/"><img src="@/public/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" class="h-14 w-auto mr-4"></nuxt-link>
         </div>
         <div class="flex md:hidden">
           <button id="hamburger" class="text-white focus:outline-none" @click="toggleMenu">
