@@ -1,3 +1,4 @@
+<!-- components/ContactForm.vue -->
 <template>
   <div class="container mx-auto p-4 bg-white rounded-lg shadow-md max-w-xl">
     <h2 class="text-2xl text-primary text-center mb-4 font-bold">Bewerbungsformular für Systemadministrator*in</h2>
@@ -111,7 +112,7 @@
 </template>
 
 <script>
-import { supabase } from '@/supabase' // Adjust the path according to your project structure
+import { supabase } from '@/supabase'; // Adjust the path according to your project structure
 
 export default {
   name: "QualificationForm",
@@ -202,8 +203,7 @@ export default {
           console.error("Error details:", error);
           this.formErrorMessage = error.message;
         } else {
-          this.formSuccessMessage = "Bewerbung erfolgreich eingereicht!";
-          this.formErrorMessage = ""; // Clear previous error message
+          this.$router.push('/thank-you'); // Navigate to thank you page
         }
       } catch (error) {
         console.error("Fehler beim Senden des Formulars:", error);
