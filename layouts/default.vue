@@ -50,7 +50,7 @@
       <img src="@/public/Bild1-removebg-preview.png" alt="Logo" class="h-14 w-auto mx-auto mb-5">
       <span class="block text-center text-gray-txt font-semibold">© 2024 TechInnovate Solutions. Alle Rechte vorbehalten.</span>
       <ul class="flex justify-center mt-10 space-x-8">
-        <li><a href="https://instagram.com" target="_blank"><img src="@/public/instagram.png" alt="Instagram" class="h-10 w-10"></a></li>
+        <li><a href="https://instagram.com" target="_blank"><img src="@/public/instagram.png" alt="Instagram" class="h-10 w-10 hover:drop-shadow-sm"></a></li>
         <li><a href="https://youtube.com" target="_blank"><img src="@/public/youtube.png" alt="YouTube" class="h-10 w-10"></a></li>
         <li><a href="https://facebook.com" target="_blank"><img src="@/public/facebook.png" alt="Facebook" class="h-10 w-10"></a></li>
         <li><a href="https://twitter.com" target="_blank"><img src="@/public/twitter.png" alt="Twitter" class="h-10 w-10"></a></li>
@@ -117,5 +117,9 @@ export default {
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 1rem;
     padding-top: 1rem;
+}
+
+footer a:hover {
+  filter: drop-shadow(0 0 4px #010717);
 }
 </style>
