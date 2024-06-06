@@ -34,7 +34,7 @@
       Unsere E-Mail-Adresse finden Sie oben im Impressum.
     </p>
 
-    <h2 class="text-2xl font-semibold text-primary mb-2">Verbraucherstreitbeilegung/Universalschlichtungsstelle</h2>
+    <h2 class="text-2xl font-semibold text-primary mb-2">Verbraucher<wbr>streitbeilegung/<br>Universal<wbr>schlichtungsstelle</h2>
     <p class="bg-gray-100 border-l-4 border-primary p-3 mb-4">
       Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
     </p>
