@@ -31,42 +31,103 @@
         </div>
       </div>
 
-      <div v-if="selectedTicket" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      <div v-if="selectedTicket && currentTab === 'bewerbung'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="clearSelection">
         <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
           <h2 class="text-2xl font-bold">Details for {{ selectedTicket.firstname || selectedTicket.name }} {{
           selectedTicket.lastname || '' }}</h2>
           <label class="block mt-4">
-            <span class="text-gray-700">Email:</span>
+            <span class="text-gray-light">Email:</span>
+            <p class="mt-1 block w-full">{{ selectedTicket.email }}</p>
+          </label>
+          <label v-if="selectedTicket.phone !== undefined" class="block mt-4">
+            <span class="text-gray-light">Phone:</span>
+            <p class="mt-1 block w-full">{{ selectedTicket.phone }}</p>
+          </label>
+          <label v-if="selectedTicket.experience !== undefined" class="block mt-4">
+            <span class="text-gray-light">Experience:</span>
+            <p class="mt-1 block w-full">{{ selectedTicket.experience }}</p>
+          </label>
+          <label v-if="selectedTicket.skills !== undefined" class="block mt-4">
+            <span class="text-gray-light">Skills:</span>
+            <p class="mt-1 block w-full">{{ selectedTicket.skills }}</p>
+          </label>
+          <label v-if="selectedTicket.education !== undefined" class="block mt-4">
+            <span class="text-gray-light">Education:</span>
+            <p class="mt-1 block w-full">{{ selectedTicket.education }}</p>
+          </label>
+          <label v-if="selectedTicket.subject !== undefined" class="block mt-4">
+            <span class="text-gray-light">Subject:</span>
+            <p class="mt-1 block w-full">{{ selectedTicket.subject }}</p>
+          </label>
+          <label v-if="selectedTicket.message !== undefined" class="block mt-4">
+            <span class="text-gray-light">Message:</span>
+            <p class="mt-1 block w-full">{{ selectedTicket.message }}</p>
+          </label>
+          <div class="mt-4 flex flex-col space-y-2">
+            <button @click="clearSelection" class="bg-gray-light text-white px-4 py-2 rounded-full">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="selectedTicket && currentTab === 'admin'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        @click="clearSelection">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Edit Details for {{ selectedTicket.firstname || selectedTicket.name }} {{
+          selectedTicket.lastname || '' }}</h2>
+          <label class="block mt-4">
+            <span class="text-gray-light">Email:</span>
             <input v-model="selectedTicket.email" type="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
           </label>
           <label v-if="selectedTicket.phone !== undefined" class="block mt-4">
-            <span class="text-gray-700">Phone:</span>
+            <span class="text-gray-light">Phone:</span>
             <input v-model="selectedTicket.phone" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
           </label>
           <label v-if="selectedTicket.experience !== undefined" class="block mt-4">
-            <span class="text-gray-700">Experience:</span>
+            <span class="text-gray-light">Experience:</span>
             <input v-model="selectedTicket.experience" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
           </label>
           <label v-if="selectedTicket.skills !== undefined" class="block mt-4">
-            <span class="text-gray-700">Skills:</span>
+            <span class="text-gray-light">Skills:</span>
             <input v-model="selectedTicket.skills" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
           </label>
           <label v-if="selectedTicket.education !== undefined" class="block mt-4">
-            <span class="text-gray-700">Education:</span>
+            <span class="text-gray-light">Education:</span>
             <input v-model="selectedTicket.education" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
           </label>
           <label v-if="selectedTicket.subject !== undefined" class="block mt-4">
-            <span class="text-gray-700">Subject:</span>
+            <span class="text-gray-light">Subject:</span>
             <input v-model="selectedTicket.subject" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
           </label>
           <label v-if="selectedTicket.message !== undefined" class="block mt-4">
-            <span class="text-gray-700">Message:</span>
+            <span class="text-gray-light">Message:</span>
             <textarea v-model="selectedTicket.message" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
           </label>
           <div class="mt-4 flex flex-col space-y-2">
-            <button @click="saveTicket" class="bg-green text-white px-4 py-2 rounded-full">Save</button>
+            <button v-if="isAdmin" @click="saveTicket" class="bg-green text-white px-4 py-2 rounded-full">Save</button>
             <button @click="clearSelection" class="bg-gray-light text-white px-4 py-2 rounded-full">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="selectedKontaktTicket && currentTab === 'kontakt'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        @click="clearKontaktSelection">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Details for {{ selectedKontaktTicket.name }}</h2>
+          <label class="block mt-4">
+            <span class="text-gray-light">Email:</span>
+            <p class="mt-1 block w-full">{{ selectedKontaktTicket.email }}</p>
+          </label>
+          <label class="block mt-4">
+            <span class="text-gray-light">Subject:</span>
+            <p class="mt-1 block w-full">{{ selectedKontaktTicket.subject }}</p>
+          </label>
+          <label class="block mt-4">
+            <span class="text-gray-light">Message:</span>
+            <p class="mt-1 block w-full">{{ selectedKontaktTicket.message }}</p>
+          </label>
+          <div class="mt-4 flex flex-col space-y-2">
+            <button @click="clearKontaktSelection" class="bg-gray-light text-white px-4 py-2 rounded-full">Close</button>
           </div>
         </div>
       </div>
@@ -101,6 +162,59 @@
             <button @click="deleteCalendarEvent(selectedEventId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
             <button @click="cancelDeleteEvent" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
+        </div>
+      </div>
+
+      <!-- Email reply window -->
+      <div v-if="showEmailReplyWindow" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        @click="showEmailReplyWindow = false">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Reply to {{ selectedKontaktTicket.name }}</h2>
+          <label class="block mt-4">
+            <span class="text-gray-light">Subject:</span>
+            <input v-model="emailSubject" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          </label>
+          <label class="block mt-4">
+            <span class="text-gray-light">Message:</span>
+            <textarea v-model="emailBody" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+          </label>
+          <div class="mt-4 flex justify-between">
+            <button @click="sendReply" class="bg-green text-white px-4 py-2 rounded-full">Send</button>
+            <button @click="showEmailReplyWindow = false" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date picker for invitations -->
+      <div v-if="showDatePicker" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        @click="closeDatePicker">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold">Invite {{ selectedTicket.firstname }} {{ selectedTicket.lastname }}</h2>
+          <label class="block mt-4">
+            <span class="text-gray-light">Select Date and Time:</span>
+            <flat-pickr v-model="selectedDate" :config="datePickerConfig" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></flat-pickr>
+          </label>
+          <div class="mt-4 flex justify-between">
+            <button @click="sendInvitation" class="bg-green text-white px-4 py-2 rounded-full">Send Invitation</button>
+            <button @click="closeDatePicker" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading screen -->
+      <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
+          <h2 class="text-2xl font-bold">Processing...</h2>
+          <p>Please wait while we process your request.</p>
+        </div>
+      </div>
+
+      <!-- Success message -->
+      <div v-if="showSuccessMessage" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
+          <h2 class="text-2xl font-bold">Success</h2>
+          <p>{{ successMessage }}</p>
+          <button @click="closeSuccessMessage" class="bg-gray-light text-white px-4 py-2 rounded-full mt-4">Close</button>
         </div>
       </div>
     </div>
@@ -152,6 +266,9 @@ export default {
       },
       user: null,
       isAdmin: false,
+      loading: false,
+      showSuccessMessage: false,
+      successMessage: '',
     };
   },
   methods: {
@@ -198,21 +315,20 @@ export default {
       this.selectedKontaktTicket = null;
     },
     inviteTicket(ticket) {
-      if (this.currentTab === 'bewerbung' && !this.datePickerOpen) {
-        this.selectedTicket = ticket;
-        this.showDatePicker = true;
-        this.datePickerOpen = true;
-      }
+      this.selectedTicket = { ...ticket };
+      this.showDatePicker = true;
     },
     closeDatePicker() {
       this.showDatePicker = false;
-      this.datePickerOpen = false;
+      this.selectedTicket = null;
     },
     async sendInvitation() {
-      if (!this.selectedTicket) {
-        console.error('No ticket selected');
+      if (!this.selectedTicket || !this.selectedDate) {
+        console.error('No ticket selected or date not set');
         return;
       }
+
+      this.loading = true;
 
       const formattedDate = dayjs(this.selectedDate).format('MMMM D, YYYY HH:mm');
       const fullName = `${this.selectedTicket.firstname} ${this.selectedTicket.lastname}`;
@@ -229,7 +345,7 @@ export default {
 
       try {
         const response = await axios.post('/api/send-email', {
-          to: this.selectedTicket.email,
+          to: email,
           subject: 'Invitation',
           html: `<strong>You are invited!</strong><br>Date and Time: ${formattedDate} <br>We are looking forward to seeing you!<br>You can join the meeting <a href="https://example.com/meeting">here</a>.<br>Best regards, TechInnovate Solutions`,
         });
@@ -243,9 +359,11 @@ export default {
         console.error('Error sending email:', error);
       }
 
+      this.loading = false;
       this.showDatePicker = false;
-      this.datePickerOpen = false;
-      this.selectedTicket = null; // Set to null after processing
+      this.selectedTicket = null;
+      this.successMessage = 'The invitation has been sent successfully.';
+      this.showSuccessMessage = true;
     },
     confirmDeleteTicket(ticketId) {
       this.selectedTicketId = ticketId;
@@ -352,15 +470,16 @@ export default {
       this.selectedEventId = null;
     },
     replyToTicket(ticket) {
-      if (this.currentTab === 'kontakt') {
-        this.selectedKontaktTicket = ticket;
-        this.showEmailReplyWindow = true;
-      }
+      this.selectedKontaktTicket = { ...ticket };
+      this.showEmailReplyWindow = true;
     },
     async sendReply() {
       if (!this.emailSubject || !this.emailBody || !this.selectedKontaktTicket) {
         return;
       }
+
+      this.loading = true;
+
       try {
         const response = await axios.post('/api/send-email', {
           to: this.selectedKontaktTicket.email,
@@ -375,11 +494,17 @@ export default {
       } catch (error) {
         console.error('Error sending email:', error);
       }
+
+      this.loading = false;
       this.showEmailReplyWindow = false;
       this.selectedKontaktTicket = null;
+      this.successMessage = 'The reply has been sent successfully.';
+      this.showSuccessMessage = true;
     },
     async editTicket(ticket) {
-      this.selectedTicket = { ...ticket }; // Create a copy of the ticket
+      if (this.isAdmin) {
+        this.selectedTicket = { ...ticket }; // Create a copy of the ticket
+      }
     },
     async saveTicket() {
       if (!this.selectedTicket) return;
@@ -408,6 +533,9 @@ export default {
         this.clearSelection();
       }
     },
+    closeSuccessMessage() {
+      this.showSuccessMessage = false;
+    },
   },
   async mounted() {
     await this.fetchTickets();
@@ -424,5 +552,5 @@ export default {
 </script>
 
 <style scoped>
-/* Füge Tailwind-Klassen für das Styling hinzu */
+/* Add Tailwind classes for styling */
 </style>
