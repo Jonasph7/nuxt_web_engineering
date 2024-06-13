@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto p-4 dark:pb-40">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div v-for="event in calendarEvents" :key="event.id" class="p-4 border rounded-lg dark:bg-gray-800">
           <h2 class="text-lg font-semibold">{{ event.title }}</h2>
