@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            <div v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 w-full max-w-xs mx-auto overflow-hidden">
+            <div v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-800 w-full max-w-xs mx-auto overflow-hidden">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">{{ ticket.firstname }} {{ ticket.lastname }}</h2>
                 <p class="text-gray-700 dark:text-gray-300 truncate">Email: {{ ticket.email }}</p>
                 <button @click.stop="editTicket(ticket)" class="mt-2 px-4 py-2 bg-primary text-white rounded-full">Edit</button>
