@@ -96,18 +96,18 @@
   >
     <swiper-slide
       ><img
-        src="/netflix.svg" alt="Netflix Logo" class="dark:bg-gray-700"/></swiper-slide
+        src="/netflix.svg" alt="Netflix Logo" class="dark:bg-gray"/></swiper-slide
     ><swiper-slide
       ><img
-        src="/yahoo.svg" alt="Yahoo Logo" class="dark:bg-gray-700"/></swiper-slide
+        src="/yahoo.svg" alt="Yahoo Logo" class="dark:bg-gray"/></swiper-slide
     ><swiper-slide
       ><img
-        src="/amazon.svg" alt="Amazon Logo" class="dark:bg-gray-700"/></swiper-slide
+        src="/amazon.svg" alt="Amazon Logo" class="dark:bg-gray"/></swiper-slide
     ><swiper-slide
       ><img
-        src="/invision.svg" alt="Invision Logo" class="dark:bg-gray-700"/></swiper-slide
+        src="/invision.svg" alt="Invision Logo" class="dark:bg-gray"/></swiper-slide
     ><swiper-slide
-      ><img src="/walmart.svg" alt="Walmart Logo" class="dark:bg-gray-700"
+      ><img src="/walmart.svg" alt="Walmart Logo" class="dark:bg-gray"
     /></swiper-slide>
   </swiper>
   </section>

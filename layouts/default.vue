@@ -34,11 +34,11 @@
       </header>
       <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="mobile-menu flex flex-col items-center space-y-8 md:hidden">
         <ul>
-          <li><nuxt-link to="/" class="hover:text-secondary font-bold">Home</nuxt-link></li>
-          <li><nuxt-link to="/contactform" class="hover:text-secondary font-bold">Kontakt</nuxt-link></li>
-          <li><nuxt-link to="/qualificationform" class="hover:text-secondary font-bold">Karriere</nuxt-link></li>
-          <li><nuxt-link to="/impressum" class="hover:text-secondary font-bold">Impressum</nuxt-link></li>
-          <li v-if="isLoggedIn"><nuxt-link to="/backend" class="hover:text-secondary font-bold">Backend</nuxt-link></li>
+          <li><nuxt-link to="/" class="hover:text-secondary font-bold dark:text-white">Home</nuxt-link></li>
+          <li><nuxt-link to="/contactform" class="hover:text-secondary font-bold dark:text-white">Kontakt</nuxt-link></li>
+          <li><nuxt-link to="/qualificationform" class="hover:text-secondary font-bold dark:text-white">Karriere</nuxt-link></li>
+          <li><nuxt-link to="/impressum" class="hover:text-secondary font-bold dark:text-white">Impressum</nuxt-link></li>
+          <li v-if="isLoggedIn"><nuxt-link to="/backend" class="hover:text-secondary font-bold dark:text-white">Backend</nuxt-link></li>
         </ul>
         <div class="flex flex-col mt-6 space-y-2 items-center">
           <button @click="toggleDarkMode" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full">
