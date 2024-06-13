@@ -564,31 +564,6 @@ export default {
 };
 </script>
 <style scoped>
-/* Add Tailwind classes for styling */
-.bg-primary {
-  background-color: #004cfd;
-}
-
-.bg-secondary {
-  background-color: #003bb5;
-}
-
-.text-primary {
-  color: #004cfd;
-}
-
-.text-secondary {
-  color: #003bb5;
-}
-
-.bg-gray-700 {
-  background-color: #4a5568;
-}
-
-.bg-gray-600 {
-  background-color: #718096;
-}
-
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
