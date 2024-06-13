@@ -42,7 +42,12 @@
           </div>
         </div>
       </header>
-      <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="fixed top-0 left-0 right-0 bottom-0 bg-white dark:bg-gray-800 z-50 flex flex-col items-center space-y-8 p-8 md:hidden">
+      <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="fixed top-0 left-0 right-0 bottom-0 bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 z-50 flex flex-col items-center space-y-8 p-8 md:hidden">
+        <button class="self-end text-black dark:text-white focus:outline-none" @click="closeMenu">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
         <ul class="w-full text-center">
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Home</nuxt-link></li>
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/contactform" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Kontakt</nuxt-link></li>
@@ -139,6 +144,6 @@ export default {
 
 <style scoped>
 .page-wrapper {
-  transition: transform 0.3s;
+  transition: transform 0.3
 }
 </style>
