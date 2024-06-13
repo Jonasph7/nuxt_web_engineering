@@ -21,27 +21,13 @@
         </div>
       </div>
 
-
-
-
-
-
-
       <bewerbung v-if="currentTab === 'bewerbung'" :tickets="tickets" :calendarEvents="calendarEvents"
         @select-ticket="selectTicket" @invite-ticket="inviteTicket" @confirm-delete="confirmDeleteTicket" />
       <kontakt v-if="currentTab === 'kontakt'" :kontaktTickets="kontaktTickets" @select-ticket="selectKontaktTicket"
         @reply-to-ticket="replyToTicket" @confirm-delete-kontakt="confirmDeleteKontaktTicket" />
       <kalender v-if="currentTab === 'kalender'" :calendarEvents="calendarEvents"
         @confirm-delete-event="confirmDeleteEvent" />
-        <div v-if="currentTab === 'admin'" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <div v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 w-full max-w-xs mx-auto overflow-hidden">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">{{ ticket.firstname }} {{ ticket.lastname }}</h2>
-          <p class="text-gray-700 dark:text-gray-300 truncate">Email: {{ ticket.email }}</p>
-          <button @click="editTicket(ticket)" class="mt-2 px-4 py-2 bg-primary text-white rounded-full">Edit</button>
-        </div>
-      </div>
-
-
+      <admin v-if="currentTab === 'admin'" :tickets="tickets" />
 
       <div v-if="selectedTicket && currentTab === 'bewerbung'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="clearSelection">
@@ -82,46 +68,6 @@
         </div>
       </div>
 
-      <div v-if="selectedTicket && currentTab === 'admin'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-        @click="clearSelection">
-        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Edit Details for {{ selectedTicket.firstname || selectedTicket.name }} {{
-          selectedTicket.lastname || '' }}</h2>
-          <label class="block mt-4">
-            <span class="text-gray-700 dark:text-gray-300">Email:</span>
-            <input v-model="selectedTicket.email" type="email" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </label>
-          <label v-if="selectedTicket.phone !== undefined" class="block mt-4">
-            <span class="text-gray-700 dark:text-gray-300">Phone:</span>
-            <input v-model="selectedTicket.phone" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </label>
-          <label v-if="selectedTicket.experience !== undefined" class="block mt-4">
-            <span class="text-gray-700 dark:text-gray-300">Experience:</span>
-            <input v-model="selectedTicket.experience" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </label>
-          <label v-if="selectedTicket.skills !== undefined" class="block mt-4">
-            <span class="text-gray-700 dark:text-gray-300">Skills:</span>
-            <input v-model="selectedTicket.skills" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </label>
-          <label v-if="selectedTicket.education !== undefined" class="block mt-4">
-            <span class="text-gray-700 dark:text-gray-300">Education:</span>
-            <input v-model="selectedTicket.education" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </label>
-          <label v-if="selectedTicket.subject !== undefined" class="block mt-4">
-            <span class="text-gray-700 dark:text-gray-300">Subject:</span>
-            <input v-model="selectedTicket.subject" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </label>
-          <label v-if="selectedTicket.message !== undefined" class="block mt-4">
-            <span class="text-gray-700 dark:text-gray-300">Message:</span>
-            <textarea v-model="selectedTicket.message" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
-          </label>
-          <div class="mt-4 flex flex-col space-y-2">
-            <button v-if="isAdmin" @click="saveTicket" class="bg-green-500 text-white px-4 py-2 rounded-full">Save</button>
-            <button @click="clearSelection" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Close</button>
-          </div>
-        </div>
-      </div>
-
       <div v-if="selectedKontaktTicket && currentTab === 'kontakt'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="clearKontaktSelection">
         <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
@@ -144,42 +90,7 @@
         </div>
       </div>
 
-      <!-- Confirmation modal for deleting tickets -->
-      <div v-if="showConfirmDelete" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this ticket?</h2>
-          <div class="mt-4 flex justify-between">
-            <button @click="deleteTicket(selectedTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
-            <button @click="cancelDelete" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Confirmation modal for deleting kontakt tickets -->
-      <div v-if="showConfirmDeleteKontakt" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this kontakt ticket?</h2>
-          <div class="mt-4 flex justify-between">
-            <button @click="deleteKontaktTicket(selectedKontaktTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
-            <button @click="cancelDeleteKontakt" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Confirmation modal for deleting calendar events -->
-      <div v-if="showConfirmDeleteEvent" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this event?</h2>
-          <div class="mt-4 flex justify-between">
-            <button @click="deleteCalendarEvent(selectedEventId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
-            <button @click="cancelDeleteEvent" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Email reply window -->
-      <div v-if="showEmailReplyWindow" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-        @click="showEmailReplyWindow = false">
+      <div v-if="showEmailReplyWindow" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="showEmailReplyWindow = false">
         <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
           <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Reply to {{ selectedKontaktTicket.name }}</h2>
           <label class="block mt-4">
@@ -197,9 +108,7 @@
         </div>
       </div>
 
-      <!-- Date picker for invitations -->
-      <div v-if="showDatePicker" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-        @click="closeDatePicker">
+      <div v-if="showDatePicker" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="closeDatePicker">
         <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
           <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Invite {{ selectedTicket.firstname }} {{ selectedTicket.lastname }}</h2>
           <label class="block mt-4">
@@ -213,32 +122,46 @@
         </div>
       </div>
 
-      <!-- Loading screen -->
-      <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Processing...</h2>
-          <p class="text-gray-700 dark:text-gray-300">Please wait while we process your request.</p>
+      <!-- Confirmation modals for deleting tickets, kontakt tickets, and calendar events -->
+      <div v-if="showConfirmDelete" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this ticket?</h2>
+          <div class="mt-4 flex justify-between">
+            <button @click="deleteTicket(selectedTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDelete" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
+          </div>
         </div>
       </div>
 
-      <!-- Success message -->
-      <div v-if="showSuccessMessage" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Success</h2>
-          <p class="text-gray-700 dark:text-gray-300">{{ successMessage }}</p>
-          <button @click
+      <div v-if="showConfirmDeleteKontakt" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this kontakt ticket?</h2>
+          <div class="mt-4 flex justify-between">
+            <button @click="deleteKontaktTicket(selectedKontaktTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDeleteKontakt" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
+          </div>
+        </div>
+      </div>
 
-="closeSuccessMessage" class="bg-gray-700 dark
-text-white px-4 py-2 rounded-full mt-4">Close</button>
-</div>
-</div>
-</div>
+      <div v-if="showConfirmDeleteEvent" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this event?</h2>
+          <div class="mt-4 flex justify-between">
+            <button @click="deleteCalendarEvent(selectedEventId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDeleteEvent" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
+
 <script>
 import Bewerbung from '@/components/Bewerbung.vue';
 import Kontakt from '@/components/Kontakt.vue';
 import Kalender from '@/components/Kalender.vue';
+import Admin from '@/components/Admin.vue';  // Admin-Komponente importieren
 import { supabase } from '@/supabase';
 import axios from 'axios';
 import FlatPickr from 'vue-flatpickr-component';
@@ -250,6 +173,7 @@ export default {
     Bewerbung,
     Kontakt,
     Kalender,
+    Admin,  // Admin-Komponente registrieren
     FlatPickr,
   },
   data() {
@@ -320,7 +244,7 @@ export default {
       this.selectedTicket = { ...ticket }; // create a copy of the ticket
     },
     selectKontaktTicket(ticket) {
-      this.selectedKontaktTicket = ticket;
+      this.selectedKontaktTicket = { ...ticket }; // create a copy of the kontakt ticket
     },
     clearSelection() {
       this.selectedTicket = null;
@@ -336,6 +260,12 @@ export default {
       this.showDatePicker = false;
       this.selectedTicket = null;
     },
+/*
+==========================================
+🚀 BEGINN: Maschinell erstellter Code 🚀
+Software: ChatGPT (OpenAI)
+==========================================
+*/
     async sendInvitation() {
       if (!this.selectedTicket || !this.selectedDate) {
         console.error('No ticket selected or date not set');
@@ -379,10 +309,32 @@ export default {
       this.successMessage = 'The invitation has been sent successfully.';
       this.showSuccessMessage = true;
     },
+    /*
+==========================================
+🏁 ENDE: Maschinell erstellter Code 🏁
+Software: ChatGPT (OpenAI)
+==========================================
+
+🔍 Qualität und Treffgenauigkeit:
+Der generierte Code funktioniert korrekt und erfüllt die Aufgabe, eine Einladung per E-Mail zu senden. Die Verwendung von dayjs zur Formatierung des Datums und die Verwendung von axios zur Durchführung der HTTP-Anfrage sind gut umgesetzt.
+
+🔧 Fehlende Aspekte:
+- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
+- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
+
+✏ Manuelle Anpassungen:
+- Der Code enthält bereits die Logik zur Sendung der Einladung per E-Mail und zur Erstellung eines Kalendereintrags.
+    */
     confirmDeleteTicket(ticketId) {
       this.selectedTicketId = ticketId;
       this.showConfirmDelete = true;
     },
+/*
+==========================================
+🚀 BEGINN: Maschinell erstellter Code 🚀
+Software: ChatGPT (OpenAI)
+==========================================
+*/
     async deleteTicket(ticketId) {
       const ticketToDelete = this.tickets.find(ticket => ticket.id === ticketId);
       if (!ticketToDelete) {
@@ -417,6 +369,22 @@ export default {
         }
       }
     },
+    /*
+==========================================
+🏁 ENDE: Maschinell erstellter Code 🏁
+Software: ChatGPT (OpenAI)
+==========================================
+
+🔍 Qualität und Treffgenauigkeit:
+Der generierte Code funktioniert korrekt und löscht das Ticket aus der Datenbank. Zusätzlich wird eine E-Mail-Benachrichtigung gesendet, die den Bewerber über die Ablehnung informiert.
+
+🔧 Fehlende Aspekte:
+- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
+- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
+
+✏ Manuelle Anpassungen:
+- Der Code war nur ein Grundgerüst, es musste der Table Name und die column names angepasst werden. Ebenso der Inhalt der E-Mail. Der Name der API musste auch angepasst werden.
+*/
     cancelDelete() {
       this.showConfirmDelete = false;
       this.selectedTicketId = null;
@@ -425,6 +393,12 @@ export default {
       this.selectedKontaktTicketId = ticketId;
       this.showConfirmDeleteKontakt = true;
     },
+/*
+==========================================
+🚀 BEGINN: Maschinell erstellter Code 🚀
+Software: ChatGPT (OpenAI)
+==========================================
+*/
     async deleteKontaktTicket(ticketId) {
       const { error } = await supabase
         .from('kontakt')
@@ -438,6 +412,22 @@ export default {
         this.selectedKontaktTicketId = null;
       }
     },
+    /*
+==========================================
+🏁 ENDE: Maschinell erstellter Code 🏁
+Software: ChatGPT (OpenAI)
+==========================================
+
+🔍 Qualität und Treffgenauigkeit:
+Der generierte Code funktioniert korrekt und löscht das Kontakt-Ticket aus der Datenbank.
+
+🔧 Fehlende Aspekte:
+- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
+- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
+
+✏ Manuelle Anpassungen:
+- Der Code war nur ein Grundgerüst, es musste der Table Name und die column names angepasst werden.
+*/
     cancelDeleteKontakt() {
       this.showConfirmDeleteKontakt = false;
       this.selectedKontaktTicketId = null;
@@ -446,6 +436,12 @@ export default {
       this.selectedEventId = eventId;
       this.showConfirmDeleteEvent = true;
     },
+/*
+==========================================
+🚀 BEGINN: Maschinell erstellter Code 🚀
+Software: ChatGPT (OpenAI)
+==========================================
+*/
     async deleteCalendarEvent(eventId) {
       const event = this.calendarEvents.find(event => event.id === eventId);
       if (!event) {
@@ -479,6 +475,22 @@ export default {
         }
       }
     },
+    /*
+==========================================
+🏁 ENDE: Maschinell erstellter Code 🏁
+Software: ChatGPT (OpenAI)
+==========================================
+
+🔍 Qualität und Treffgenauigkeit:
+Der generierte Code funktioniert korrekt und löscht das Kalenderevent aus der Datenbank. Zusätzlich wird eine E-Mail-Benachrichtigung gesendet, die den Teilnehmer über die Absage informiert.
+
+🔧 Fehlende Aspekte:
+- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
+- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
+
+✏ Manuelle Anpassungen:
+- Der Code war nur ein Grundgerüst, es musste der Table Name und die column names angepasst werden. Ebenso der Inhalt der E-Mail. Der Name der API musste auch angepasst werden.
+*/
     cancelDeleteEvent() {
       this.showConfirmDeleteEvent = false;
       this.selectedEventId = null;
@@ -487,6 +499,12 @@ export default {
       this.selectedKontaktTicket = { ...ticket };
       this.showEmailReplyWindow = true;
     },
+/*
+==========================================
+🚀 BEGINN: Maschinell erstellter Code 🚀
+Software: ChatGPT (OpenAI)
+==========================================
+*/
     async sendReply() {
       if (!this.emailSubject || !this.emailBody || !this.selectedKontaktTicket) {
         return;
@@ -515,40 +533,22 @@ export default {
       this.successMessage = 'The reply has been sent successfully.';
       this.showSuccessMessage = true;
     },
-    async editTicket(ticket) {
-      if (this.isAdmin) {
-        this.selectedTicket = { ...ticket };
-      }
-    },
-    async saveTicket() {
-      if (!this.selectedTicket) return;
+    /*
+==========================================
+🏁 ENDE: Maschinell erstellter Code 🏁
+Software: ChatGPT (OpenAI)
+==========================================
 
-      const { error } = await supabase
-        .from('bewerbung')
-        .update({
-          email: this.selectedTicket.email,
-          phone: this.selectedTicket.phone,
-          experience: this.selectedTicket.experience,
-          skills: this.selectedTicket.skills,
-          education: this.selectedTicket.education,
-          subject: this.selectedTicket.subject,
-          message: this.selectedTicket.message,
-        })
-        .eq('id', this.selectedTicket.id);
+🔍 Qualität und Treffgenauigkeit:
+Der generierte Code funktioniert korrekt und erfüllt die Aufgabe, eine Antwort per E-Mail zu senden. Die Verwendung von axios zur Durchführung der HTTP-Anfrage ist gut umgesetzt.
 
-      if (error) {
-        console.error('Error updating ticket:', error);
-      } else {
-        const index = this.tickets.findIndex(t => t.id === this.selectedTicket.id);
-        if (index !== -1) {
-          this.tickets[index] = this.selectedTicket;
-        }
-        this.clearSelection();
-      }
-    },
-    closeSuccessMessage() {
-      this.showSuccessMessage = false;
-    },
+🔧 Fehlende Aspekte:
+- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
+- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
+
+✏ Manuelle Anpassungen:
+- Der Code enthält bereits die Logik zur Sendung der Antwort per E-Mail.
+    */
   },
   async mounted() {
     await this.fetchTickets();
@@ -563,36 +563,12 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-/* Add Tailwind classes for styling */
-.bg-primary {
-  background-color: #004cfd;
-}
-
-.bg-secondary {
-  background-color: #003bb5;
-}
-
-.text-primary {
-  color: #004cfd;
-}
-
-.text-secondary {
-  color: #003bb5;
-}
-
-.bg-gray-700 {
-  background-color: #4a5568;
-}
-
-.bg-gray-600 {
-  background-color: #718096;
-}
-
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
-  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+  margin-top: calc(0.5rem * calc(1 - var (--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var (--tw-space-y-reverse));
 }
 
 .flex-shrink-0 {
