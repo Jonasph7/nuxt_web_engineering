@@ -8,7 +8,7 @@
           </svg>
         </div>
         <h1 class="text-3xl font-medium text-gray-900 dark:text-gray-100">Thank You!</h1>
-        <p class="leading-relaxed text-gray-700 dark:text-gray-300">We appreciate your feedback.</p>
+        <p class="leading-relaxed text-gray-700 dark:text-gray-300">We wil contact you soon.</p>
       </div>
     </section>
   </template>
