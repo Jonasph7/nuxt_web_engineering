@@ -1,22 +1,22 @@
 <template>
   <div class="bg-white dark:bg-gray-900 py-16">
     <div class="container mx-auto max-w-screen-xl px-4 relative">
-      <h1 class="text-5xl font-bold mb-4 text-center md:text-left text-gray-900 dark:text-gray-100">Backend Ticket Dashboard</h1>
+      <h1 class="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left text-gray-900 dark:text-gray-100">Backend Ticket Dashboard</h1>
       <div class="mb-8 flex flex-wrap justify-center md:justify-start items-center space-y-2">
         <div class="flex justify-center md:justify-start w-full">
           <button :class="{ 'bg-primary': currentTab === 'bewerbung', 'bg-secondary': currentTab !== 'bewerbung' }"
-            class="flex-grow h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
+            class="flex-grow h-10 md:h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
             @click="currentTab = 'bewerbung'">Bewerbung</button>
           <button :class="{ 'bg-primary': currentTab === 'kontakt', 'bg-secondary': currentTab !== 'kontakt' }"
-            class="flex-grow h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
+            class="flex-grow h-10 md:h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
             @click="currentTab = 'kontakt'">Kontakt</button>
         </div>
         <div class="flex justify-center md:justify-start w-full">
           <button :class="{ 'bg-primary': currentTab === 'kalender', 'bg-secondary': currentTab !== 'kalender' }"
-            class="flex-grow h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
+            class="flex-grow h-10 md:h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
             @click="currentTab = 'kalender'">Kalender</button>
           <button v-if="isAdmin" :class="{ 'bg-primary': currentTab === 'admin', 'bg-secondary': currentTab !== 'admin' }"
-            class="flex-grow h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
+            class="flex-grow h-10 md:h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
             @click="currentTab = 'admin'">Admin</button>
         </div>
       </div>
@@ -122,7 +122,6 @@
         </div>
       </div>
 
-      <!-- Confirmation modals for deleting tickets, kontakt tickets, and calendar events -->
       <div v-if="showConfirmDelete" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
           <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this ticket?</h2>
@@ -152,7 +151,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -161,7 +159,7 @@
 import Bewerbung from '@/components/Bewerbung.vue';
 import Kontakt from '@/components/Kontakt.vue';
 import Kalender from '@/components/Kalender.vue';
-import Admin from '@/components/Admin.vue';  // Admin-Komponente importieren
+import Admin from '@/components/Admin.vue';
 import { supabase } from '@/supabase';
 import axios from 'axios';
 import FlatPickr from 'vue-flatpickr-component';
@@ -173,7 +171,7 @@ export default {
     Bewerbung,
     Kontakt,
     Kalender,
-    Admin,  // Admin-Komponente registrieren
+    Admin,
     FlatPickr,
   },
   data() {
@@ -260,12 +258,6 @@ export default {
       this.showDatePicker = false;
       this.selectedTicket = null;
     },
-/*
-==========================================
-🚀 BEGINN: Maschinell erstellter Code 🚀
-Software: ChatGPT (OpenAI)
-==========================================
-*/
     async sendInvitation() {
       if (!this.selectedTicket || !this.selectedDate) {
         console.error('No ticket selected or date not set');
@@ -309,32 +301,10 @@ Software: ChatGPT (OpenAI)
       this.successMessage = 'The invitation has been sent successfully.';
       this.showSuccessMessage = true;
     },
-    /*
-==========================================
-🏁 ENDE: Maschinell erstellter Code 🏁
-Software: ChatGPT (OpenAI)
-==========================================
-
-🔍 Qualität und Treffgenauigkeit:
-Der generierte Code funktioniert korrekt und erfüllt die Aufgabe, eine Einladung per E-Mail zu senden. Die Verwendung von dayjs zur Formatierung des Datums und die Verwendung von axios zur Durchführung der HTTP-Anfrage sind gut umgesetzt.
-
-🔧 Fehlende Aspekte:
-- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
-- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
-
-✏ Manuelle Anpassungen:
-- Der Code enthält bereits die Logik zur Sendung der Einladung per E-Mail und zur Erstellung eines Kalendereintrags.
-    */
     confirmDeleteTicket(ticketId) {
       this.selectedTicketId = ticketId;
       this.showConfirmDelete = true;
     },
-/*
-==========================================
-🚀 BEGINN: Maschinell erstellter Code 🚀
-Software: ChatGPT (OpenAI)
-==========================================
-*/
     async deleteTicket(ticketId) {
       const ticketToDelete = this.tickets.find(ticket => ticket.id === ticketId);
       if (!ticketToDelete) {
@@ -369,22 +339,6 @@ Software: ChatGPT (OpenAI)
         }
       }
     },
-    /*
-==========================================
-🏁 ENDE: Maschinell erstellter Code 🏁
-Software: ChatGPT (OpenAI)
-==========================================
-
-🔍 Qualität und Treffgenauigkeit:
-Der generierte Code funktioniert korrekt und löscht das Ticket aus der Datenbank. Zusätzlich wird eine E-Mail-Benachrichtigung gesendet, die den Bewerber über die Ablehnung informiert.
-
-🔧 Fehlende Aspekte:
-- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
-- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
-
-✏ Manuelle Anpassungen:
-- Der Code war nur ein Grundgerüst, es musste der Table Name und die column names angepasst werden. Ebenso der Inhalt der E-Mail. Der Name der API musste auch angepasst werden.
-*/
     cancelDelete() {
       this.showConfirmDelete = false;
       this.selectedTicketId = null;
@@ -393,12 +347,6 @@ Der generierte Code funktioniert korrekt und löscht das Ticket aus der Datenban
       this.selectedKontaktTicketId = ticketId;
       this.showConfirmDeleteKontakt = true;
     },
-/*
-==========================================
-🚀 BEGINN: Maschinell erstellter Code 🚀
-Software: ChatGPT (OpenAI)
-==========================================
-*/
     async deleteKontaktTicket(ticketId) {
       const { error } = await supabase
         .from('kontakt')
@@ -412,22 +360,6 @@ Software: ChatGPT (OpenAI)
         this.selectedKontaktTicketId = null;
       }
     },
-    /*
-==========================================
-🏁 ENDE: Maschinell erstellter Code 🏁
-Software: ChatGPT (OpenAI)
-==========================================
-
-🔍 Qualität und Treffgenauigkeit:
-Der generierte Code funktioniert korrekt und löscht das Kontakt-Ticket aus der Datenbank.
-
-🔧 Fehlende Aspekte:
-- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
-- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
-
-✏ Manuelle Anpassungen:
-- Der Code war nur ein Grundgerüst, es musste der Table Name und die column names angepasst werden.
-*/
     cancelDeleteKontakt() {
       this.showConfirmDeleteKontakt = false;
       this.selectedKontaktTicketId = null;
@@ -436,12 +368,6 @@ Der generierte Code funktioniert korrekt und löscht das Kontakt-Ticket aus der 
       this.selectedEventId = eventId;
       this.showConfirmDeleteEvent = true;
     },
-/*
-==========================================
-🚀 BEGINN: Maschinell erstellter Code 🚀
-Software: ChatGPT (OpenAI)
-==========================================
-*/
     async deleteCalendarEvent(eventId) {
       const event = this.calendarEvents.find(event => event.id === eventId);
       if (!event) {
@@ -475,22 +401,6 @@ Software: ChatGPT (OpenAI)
         }
       }
     },
-    /*
-==========================================
-🏁 ENDE: Maschinell erstellter Code 🏁
-Software: ChatGPT (OpenAI)
-==========================================
-
-🔍 Qualität und Treffgenauigkeit:
-Der generierte Code funktioniert korrekt und löscht das Kalenderevent aus der Datenbank. Zusätzlich wird eine E-Mail-Benachrichtigung gesendet, die den Teilnehmer über die Absage informiert.
-
-🔧 Fehlende Aspekte:
-- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
-- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
-
-✏ Manuelle Anpassungen:
-- Der Code war nur ein Grundgerüst, es musste der Table Name und die column names angepasst werden. Ebenso der Inhalt der E-Mail. Der Name der API musste auch angepasst werden.
-*/
     cancelDeleteEvent() {
       this.showConfirmDeleteEvent = false;
       this.selectedEventId = null;
@@ -499,12 +409,6 @@ Der generierte Code funktioniert korrekt und löscht das Kalenderevent aus der D
       this.selectedKontaktTicket = { ...ticket };
       this.showEmailReplyWindow = true;
     },
-/*
-==========================================
-🚀 BEGINN: Maschinell erstellter Code 🚀
-Software: ChatGPT (OpenAI)
-==========================================
-*/
     async sendReply() {
       if (!this.emailSubject || !this.emailBody || !this.selectedKontaktTicket) {
         return;
@@ -533,22 +437,6 @@ Software: ChatGPT (OpenAI)
       this.successMessage = 'The reply has been sent successfully.';
       this.showSuccessMessage = true;
     },
-    /*
-==========================================
-🏁 ENDE: Maschinell erstellter Code 🏁
-Software: ChatGPT (OpenAI)
-==========================================
-
-🔍 Qualität und Treffgenauigkeit:
-Der generierte Code funktioniert korrekt und erfüllt die Aufgabe, eine Antwort per E-Mail zu senden. Die Verwendung von axios zur Durchführung der HTTP-Anfrage ist gut umgesetzt.
-
-🔧 Fehlende Aspekte:
-- Eine genauere Fehlerbehandlung könnte hinzugefügt werden.
-- Zusätzliche Logging-Informationen könnten hilfreich sein, um den Status der Anfrage besser nachzuverfolgen.
-
-✏ Manuelle Anpassungen:
-- Der Code enthält bereits die Logik zur Sendung der Antwort per E-Mail.
-    */
   },
   async mounted() {
     await this.fetchTickets();
@@ -567,8 +455,8 @@ Der generierte Code funktioniert korrekt und erfüllt die Aufgabe, eine Antwort 
 <style scoped>
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
-  margin-top: calc(0.5rem * calc(1 - var (--tw-space-y-reverse)));
-  margin-bottom: calc(0.5rem * var (--tw-space-y-reverse));
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 
 .flex-shrink-0 {

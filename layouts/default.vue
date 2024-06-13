@@ -7,22 +7,19 @@
             <nuxt-link to="/"><img src="@/public/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" class="h-14 w-auto mr-4"></nuxt-link>
           </div>
           <div class="flex md:hidden z-50">
-            <button id="hamburger" class="text-white focus:outline-none" @click="toggleMenu">
-              <svg v-if="!isMenuVisible" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-              </svg>
-              <svg v-else class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button id="hamburger" class="text-white focus:outline-none" @click="toggleMenu" v-show="!isMenuVisible">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
               </svg>
             </button>
           </div>
           <nav class="hidden md:flex md:flex-grow justify-center">
             <ul class="flex justify-center space-x-4 text-white">
-              <li><nuxt-link to="/" class="hover:text-secondary font-bold">Home</nuxt-link></li>
-              <li><nuxt-link to="/contactform" class="hover:text-secondary font-bold">Kontakt</nuxt-link></li>
-              <li><nuxt-link to="/qualificationform" class="hover:text-secondary font-bold">Karriere</nuxt-link></li>
-              <li><nuxt-link to="/impressum" class="hover:text-secondary font-bold">Impressum</nuxt-link></li>
-              <li v-if="isLoggedIn"><nuxt-link to="/backend" class="hover:text-secondary font-bold">Backend</nuxt-link></li>
+              <li><nuxt-link to="/" class="hover:text-secondary font-bold dark:text-white">Home</nuxt-link></li>
+              <li><nuxt-link to="/contactform" class="hover:text-secondary font-bold dark:text-white">Kontakt</nuxt-link></li>
+              <li><nuxt-link to="/qualificationform" class="hover:text-secondary font-bold dark:text-white">Karriere</nuxt-link></li>
+              <li><nuxt-link to="/impressum" class="hover:text-secondary font-bold dark:text-white">Impressum</nuxt-link></li>
+              <li v-if="isLoggedIn"><nuxt-link to="/backend" class="hover:text-secondary font-bold dark:text-white">Backend</nuxt-link></li>
             </ul>
           </nav>
           <div class="hidden lg:flex items-center space-x-4">
@@ -45,15 +42,21 @@
           </div>
         </div>
       </header>
-      <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="fixed top-0 left-0 right-0 bottom-0 bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 z-40 flex flex-col items-center space-y-8 p-8 md:hidden">
-        <ul class="w-full text-center">
+      <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="fixed top-0 left-0 right-0 bottom-0 bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 z-50 flex flex-col items-center space-y-8 p-8 md:hidden">
+        <button id="close-hamburger" class="text-black dark:text-white focus:outline-none absolute top-4 right-4" @click="toggleMenu">
+
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+        <ul class="w-full text-center dark:text-white">
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Home</nuxt-link></li>
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/contactform" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Kontakt</nuxt-link></li>
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/qualificationform" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Karriere</nuxt-link></li>
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/impressum" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Impressum</nuxt-link></li>
           <li v-if="isLoggedIn" class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/backend" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Backend</nuxt-link></li>
         </ul>
-        <div class="flex flex-col mt-6 space-y-2 items-center">
+        <div class="flex flex-col mt-6 space-y-2 items-center dark:text-white">
           <div class="flex flex-col justify-center ml-3">
             <input type="checkbox" id="dark-mode-toggle-mobile" class="sr-only" @change="toggleDarkMode" :checked="isDarkMode" />
             <label class="relative cursor-pointer p-2" for="dark-mode-toggle-mobile">
