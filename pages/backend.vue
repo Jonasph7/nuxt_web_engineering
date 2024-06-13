@@ -2,20 +2,30 @@
   <div class="bg-white dark:bg-gray-900 py-16">
     <div class="container mx-auto max-w-screen-xl px-4 relative">
       <h1 class="text-5xl font-bold mb-4 text-center md:text-left text-gray-900 dark:text-gray-100">Backend Ticket Dashboard</h1>
-      <div class="mb-8 flex justify-center md:justify-start space-x-2">
-        <button :class="{ 'bg-primary': currentTab === 'bewerbung', 'bg-secondary': currentTab !== 'bewerbung' }"
-          class="px-4 py-2 text-white font-semibold rounded-full transition-colors"
-          @click="currentTab = 'bewerbung'">Bewerbung</button>
-        <button :class="{ 'bg-primary': currentTab === 'kontakt', 'bg-secondary': currentTab !== 'kontakt' }"
-          class="px-4 py-2 text-white font-semibold rounded-full transition-colors"
-          @click="currentTab = 'kontakt'">Kontakt</button>
-        <button :class="{ 'bg-primary': currentTab === 'kalender', 'bg-secondary': currentTab !== 'kalender' }"
-          class="px-4 py-2 text-white font-semibold rounded-full transition-colors"
-          @click="currentTab = 'kalender'">Kalender</button>
-        <button v-if="isAdmin" :class="{ 'bg-primary': currentTab === 'admin', 'bg-secondary': currentTab !== 'admin' }"
-          class="px-4 py-2 text-white font-semibold rounded-full transition-colors"
-          @click="currentTab = 'admin'">Admin</button>
+      <div class="mb-8 flex flex-wrap justify-center md:justify-start items-center space-y-2">
+        <div class="flex justify-center md:justify-start w-full">
+          <button :class="{ 'bg-primary': currentTab === 'bewerbung', 'bg-secondary': currentTab !== 'bewerbung' }"
+            class="flex-grow h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
+            @click="currentTab = 'bewerbung'">Bewerbung</button>
+          <button :class="{ 'bg-primary': currentTab === 'kontakt', 'bg-secondary': currentTab !== 'kontakt' }"
+            class="flex-grow h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
+            @click="currentTab = 'kontakt'">Kontakt</button>
+        </div>
+        <div class="flex justify-center md:justify-start w-full">
+          <button :class="{ 'bg-primary': currentTab === 'kalender', 'bg-secondary': currentTab !== 'kalender' }"
+            class="flex-grow h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
+            @click="currentTab = 'kalender'">Kalender</button>
+          <button v-if="isAdmin" :class="{ 'bg-primary': currentTab === 'admin', 'bg-secondary': currentTab !== 'admin' }"
+            class="flex-grow h-12 max-w-xs text-center text-white font-semibold rounded-full transition-colors flex items-center justify-center m-1"
+            @click="currentTab = 'admin'">Admin</button>
+        </div>
       </div>
+
+
+
+
+
+
 
       <bewerbung v-if="currentTab === 'bewerbung'" :tickets="tickets" :calendarEvents="calendarEvents"
         @select-ticket="selectTicket" @invite-ticket="inviteTicket" @confirm-delete="confirmDeleteTicket" />
@@ -23,13 +33,15 @@
         @reply-to-ticket="replyToTicket" @confirm-delete-kontakt="confirmDeleteKontaktTicket" />
       <kalender v-if="currentTab === 'kalender'" :calendarEvents="calendarEvents"
         @confirm-delete-event="confirmDeleteEvent" />
-      <div v-if="currentTab === 'admin'" class="grid gap-4">
-        <div v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ ticket.firstname }} {{ ticket.lastname }}</h2>
-          <p class="text-gray-700 dark:text-gray-300">Email: {{ ticket.email }}</p>
+        <div v-if="currentTab === 'admin'" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 w-full max-w-xs mx-auto overflow-hidden">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">{{ ticket.firstname }} {{ ticket.lastname }}</h2>
+          <p class="text-gray-700 dark:text-gray-300 truncate">Email: {{ ticket.email }}</p>
           <button @click="editTicket(ticket)" class="mt-2 px-4 py-2 bg-primary text-white rounded-full">Edit</button>
         </div>
       </div>
+
+
 
       <div v-if="selectedTicket && currentTab === 'bewerbung'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="clearSelection">
@@ -214,13 +226,15 @@
         <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Success</h2>
           <p class="text-gray-700 dark:text-gray-300">{{ successMessage }}</p>
-          <button @click="closeSuccessMessage" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full mt-4">Close</button>
-        </div>
-      </div>
-    </div>
+          <button @click
+
+="closeSuccessMessage" class="bg-gray-700 dark
+text-white px-4 py-2 rounded-full mt-4">Close</button>
+</div>
+</div>
+</div>
   </div>
 </template>
-
 <script>
 import Bewerbung from '@/components/Bewerbung.vue';
 import Kontakt from '@/components/Kontakt.vue';
@@ -549,7 +563,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 /* Add Tailwind classes for styling */
 .bg-primary {
@@ -574,5 +587,15 @@ export default {
 
 .bg-gray-600 {
   background-color: #718096;
+}
+
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
 }
 </style>
