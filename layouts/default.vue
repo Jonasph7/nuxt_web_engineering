@@ -1,6 +1,6 @@
 <template>
   <div :class="{ dark: isDarkMode }">
-    <div class="page-wrapper" :class="{ 'translate-x-0': !isMenuVisible, 'translate-x-72': isMenuVisible }">
+    <div class="page-wrapper">
       <header class="bg-gray-900 sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center py-4">
           <div class="flex items-center">
@@ -9,8 +9,7 @@
           <div class="flex md:hidden">
             <button id="hamburger" class="text-white focus:outline-none" @click="toggleMenu">
               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M4 6h16M4 12h16m-7 6h7"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
               </svg>
             </button>
           </div>
@@ -23,12 +22,6 @@
               <li v-if="isLoggedIn"><nuxt-link to="/backend" class="hover:text-secondary font-bold">Backend</nuxt-link></li>
             </ul>
           </nav>
-<!--
-==========================================
-🚀 BEGINN: Externe Quelle 🚀
-Webseite: https://cruip.com/implementing-tailwind-css-dark-mode-toggle-with-no-flicker/
-==========================================
--->
           <div class="hidden lg:flex items-center space-x-4">
             <div class="flex flex-col justify-center ml-3">
               <input type="checkbox" id="dark-mode-toggle" class="sr-only" @change="toggleDarkMode" :checked="isDarkMode" />
@@ -47,15 +40,9 @@ Webseite: https://cruip.com/implementing-tailwind-css-dark-mode-toggle-with-no-f
             <button v-if="isLoggedIn" @click="logout" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">Logout</button>
             <nuxt-link v-else to="/login" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">Login</nuxt-link>
           </div>
-<!-- 
-==========================================
-🏁 ENDE: Externe Quelle 🏁
-Webseite: https://cruip.com/implementing-tailwind-css-dark-mode-toggle-with-no-flicker/
-==========================================
--->
         </div>
       </header>
-      <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="fixed top-20 left-0 right-0 p-8 bg-white dark:bg-gray-800 z-50 flex flex-col items-center space-y-8 md:hidden">
+      <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="fixed top-0 left-0 right-0 bottom-0 bg-white dark:bg-gray-800 z-50 flex flex-col items-center space-y-8 p-8 md:hidden">
         <ul class="w-full text-center">
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Home</nuxt-link></li>
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/contactform" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Kontakt</nuxt-link></li>
@@ -85,7 +72,6 @@ Webseite: https://cruip.com/implementing-tailwind-css-dark-mode-toggle-with-no-f
       <div class="content-wrapper bg-gray-100 dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
         <slot />
       </div>
-
       <footer class="py-10 bg-gray-100 dark:bg-gray-900 text-black dark:text-white">
         <img src="@/public/Bild1-removebg-preview.png" alt="Logo" class="h-14 w-auto mx-auto mb-5">
         <span class="block text-center text-gray-600 dark:text-gray-400 font-semibold">© 2024 TechInnovate Solutions. Alle Rechte vorbehalten.</span>
