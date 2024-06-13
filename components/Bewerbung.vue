@@ -70,6 +70,12 @@ export default {
         };
     },
     computed: {
+/*
+==========================================
+🚀 BEGINN: Maschinell erstellter Code 🚀
+Software: ChatGPT (OpenAI)
+==========================================
+*/
         sortedTickets() {
             return this.tickets.sort((a, b) => {
                 let valueA, valueB;
@@ -84,6 +90,24 @@ export default {
             });
         }
     },
+/*
+==========================================
+🏁 ENDE: Maschinell erstellter Code 🏁
+Software: ChatGPT (OpenAI)
+==========================================
+
+🔍 Qualität und Treffgenauigkeit:
+Der generierte Code ist funktional korrekt und erfüllt die Aufgabe, Tickets basierend auf den angegebenen Kriterien und der Sortierreihenfolge zu sortieren. Die Struktur des Codes ist klar und verständlich.
+
+🔧 Fehlende Aspekte:
+- Fehlerbehandlung: Überprüfung, ob sortCriteria und sortOrder gültige Werte haben.
+- Optimierung: Möglicherweise kann die Sortierlogik effizienter gestaltet werden.
+- Kommentierung: Es fehlt eine detaillierte Erklärung der Sortierlogik.
+
+✏ Manuelle Anpassungen:
+- Sortierung nach den Kriterien 'experience' und 'education' basierend auf experienceValue und educationValue.
+- Sortierreihenfolge wird anhand von sortOrder festgelegt.
+*/
     methods: {
         experienceValue(experience) {
             switch (experience) {

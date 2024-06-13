@@ -503,7 +503,7 @@ export default {
     },
     async editTicket(ticket) {
       if (this.isAdmin) {
-        this.selectedTicket = { ...ticket }; // Create a copy of the ticket
+        this.selectedTicket = { ...ticket };
       }
     },
     async saveTicket() {
@@ -527,7 +527,6 @@ export default {
       } else {
         const index = this.tickets.findIndex(t => t.id === this.selectedTicket.id);
         if (index !== -1) {
-          // Vue 3 reactive state update
           this.tickets[index] = this.selectedTicket;
         }
         this.clearSelection();

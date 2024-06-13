@@ -54,8 +54,7 @@
   </template>
   
   <script>
-  import { supabase } from '@/supabase'; // Adjust the path according to your project structure
-  
+  import { supabase } from '@/supabase';
   export default {
     name: "ContactForm",
     data() {
@@ -87,18 +86,18 @@
           return;
         }
   
-        this.formHasErrors = false; // reset error state
+        this.formHasErrors = false;
   
         try {
           const { error } = await supabase
-            .from('kontakt') // Replace 'contact_form' with your table name
+            .from('kontakt')
             .insert([this.form]);
   
           if (error) {
             console.error("Error details:", error);
             this.formErrorMessage = error.message;
           } else {
-            this.$router.push('/thank-you'); // Navigate to thank you page
+            this.$router.push('/thank-you');
           }
         } catch (error) {
           console.error("Fehler beim Senden des Formulars:", error);
