@@ -6,9 +6,12 @@
           <div class="flex items-center">
             <nuxt-link to="/"><img src="@/public/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" class="h-14 w-auto mr-4"></nuxt-link>
           </div>
-          <div class="flex md:hidden">
+          <div class="flex md:hidden z-50">
             <button id="hamburger" class="text-white focus:outline-none" @click="toggleMenu">
-              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg v-if="!isMenuVisible" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+              </svg>
+              <svg v-else class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
               </svg>
             </button>
@@ -25,7 +28,7 @@
           <div class="hidden lg:flex items-center space-x-4">
             <div class="flex flex-col justify-center ml-3">
               <input type="checkbox" id="dark-mode-toggle" class="sr-only" @change="toggleDarkMode" :checked="isDarkMode" />
-              <label class="relative cursor-pointer p-2" for="dark-mode-toggle">
+              <label class="relative cursor-pointer p-2 flex" for="dark-mode-toggle">
                 <svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
                   <path class="fill-slate-300" d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.413-1.414zM14 7h2v2h-2zM12.95 14.433l-1.414-1.413 1.413-1.415 1.415 1.414zM7 14h2v2H7zM2.98 14.364l-1.413-1.415 1.414-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.706 4.463 3.12 3.05 4.535 1.636 3.12z" />
                   <path class="fill-slate-400" d="M8 4C5.8 4 4 5.8 4 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4Z" />
@@ -42,12 +45,7 @@
           </div>
         </div>
       </header>
-      <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="fixed top-0 left-0 right-0 bottom-0 bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 z-50 flex flex-col items-center space-y-8 p-8 md:hidden">
-        <button class="self-end text-black dark:text-white focus:outline-none" @click="closeMenu">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
+      <nav id="mobile-menu-placeholder" v-show="isMenuVisible" class="fixed top-0 left-0 right-0 bottom-0 bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-90 z-40 flex flex-col items-center space-y-8 p-8 md:hidden">
         <ul class="w-full text-center">
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Home</nuxt-link></li>
           <li class="border-b border-gray-300 dark:border-gray-600 py-4"><nuxt-link to="/contactform" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Kontakt</nuxt-link></li>
@@ -144,6 +142,6 @@ export default {
 
 <style scoped>
 .page-wrapper {
-  transition: transform 0.3
+  transition: transform 0.3s;
 }
 </style>
