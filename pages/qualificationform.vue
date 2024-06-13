@@ -1,6 +1,6 @@
 <!-- components/ContactForm.vue -->
 <template>
-  <div class="container mx-auto p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md max-w-xl">
+  <div class="container mx-auto p-4 bg-white dark:bg-gray-900 dark:pb-40 rounded-lg shadow-md max-w-xl">
     <h2 class="text-2xl text-primary dark:text-indigo-300 text-center mb-4 font-bold">Bewerbungsformular für Systemadministrator*in</h2>
     <div class="flex justify-center mb-4">
       <img src="/Bild1-removebg-preview.png" alt="TechInnovate Solutions Logo" class="w-32 h-auto" />
