@@ -3,49 +3,49 @@
         <div class="mb-4 flex flex-wrap gap-2">
             <label for="sortCriteria" class="w-full sm:w-auto">Sort by:</label>
             <select id="sortCriteria" v-model="sortCriteria" @change="sortTickets"
-                class="w-full sm:w-auto p-2 border rounded-lg">
+                class="w-full sm:w-auto p-2 border rounded-lg bg-white dark:bg-gray-700 dark:text-gray-300">
                 <option value="experience">Experience</option>
                 <option value="education">Education</option>
             </select>
             <label for="sortOrder" class="w-full sm:w-auto">Order:</label>
             <select id="sortOrder" v-model="sortOrder" @change="sortTickets"
-                class="w-full sm:w-auto p-2 border rounded-lg">
+                class="w-full sm:w-auto p-2 border rounded-lg bg-white dark:bg-gray-700 dark:text-gray-300">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
             </select>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div v-for="ticket in sortedTickets" :key="ticket.id"
-                class="border p-4 bg-white rounded-lg shadow-lg transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between"
+                class="border p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between"
                 @click="selectTicket(ticket)">
                 <div>
-                    <h3 class="text-xl font-semibold">{{ ticket.firstname }} {{ ticket.lastname }}</h3>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ ticket.firstname }} {{ ticket.lastname }}</h3>
                     <div class="mt-2 space-y-2">
                         <div class="flex justify-between">
-                            <p class="font-bold">Email:</p>
-                            <p class="truncate">{{ ticket.email }}</p>
+                            <p class="font-bold text-gray-900 dark:text-gray-100">Email:</p>
+                            <p class="truncate text-gray-700 dark:text-gray-300">{{ ticket.email }}</p>
                         </div>
                         <div class="flex justify-between">
-                            <p class="font-bold">Phone:</p>
-                            <p class="truncate">{{ ticket.phone }}</p>
+                            <p class="font-bold text-gray-900 dark:text-gray-100">Phone:</p>
+                            <p class="truncate text-gray-700 dark:text-gray-300">{{ ticket.phone }}</p>
                         </div>
                         <div class="flex justify-between">
-                            <p class="font-bold">Experience:</p>
-                            <p class="truncate">{{ ticket.experience }}</p>
+                            <p class="font-bold text-gray-900 dark:text-gray-100">Experience:</p>
+                            <p class="truncate text-gray-700 dark:text-gray-300">{{ ticket.experience }}</p>
                         </div>
                         <div class="flex justify-between">
-                            <p class="font-bold">Skills:</p>
-                            <p class="truncate">{{ ticket.skills }}</p>
+                            <p class="font-bold text-gray-900 dark:text-gray-100">Skills:</p>
+                            <p class="truncate text-gray-700 dark:text-gray-300">{{ ticket.skills }}</p>
                         </div>
                         <div class="flex justify-between">
-                            <p class="font-bold">Education:</p>
-                            <p class="truncate">{{ ticket.education }}</p>
+                            <p class="font-bold text-gray-900 dark:text-gray-100">Education:</p>
+                            <p class="truncate text-gray-700 dark:text-gray-300">{{ ticket.education }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="mt-4 flex justify-between">
                     <button @click.stop="inviteTicket(ticket)" :disabled="isNameInCalendar(ticket)"
-                        :class="{ 'bg-gray-light': isNameInCalendar(ticket), 'bg-primary': !isNameInCalendar(ticket) }"
+                        :class="{ 'bg-gray-500': isNameInCalendar(ticket), 'bg-primary': !isNameInCalendar(ticket) }"
                         class="text-white px-4 py-2 rounded-full">
                         {{ isNameInCalendar(ticket) ? 'Invited' : 'Invite' }}
                     </button>

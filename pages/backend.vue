@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-white py-16">
+  <div class="bg-white dark:bg-gray-900 py-16">
     <div class="container mx-auto max-w-screen-xl px-4 relative">
-      <h1 class="text-5xl font-bold mb-4 text-center md:text-left">Backend Ticket Dashboard</h1>
+      <h1 class="text-5xl font-bold mb-4 text-center md:text-left text-gray-900 dark:text-gray-100">Backend Ticket Dashboard</h1>
       <div class="mb-8 flex justify-center md:justify-start space-x-2">
         <button :class="{ 'bg-primary': currentTab === 'bewerbung', 'bg-secondary': currentTab !== 'bewerbung' }"
           class="px-4 py-2 text-white font-semibold rounded-full transition-colors"
@@ -24,143 +24,143 @@
       <kalender v-if="currentTab === 'kalender'" :calendarEvents="calendarEvents"
         @confirm-delete-event="confirmDeleteEvent" />
       <div v-if="currentTab === 'admin'" class="grid gap-4">
-        <div v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded-lg">
-          <h2 class="text-lg font-semibold">{{ ticket.firstname }} {{ ticket.lastname }}</h2>
-          <p>Email: {{ ticket.email }}</p>
+        <div v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ ticket.firstname }} {{ ticket.lastname }}</h2>
+          <p class="text-gray-700 dark:text-gray-300">Email: {{ ticket.email }}</p>
           <button @click="editTicket(ticket)" class="mt-2 px-4 py-2 bg-primary text-white rounded-full">Edit</button>
         </div>
       </div>
 
       <div v-if="selectedTicket && currentTab === 'bewerbung'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="clearSelection">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Details for {{ selectedTicket.firstname || selectedTicket.name }} {{
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Details for {{ selectedTicket.firstname || selectedTicket.name }} {{
           selectedTicket.lastname || '' }}</h2>
           <label class="block mt-4">
-            <span class="text-gray-light">Email:</span>
-            <p class="mt-1 block w-full">{{ selectedTicket.email }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Email:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedTicket.email }}</p>
           </label>
           <label v-if="selectedTicket.phone !== undefined" class="block mt-4">
-            <span class="text-gray-light">Phone:</span>
-            <p class="mt-1 block w-full">{{ selectedTicket.phone }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Phone:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedTicket.phone }}</p>
           </label>
           <label v-if="selectedTicket.experience !== undefined" class="block mt-4">
-            <span class="text-gray-light">Experience:</span>
-            <p class="mt-1 block w-full">{{ selectedTicket.experience }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Experience:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedTicket.experience }}</p>
           </label>
           <label v-if="selectedTicket.skills !== undefined" class="block mt-4">
-            <span class="text-gray-light">Skills:</span>
-            <p class="mt-1 block w-full">{{ selectedTicket.skills }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Skills:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedTicket.skills }}</p>
           </label>
           <label v-if="selectedTicket.education !== undefined" class="block mt-4">
-            <span class="text-gray-light">Education:</span>
-            <p class="mt-1 block w-full">{{ selectedTicket.education }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Education:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedTicket.education }}</p>
           </label>
           <label v-if="selectedTicket.subject !== undefined" class="block mt-4">
-            <span class="text-gray-light">Subject:</span>
-            <p class="mt-1 block w-full">{{ selectedTicket.subject }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Subject:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedTicket.subject }}</p>
           </label>
           <label v-if="selectedTicket.message !== undefined" class="block mt-4">
-            <span class="text-gray-light">Message:</span>
-            <p class="mt-1 block w-full">{{ selectedTicket.message }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Message:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedTicket.message }}</p>
           </label>
           <div class="mt-4 flex flex-col space-y-2">
-            <button @click="clearSelection" class="bg-gray-light text-white px-4 py-2 rounded-full">Close</button>
+            <button @click="clearSelection" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Close</button>
           </div>
         </div>
       </div>
 
       <div v-if="selectedTicket && currentTab === 'admin'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="clearSelection">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Edit Details for {{ selectedTicket.firstname || selectedTicket.name }} {{
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Edit Details for {{ selectedTicket.firstname || selectedTicket.name }} {{
           selectedTicket.lastname || '' }}</h2>
           <label class="block mt-4">
-            <span class="text-gray-light">Email:</span>
-            <input v-model="selectedTicket.email" type="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <span class="text-gray-700 dark:text-gray-300">Email:</span>
+            <input v-model="selectedTicket.email" type="email" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </label>
           <label v-if="selectedTicket.phone !== undefined" class="block mt-4">
-            <span class="text-gray-light">Phone:</span>
-            <input v-model="selectedTicket.phone" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <span class="text-gray-700 dark:text-gray-300">Phone:</span>
+            <input v-model="selectedTicket.phone" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </label>
           <label v-if="selectedTicket.experience !== undefined" class="block mt-4">
-            <span class="text-gray-light">Experience:</span>
-            <input v-model="selectedTicket.experience" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <span class="text-gray-700 dark:text-gray-300">Experience:</span>
+            <input v-model="selectedTicket.experience" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </label>
           <label v-if="selectedTicket.skills !== undefined" class="block mt-4">
-            <span class="text-gray-light">Skills:</span>
-            <input v-model="selectedTicket.skills" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <span class="text-gray-700 dark:text-gray-300">Skills:</span>
+            <input v-model="selectedTicket.skills" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </label>
           <label v-if="selectedTicket.education !== undefined" class="block mt-4">
-            <span class="text-gray-light">Education:</span>
-            <input v-model="selectedTicket.education" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <span class="text-gray-700 dark:text-gray-300">Education:</span>
+            <input v-model="selectedTicket.education" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </label>
           <label v-if="selectedTicket.subject !== undefined" class="block mt-4">
-            <span class="text-gray-light">Subject:</span>
-            <input v-model="selectedTicket.subject" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <span class="text-gray-700 dark:text-gray-300">Subject:</span>
+            <input v-model="selectedTicket.subject" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </label>
           <label v-if="selectedTicket.message !== undefined" class="block mt-4">
-            <span class="text-gray-light">Message:</span>
-            <textarea v-model="selectedTicket.message" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+            <span class="text-gray-700 dark:text-gray-300">Message:</span>
+            <textarea v-model="selectedTicket.message" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
           </label>
           <div class="mt-4 flex flex-col space-y-2">
-            <button v-if="isAdmin" @click="saveTicket" class="bg-green text-white px-4 py-2 rounded-full">Save</button>
-            <button @click="clearSelection" class="bg-gray-light text-white px-4 py-2 rounded-full">Close</button>
+            <button v-if="isAdmin" @click="saveTicket" class="bg-green-500 text-white px-4 py-2 rounded-full">Save</button>
+            <button @click="clearSelection" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Close</button>
           </div>
         </div>
       </div>
 
       <div v-if="selectedKontaktTicket && currentTab === 'kontakt'" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="clearKontaktSelection">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Details for {{ selectedKontaktTicket.name }}</h2>
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Details for {{ selectedKontaktTicket.name }}</h2>
           <label class="block mt-4">
-            <span class="text-gray-light">Email:</span>
-            <p class="mt-1 block w-full">{{ selectedKontaktTicket.email }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Email:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedKontaktTicket.email }}</p>
           </label>
           <label class="block mt-4">
-            <span class="text-gray-light">Subject:</span>
-            <p class="mt-1 block w-full">{{ selectedKontaktTicket.subject }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Subject:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedKontaktTicket.subject }}</p>
           </label>
           <label class="block mt-4">
-            <span class="text-gray-light">Message:</span>
-            <p class="mt-1 block w-full">{{ selectedKontaktTicket.message }}</p>
+            <span class="text-gray-700 dark:text-gray-300">Message:</span>
+            <p class="mt-1 block w-full text-gray-900 dark:text-gray-100">{{ selectedKontaktTicket.message }}</p>
           </label>
           <div class="mt-4 flex flex-col space-y-2">
-            <button @click="clearKontaktSelection" class="bg-gray-light text-white px-4 py-2 rounded-full">Close</button>
+            <button @click="clearKontaktSelection" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Close</button>
           </div>
         </div>
       </div>
 
       <!-- Confirmation modal for deleting tickets -->
       <div v-if="showConfirmDelete" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Are you sure you want to delete this ticket?</h2>
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this ticket?</h2>
           <div class="mt-4 flex justify-between">
-            <button @click="deleteTicket(selectedTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
-            <button @click="cancelDelete" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+            <button @click="deleteTicket(selectedTicketId)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDelete" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
         </div>
       </div>
 
       <!-- Confirmation modal for deleting kontakt tickets -->
       <div v-if="showConfirmDeleteKontakt" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Are you sure you want to delete this kontakt ticket?</h2>
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this kontakt ticket?</h2>
           <div class="mt-4 flex justify-between">
-            <button @click="deleteKontaktTicket(selectedKontaktTicketId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
-            <button @click="cancelDeleteKontakt" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+            <button @click="deleteKontaktTicket(selectedKontaktTicketId)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDeleteKontakt" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
         </div>
       </div>
 
       <!-- Confirmation modal for deleting calendar events -->
       <div v-if="showConfirmDeleteEvent" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Are you sure you want to delete this event?</h2>
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Are you sure you want to delete this event?</h2>
           <div class="mt-4 flex justify-between">
-            <button @click="deleteCalendarEvent(selectedEventId)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
-            <button @click="cancelDeleteEvent" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+            <button @click="deleteCalendarEvent(selectedEventId)" class="bg-red-500 text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click="cancelDeleteEvent" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
         </div>
       </div>
@@ -168,19 +168,19 @@
       <!-- Email reply window -->
       <div v-if="showEmailReplyWindow" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="showEmailReplyWindow = false">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Reply to {{ selectedKontaktTicket.name }}</h2>
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Reply to {{ selectedKontaktTicket.name }}</h2>
           <label class="block mt-4">
-            <span class="text-gray-light">Subject:</span>
-            <input v-model="emailSubject" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <span class="text-gray-700 dark:text-gray-300">Subject:</span>
+            <input v-model="emailSubject" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </label>
           <label class="block mt-4">
-            <span class="text-gray-light">Message:</span>
-            <textarea v-model="emailBody" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+            <span class="text-gray-700 dark:text-gray-300">Message:</span>
+            <textarea v-model="emailBody" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
           </label>
           <div class="mt-4 flex justify-between">
-            <button @click="sendReply" class="bg-green text-white px-4 py-2 rounded-full">Send</button>
-            <button @click="showEmailReplyWindow = false" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+            <button @click="sendReply" class="bg-green-500 text-white px-4 py-2 rounded-full">Send</button>
+            <button @click="showEmailReplyWindow = false" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
         </div>
       </div>
@@ -188,39 +188,38 @@
       <!-- Date picker for invitations -->
       <div v-if="showDatePicker" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click="closeDatePicker">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
-          <h2 class="text-2xl font-bold">Invite {{ selectedTicket.firstname }} {{ selectedTicket.lastname }}</h2>
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full" @click.stop>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Invite {{ selectedTicket.firstname }} {{ selectedTicket.lastname }}</h2>
           <label class="block mt-4">
-            <span class="text-gray-light">Select Date and Time:</span>
-            <flat-pickr v-model="selectedDate" :config="datePickerConfig" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></flat-pickr>
+            <span class="text-gray-700 dark:text-gray-300">Select Date and Time:</span>
+            <flat-pickr v-model="selectedDate" :config="datePickerConfig" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"></flat-pickr>
           </label>
           <div class="mt-4 flex justify-between">
-            <button @click="sendInvitation" class="bg-green text-white px-4 py-2 rounded-full">Send Invitation</button>
-            <button @click="closeDatePicker" class="bg-gray-light text-white px-4 py-2 rounded-full">Cancel</button>
+            <button @click="sendInvitation" class="bg-green-500 text-white px-4 py-2 rounded-full">Send Invitation</button>
+            <button @click="closeDatePicker" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full">Cancel</button>
           </div>
         </div>
       </div>
 
       <!-- Loading screen -->
       <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
-          <h2 class="text-2xl font-bold">Processing...</h2>
-          <p>Please wait while we process your request.</p>
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Processing...</h2>
+          <p class="text-gray-700 dark:text-gray-300">Please wait while we process your request.</p>
         </div>
       </div>
 
       <!-- Success message -->
       <div v-if="showSuccessMessage" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
-          <h2 class="text-2xl font-bold">Success</h2>
-          <p>{{ successMessage }}</p>
-          <button @click="closeSuccessMessage" class="bg-gray-light text-white px-4 py-2 rounded-full mt-4">Close</button>
+        <div class="bg-white dark:bg-gray-800 p-6 border shadow-lg rounded-lg max-w-lg w-full text-center">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Success</h2>
+          <p class="text-gray-700 dark:text-gray-300">{{ successMessage }}</p>
+          <button @click="closeSuccessMessage" class="bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-full mt-4">Close</button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import Bewerbung from '@/components/Bewerbung.vue';
@@ -554,4 +553,27 @@ export default {
 
 <style scoped>
 /* Add Tailwind classes for styling */
+.bg-primary {
+  background-color: #004cfd;
+}
+
+.bg-secondary {
+  background-color: #003bb5;
+}
+
+.text-primary {
+  color: #004cfd;
+}
+
+.text-secondary {
+  color: #003bb5;
+}
+
+.bg-gray-700 {
+  background-color: #4a5568;
+}
+
+.bg-gray-600 {
+  background-color: #718096;
+}
 </style>
