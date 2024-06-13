@@ -61,6 +61,23 @@ module.exports = {
         'indigo-200': '#c3dafe',
         'indigo-700': '#4c51bf',
       },
+      spacing: {
+        '128': '32rem',
+        '144': '36rem',
+      },
+      fontSize: {
+        '3xl': '1.875rem', // Adjusted for smaller screens
+        '5xl': '3rem',
+        '6xl': '4rem',
+      },
+      screens: {
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+        '3xl': '1600px',
+      },
     },
   },
   plugins: [],
