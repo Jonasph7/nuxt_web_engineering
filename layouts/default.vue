@@ -24,9 +24,20 @@
             </ul>
           </nav>
           <div class="hidden lg:flex items-center space-x-4">
-            <button @click="toggleDarkMode" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full">
-              {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
-            </button>
+            <div class="flex flex-col justify-center ml-3">
+              <input type="checkbox" id="dark-mode-toggle" class="light-switch sr-only" @change="toggleDarkMode" :checked="isDarkMode" />
+              <label class="relative cursor-pointer p-2" for="dark-mode-toggle">
+                <svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                  <path class="fill-slate-300" d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.413-1.414zM14 7h2v2h-2zM12.95 14.433l-1.414-1.413 1.413-1.415 1.415 1.414zM7 14h2v2H7zM2.98 14.364l-1.413-1.415 1.414-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.706 4.463 3.12 3.05 4.535 1.636 3.12z" />
+                  <path class="fill-slate-400" d="M8 4C5.8 4 4 5.8 4 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4Z" />
+                </svg>
+                <svg class="hidden dark:block" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                  <path class="fill-slate-400" d="M6.2 1C3.2 1.8 1 4.6 1 7.9 1 11.8 4.2 15 8.1 15c3.3 0 6-2.2 6.9-5.2C9.7 11.2 4.8 6.3 6.2 1Z" />
+                  <path class="fill-slate-500" d="M12.5 5a.625.625 0 0 1-.625-.625 1.252 1.252 0 0 0-1.25-1.25.625.625 0 1 1 0-1.25 1.252 1.252 0 0 0 1.25-1.25.625.625 0 1 1 1.25 0c.001.69.56 1.249 1.25 1.25a.625.625 0 1 1 0 1.25c-.69.001-1.249.56-1.25 1.25A.625.625 0 0 1 12.5 5Z" />
+                </svg>
+                <span class="sr-only">Switch to light / dark version</span>
+              </label>
+            </div>
             <button v-if="isLoggedIn" @click="logout" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">Logout</button>
             <nuxt-link v-else to="/login" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full inline-block">Login</nuxt-link>
           </div>
@@ -41,9 +52,20 @@
           <li v-if="isLoggedIn"><nuxt-link to="/backend" @click.native="closeMenu" class="hover:text-secondary font-bold dark:text-white">Backend</nuxt-link></li>
         </ul>
         <div class="flex flex-col mt-6 space-y-2 items-center">
-          <button @click="toggleDarkMode" @click.native="closeMenu" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full">
-            {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
-          </button>
+          <div class="flex flex-col justify-center ml-3">
+            <input type="checkbox" id="dark-mode-toggle-mobile" class="light-switch sr-only" @change="toggleDarkMode" :checked="isDarkMode" />
+            <label class="relative cursor-pointer p-2" for="dark-mode-toggle-mobile">
+              <svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                <path class="fill-slate-300" d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.413-1.414zM14 7h2v2h-2zM12.95 14.433l-1.414-1.413 1.413-1.415 1.415 1.414zM7 14h2v2H7zM2.98 14.364l-1.413-1.415 1.414-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.706 4.463 3.12 3.05 4.535 1.636 3.12z" />
+                <path class="fill-slate-400" d="M8 4C5.8 4 4 5.8 4 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4Z" />
+              </svg>
+              <svg class="hidden dark:block" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                <path class="fill-slate-400" d="M6.2 1C3.2 1.8 1 4.6 1 7.9 1 11.8 4.2 15 8.1 15c3.3 0 6-2.2 6.9-5.2C9.7 11.2 4.8 6.3 6.2 1Z" />
+                <path class="fill-slate-500" d="M12.5 5a.625.625 0 0 1-.625-.625 1.252 1.252 0 0 0-1.25-1.25.625.625 0 1 1 0-1.25 1.252 1.252 0 0 0 1.25-1.25.625.625 0 1 1 1.25 0c.001.69.56 1.249 1.25 1.25a.625.625 0 1 1 0 1.25c-.69.001-1.249.56-1.25 1.25A.625.625 0 0 1 12.5 5Z" />
+              </svg>
+              <span class="sr-only">Switch to light / dark version</span>
+            </label>
+          </div>
           <button v-if="isLoggedIn" @click="logout" @click.native="closeMenu" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Logout</button>
           <nuxt-link v-else to="/login" @click.native="closeMenu" class="bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Login</nuxt-link>
         </div>
@@ -90,34 +112,35 @@ export default {
     }
   },
   methods: {
-    async checkAuthStatus() {
-      const { data: { session } } = await supabase.auth.getSession();
-      this.isLoggedIn = !!session;
-    },
-    async logout() {
-      await supabase.auth.signOut();
-      this.isLoggedIn = false;
-      this.$router.push('/'); // Weiterleitung zur Startseite nach dem Logout
-    },
-    toggleMenu() {
-      this.isMenuVisible = !this.isMenuVisible;
-    },
-    closeMenu() {
-      this.isMenuVisible = false;
-    },
-    toggleDarkMode() {
-      this.isDarkMode = !this.isDarkMode;
-      localStorage.setItem('darkMode', this.isDarkMode);
-      if (this.isDarkMode) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+  async checkAuthStatus() {
+    const { data: { session } } = await supabase.auth.getSession();
+    this.isLoggedIn = !!session;
+  },
+  async logout() {
+    await supabase.auth.signOut();
+    this.isLoggedIn = false;
+    this.$router.push('/'); // Weiterleitung zur Startseite nach dem Logout
+  },
+  toggleMenu() {
+    this.isMenuVisible = !this.isMenuVisible;
+  },
+  closeMenu() {
+    this.isMenuVisible = false;
+  },
+  toggleDarkMode(event) {
+    this.isDarkMode = event.target.checked;
+    localStorage.setItem('darkMode', this.isDarkMode);
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
   }
 }
-</script>
 
+}
+
+</script>
 <style scoped>
 .mobile-menu {
   position: fixed;  
@@ -164,4 +187,31 @@ footer a:hover {
 .page-wrapper {
   transition: background-color 0.3s, color 0.3s;
 }
+
+.light-switch:checked + label .dark\:hidden {
+  display: none;
+}
+
+.light-switch:checked + label .hidden {
+  display: block;
+}
+
+label[for="dark-mode-toggle"] {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+label[for="dark-mode-toggle"] .block {
+  background-color: #d1d5db;
+}
+
+label[for="dark-mode-toggle"] .translate-x-4 {
+  transform: translateX(1.5rem);
+}
+
+label[for="dark-mode-toggle"] .translate-x-0 {
+  transform: translateX(0);
+}
 </style>
+
