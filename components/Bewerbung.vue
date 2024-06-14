@@ -49,7 +49,7 @@
               class="text-white px-4 py-2 rounded-full">
               {{ isNameInCalendar(ticket) ? 'Invited' : 'Invite' }}
             </button>
-            <button @click.stop="confirmDelete(ticket.id)" class="bg-red-600 text-white px-4 py-2 rounded-full">Delete</button>
+            <button @click.stop="confirmDelete(ticket.id)" class="bg-red text-white px-4 py-2 rounded-full">Delete</button>
           </div>
         </div>
       </div>
