@@ -69,6 +69,12 @@
       };
     },
     computed: {
+/*
+==========================================
+🚀 BEGINN: Maschinell erstellter Code 🚀
+Software: ChatGPT (OpenAI)
+==========================================
+*/
       sortedTickets() {
         return this.tickets.sort((a, b) => {
           let valueA, valueB;
@@ -110,6 +116,19 @@
             return 0;
         }
       },
+/*
+==========================================
+🏁 ENDE: Maschinell erstellter Code 🏁
+Software: ChatGPT (OpenAI)
+==========================================
+🔍 Qualität und Treffgenauigkeit:
+Der generierte Code hat nache einigen Versuchen funktioniert. Es sortiert die Tickets nach den Kriterien "Experience" und "Education" und ermöglicht die Auswahl der Sortierreihenfolge. Die Verwendung von Switch-Statements ist hier angemessen und sinnvoll. 
+
+🔧 Fehlende Aspekte:
+- Die KI hätte vorschlagen können, die Datenbank Werte als Ziffern zu speichern, um die Sortierung zu vereinfachen.
+✏️ Manuelle Anpassungen:
+- Einbinden der Sortierlogik in die bestehende Seite.
+*/
       selectTicket(ticket) {
         this.$emit('select-ticket', ticket);
       },
